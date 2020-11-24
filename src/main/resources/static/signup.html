@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <form name="form1">
+        <label>First Name:</label>
+        <input id="fname" type="text"> <br> <br>
+
+        <label>Last Name:</label>
+        <input id="lname" type="text"> <br> <br>
+
+        <label>Email:</label>
+        <input id="email" type="text" name="email"> <br> <br>
+
+        <label>Password:</label>
+        <input id="password" type="text"> <br> <br>
+
+        <input type="submit" onclick="ValidateEmail(document.form1.email)">
+    </form>
+
+<script src="js/data_validation.js"></script>
+</body>
+</html>
