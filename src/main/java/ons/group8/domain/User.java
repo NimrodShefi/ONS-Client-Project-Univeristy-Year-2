@@ -3,6 +3,9 @@ package ons.group8.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.persistence.Entity;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @Entity
