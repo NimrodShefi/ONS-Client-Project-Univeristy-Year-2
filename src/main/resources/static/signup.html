@@ -5,20 +5,20 @@
     <title>Register</title>
 </head>
 <body>
-    <form name="form1">
+    <form name="form1" onsubmit="return ValidateEmail(document.form1.email)" action="/save-user">
         <label>First Name:</label>
-        <input id="fname" type="text"> <br> <br>
+        <input id="fname" type="text" name="fname" required> <br> <br>
 
         <label>Last Name:</label>
-        <input id="lname" type="text"> <br> <br>
+        <input id="lname" type="text" name="lname" required> <br> <br>
 
         <label>Email:</label>
-        <input id="email" type="text" name="email"> <br> <br>
+        <input id="email" type="text" name="email" required> <br> <br>
 
         <label>Password:</label>
-        <input id="password" type="text"> <br> <br>
+        <input id="password" type="text" name="password" required> <br> <br>
 
-        <input type="submit" onclick="ValidateEmail(document.form1.email)">
+        <input type="submit">
     </form>
 
 <script src="js/data_validation.js"></script>

@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,8 +18,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     private String email;
-    private String fname;
-    private String lname;
+    private String firstName;
+    private String lastName;
     private String password;
-    private List<String> roles;
+
+    public User(String email, String password, String fname, String lname){
+        this(null, email, fname, lname, password);
+    }
 }

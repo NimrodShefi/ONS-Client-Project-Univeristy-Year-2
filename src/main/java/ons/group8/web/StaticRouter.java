@@ -9,6 +9,6 @@ public class StaticRouter implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry){
-        registry.addViewController("sign-up").setViewName("forward:/signup.html");
+        registry.addViewController("/sign-up").setViewName("forward:/signup.html");
     }
 }
