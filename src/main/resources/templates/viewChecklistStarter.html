@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>View Checklists</title>
+
 </head>
 <body>
 <h1>Here you can view all your checklists as a new starter!</h1>
-    first name: <div th:text="${user.fname}"></div>
+
+    <table style="width:100%">
+        <tr>
+            <th>Firstname</th>
+        </tr>
+        <td><div th:text="${user.fname}"></div></td>
+    </table>
+
 </body>
 </html>
