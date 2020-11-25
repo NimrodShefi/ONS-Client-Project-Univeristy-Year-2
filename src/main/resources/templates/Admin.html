@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign roles</title>
+    <h1>Manage users</h1>
+</head>
+<body>
+<form action="#" method="post" th:action="@{/charity-add}" th:object="${charity}" >
+<ul>
+    <li th:each="user:${Users}">
+        <p th:text="${user.firstName}"> </p>
+        <input type="checkbox" name="active" th:checked="${user.firstName}" />
+        <input type="checkbox" name="active" th:checked="${user.firstName}" />
+        <input type="checkbox" name="active" th:checked="${user.firstName}" />
+
+    </li>
+
+</ul>
+
+    <input id="submit" name="submit" type="submit" value="Submit"/>
+
+</form>
+
+
+
+</body>
+</html>
