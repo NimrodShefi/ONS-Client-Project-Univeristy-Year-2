@@ -1,6 +1,8 @@
 package ons.group8.controllers;
 
 import ons.group8.domain.User;
+import ons.group8.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,17 +16,20 @@ import java.security.NoSuchAlgorithmException;
 @Controller
 public class SignupController {
 
+    private UserService userService;
+
+    @Autowired
+    public SignupController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("save-user")
     public String saveUser(@RequestParam("fname") String firstName, @RequestParam("lname") String lastName,
                            @RequestParam("email") String email, @RequestParam("password") String password, Model model) throws NoSuchAlgorithmException {
-
         String hashedPassword = toHexString(getSHA(password));
-        System.out.println("first name:" + firstName);
-        System.out.println("last name:" + lastName);
-        System.out.println("email:" + email);
-        System.out.println("password:" + password + " " + hashedPassword);
-        User user = new User(email, firstName, lastName, hashedPassword);
+        User user = new User(email, hashedPassword,firstName, lastName);
         System.out.println(user.toString());
+        userService.createUser(user);
         model.addAttribute("user", user);
         return "test";
     }
