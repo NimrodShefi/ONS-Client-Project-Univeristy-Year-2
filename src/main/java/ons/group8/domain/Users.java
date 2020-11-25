@@ -30,5 +30,8 @@ public class Users {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id"))
     private List<Role> roles;
+    Boolean admin;
+    Boolean newStarter;
+    Boolean manager;
 
 }

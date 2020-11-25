@@ -9,4 +9,7 @@ public class AssignRolesRequestDTO {
 
     private String role;
     private Long userId;
+    private boolean admin;
+    private boolean newStarter;
+    private boolean manager;
 }

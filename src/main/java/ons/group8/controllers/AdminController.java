@@ -19,17 +19,21 @@ public class AdminController {
 //        this.adminServiceImpl = adminService;
 //    }
 
-    @GetMapping(path="/Admin")
+    @GetMapping("/Admin")
     public String getAllUsers(Model model) {
         model.addAttribute("Users", adminService.findAll());
+        model.addAttribute("roles",new AssignRolesRequestDTO());
         return "Admin";
     }
 
-
-    @PostMapping("/admin/assign-roles")
-    public String AssignRoles(AssignRolesRequestDTO assignRolesRequestDTO) {
-        adminService.assignRoles(assignRolesRequestDTO);
-        return "redirect:/customers";
+    @GetMapping("/assign-roles")
+    public String getConfirmation(Model model){
+        return "assign-roles";
     }
-//
+
+    @PostMapping("/assign-roles")
+    public void AssignRoles(AssignRolesRequestDTO assignRolesRequestDTO) {
+        adminService.assignRoles(assignRolesRequestDTO);
+    }
+
 }
