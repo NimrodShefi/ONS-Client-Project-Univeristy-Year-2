@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <title>View Checklists</title>
 
-
 </head>
 <body>
-<h1>Hello</div></h1>
+<h1>Hello <div id="header" th:text="${user.fname}"> </div></h1>
 
     <table style="width:100%">
         <tr style="text-align:left">
@@ -17,10 +16,10 @@
             <th><h2>Checked</h2></th>
         </tr>
 
-<!--        <td><div th:text="${checklistItem.checkId}"></div></td>-->
+        <td><div th:text="${checklistItem.checkId}"></div></td>
         <td><div th:text="${checklistItem.checkHeader}"></div></td>
         <td><div th:text="${checklistItem.checkContent}"></div></td>
-        <td><div th:text="${checklistItem.checked}"></div></td>
+        <td><input type="checkbox" id="check" value="${checklistItem.checked}"></td>
 
     </table>
 
