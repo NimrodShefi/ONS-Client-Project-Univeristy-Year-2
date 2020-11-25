@@ -7,20 +7,20 @@
 
 </head>
 <body>
-<h1>Hello <div th:text="${user.fname}"></div></h1>
+<h1>Hello</div></h1>
 
     <table style="width:100%">
         <tr style="text-align:left">
             <th><h2>Id ref</h2></th>
-            <th><h2></h2></th>
-            <th><h2>Email</h2></th>
-            <th><h2>Role</h2></th>
+            <th><h2>Header</h2></th>
+            <th><h2>Content</h2></th>
+            <th><h2>Checked</h2></th>
         </tr>
 
-        <td><div th:text="${user.fname}"></div></td>
-        <td><div th:text="${user.lname}"></div></td>
-        <td><div th:text="${user.email}"></div></td>
-        <td><div th:text="${user.roles}"></div></td>
+<!--        <td><div th:text="${checklistItem.checkId}"></div></td>-->
+        <td><div th:text="${checklistItem.checkHeader}"></div></td>
+        <td><div th:text="${checklistItem.checkContent}"></div></td>
+        <td><div th:text="${checklistItem.checked}"></div></td>
 
     </table>
 
