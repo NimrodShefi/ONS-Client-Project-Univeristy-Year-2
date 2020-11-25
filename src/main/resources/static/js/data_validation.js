@@ -18,17 +18,32 @@ function ValidatePassword() {
         && password.length >= 8);
 }
 
-function ValidateData() {
-    if (ValidateEmail() && ValidatePassword()){
+function ValidateSamePasswordInput() {
+    const password = document.form1.password.value;
+    const repeatPassword = document.form1.repeatPassword.value;
+    if (password === repeatPassword){
         return true;
     } else {
-        if (ValidateEmail() === false){
-            alert("You have entered an invalid email address!");
+        return false;
+    }
+}
+
+function ValidateData() {
+    let emailFormat = ValidateEmail();
+    let passwordFormat = ValidatePassword();
+    let samePasswordInput = ValidateSamePasswordInput();
+    if (emailFormat && passwordFormat && samePasswordInput){
+        return true;
+    } else {
+        if (emailFormat === false){
             document.form1.email.focus();
-        } else if (ValidatePassword() === false){
-            alert("You have entered an invalid password!");
+        } else if (passwordFormat === false){
             document.form1.password.focus();
+        } else if (samePasswordInput === false){
+            document.form1.repeatPassword.focus();
         }
+
+        document.getElementById("error").style.display="block";
         return false;
     }
 }

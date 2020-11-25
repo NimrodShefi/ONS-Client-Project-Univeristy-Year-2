@@ -25,19 +25,28 @@
                 4) At least 1 special character. <br>
                 5) Minimum 8 characters.</span>
         </div> <br>
+
+        <label>Repeat Password:</label>
+        <input id="repeatPassword" type="password" name="repeatPassword" required> <br>
+
         <input type="checkbox" onclick="myFunction()">Show Password <br>
 
         <input type="submit">
     </form>
 
+    <p id="error" style="color: red" hidden>There is a problem in the form</p>
+
 <script src="js/data_validation.js"></script>
 <script>
     function myFunction() {
         const x = document.getElementById("password");
-        if (x.type === "password") {
+        const y = document.getElementById("repeatPassword");
+        if (x.type === "password" || y.type === "password") {
             x.type = "text";
+            y.type = "text";
         } else {
             x.type = "password";
+            y.type = "password";
         }
     }
 </script>
