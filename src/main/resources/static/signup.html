@@ -5,7 +5,7 @@
     <title>Register</title>
 </head>
 <body>
-    <form name="form1" onsubmit="return ValidateEmail(document.form1.email)" action="/save-user">
+    <form name="form1" onsubmit="return ValidateData()" action="/save-user">
         <label>First Name:</label>
         <input id="fname" type="text" name="fname" required> <br> <br>
 
@@ -16,11 +16,56 @@
         <input id="email" type="text" name="email" required> <br> <br>
 
         <label>Password:</label>
-        <input id="password" type="text" name="password" required> <br> <br>
+        <input id="password" type="password" name="password" required>
+        <div class="tooltip">?
+            <span class="tooltiptext">
+                1) At least 1 uppercase character. <br>
+                2) At least 1 lowercase character. <br>
+                3) At least 1 digit. <br>
+                4) At least 1 special character. <br>
+                5) Minimum 8 characters.</span>
+        </div> <br>
+        <input type="checkbox" onclick="myFunction()">Show Password <br>
 
         <input type="submit">
     </form>
 
 <script src="js/data_validation.js"></script>
+<script>
+    function myFunction() {
+        const x = document.getElementById("password");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
 </body>
+
+<style>
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+</style>
 </html>
