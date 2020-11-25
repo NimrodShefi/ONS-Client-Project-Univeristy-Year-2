@@ -4,15 +4,24 @@
     <meta charset="UTF-8">
     <title>View Checklists</title>
 
+
 </head>
 <body>
 <h1>Here you can view all your checklists as a new starter!</h1>
 
     <table style="width:100%">
-        <tr>
-            <th>Firstname</th>
+        <tr style="text-align:left">
+            <th><h2>First Name</h2></th>
+            <th><h2>Last Name</h2></th>
+            <th><h2>Email</h2></th>
+            <th><h2>Role</h2></th>
         </tr>
+
         <td><div th:text="${user.fname}"></div></td>
+        <td><div th:text="${user.lname}"></div></td>
+        <td><div th:text="${user.email}"></div></td>
+        <td><div th:text="${user.roles}"></div></td>
+
     </table>
 
 </body>
