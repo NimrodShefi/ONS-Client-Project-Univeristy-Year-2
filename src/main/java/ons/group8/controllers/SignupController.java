@@ -26,7 +26,7 @@ public class SignupController {
     }
 
     @GetMapping("add-user")
-    public String addUserForm(Model model){
+    public String addUserForm(Model model) {
         UserForm userForm = new UserForm();
         model.addAttribute("userForm", userForm);
         return "add-user";
@@ -34,16 +34,15 @@ public class SignupController {
 
     @PostMapping("create-user")
     public String addUser(@Valid UserForm newUser, BindingResult bindingResult, Model model) throws Exception {
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "add-user";
         } else {
             try {
                 userService.save(new UserCreationEvent(newUser.getEmail(), newUser.getFirstName(), newUser.getLastName(), newUser.getPassword(), newUser.getRepeatPassword()));
-            } catch (SQLIntegrityConstraintViolationException | DataFormatException e){
+            } catch (Exception e) {
                 model.addAttribute("error", "There is a problem in the form" + e);
                 return "add-user";
             }
-
         }
 
         return "redirect:/";
