@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class StaticRouter implements WebMvcConfigurer {
 
     @Override
-    public void addViewControllers(ViewControllerRegistry registry){
+    public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/sign-up").setViewName("forward:/signup.html");
         registry.addViewController("/").setViewName("forward:/home.html");
     }

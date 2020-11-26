@@ -19,7 +19,7 @@ public class User {
     private String lastName;
     private String password;
 
-    public User(String email, String password, String fname, String lname){
+    public User(String email, String password, String fname, String lname) {
         this(null, email, fname, lname, password);
     }
 }
