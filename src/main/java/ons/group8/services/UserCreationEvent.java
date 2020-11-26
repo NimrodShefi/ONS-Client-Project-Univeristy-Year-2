@@ -8,5 +8,5 @@ public class UserCreationEvent {
     String firstName;
     String lastName;
     String password;
-
+    String repeatPassword;
 }

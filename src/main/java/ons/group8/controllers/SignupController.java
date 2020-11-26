@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.zip.DataFormatException;
 
 @Controller
 @RequestMapping("/user")
@@ -37,9 +38,9 @@ public class SignupController {
             return "add-user";
         } else {
             try {
-                userService.save(new UserCreationEvent(newUser.getEmail(), newUser.getFirstName(), newUser.getLastName(), newUser.getPassword()));
-            } catch (SQLIntegrityConstraintViolationException e){
-                model.addAttribute("error", e);
+                userService.save(new UserCreationEvent(newUser.getEmail(), newUser.getFirstName(), newUser.getLastName(), newUser.getPassword(), newUser.getRepeatPassword()));
+            } catch (SQLIntegrityConstraintViolationException | DataFormatException e){
+                model.addAttribute("error", "There is a problem in the form" + e);
                 return "add-user";
             }
 
