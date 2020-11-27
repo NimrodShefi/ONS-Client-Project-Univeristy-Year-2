@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -25,15 +26,11 @@ public class ChecklistController {
     private User user;
 
     @GetMapping("view-checklist-starter")
-    public String viewChecklist(Model model){
+    public String viewChecklist(@RequestParam("email") String email, Model model){
 
-        List<Users> users = userService.findByFname("John");
-        Users user = userService.findByEmail("john@hotmail.com");
+        Users user = userService.findByEmail(email);
 
         ChecklistItem checklistItem = new ChecklistItem("this task", "do this task", false);
-
-        System.out.println(checklistItem.toString());
-        System.out.println(users.toString());
 
         model.addAttribute("user", user);
         model.addAttribute("checklistItem", checklistItem);
