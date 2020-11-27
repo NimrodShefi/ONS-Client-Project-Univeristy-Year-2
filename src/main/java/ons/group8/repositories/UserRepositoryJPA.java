@@ -10,5 +10,10 @@ import org.springframework.stereotype.Repository;
 public interface UserRepositoryJPA extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.email = :email")
-    public User getUserByEmail(@Param("email") String email);
+    User getUserByEmail(@Param("email") String email);
+
+    boolean existsByEmail(String email);
+
+    @Query(value = "INSERT INTO user_role(userId, roleId) VALUES(:userId, :roleId)", nativeQuery = true)
+    void saveUserRole(@Param("userId") Long userId,@Param("roleId") Integer roleId);
 }

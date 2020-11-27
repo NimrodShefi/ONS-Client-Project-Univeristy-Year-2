@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,12 +27,10 @@ public class User {
 
     @NotNull
     @NotEmpty
-    @Column(name = "first_name")
     private String firstName;
 
     @NotNull
     @NotEmpty
-    @Column(name = "last_name")
     private String lastName;
 
     @NotNull
@@ -42,7 +41,15 @@ public class User {
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+            inverseJoinColumns = @JoinColumn(name = "role_id")) // this means that by adding this, when a role is added to the hash then it will be added to the user_role table with the user
     private Set<Role> roles = new HashSet<>();
 
+
+    public User(String email, String password, String fname, String lname) {
+        this(null, email, fname, lname, password, new HashSet<>());
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
 }
