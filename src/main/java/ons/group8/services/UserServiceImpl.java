@@ -1,7 +1,9 @@
 package ons.group8.services;
 
 import ons.group8.domain.User;
+import ons.group8.domain.UserRole;
 import ons.group8.repositories.UserRepositoryJPA;
+import ons.group8.repositories.UserRoleRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,13 +17,15 @@ import java.util.zip.DataFormatException;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepositoryJPA userRepository;
+    private final UserRepositoryJPA userRepository;
+    private UserRoleRepositoryJPA userRoleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder; //got password encoder from: https://www.baeldung.com/spring-security-registration-password-encoding-bcrypt
 
     @Autowired
-    public UserServiceImpl(UserRepositoryJPA userRepository) {
+    public UserServiceImpl(UserRepositoryJPA userRepository, UserRoleRepositoryJPA userRoleRepository) {
         this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -33,7 +37,9 @@ public class UserServiceImpl implements UserService {
         try {
             validateData(newUser);
             User user = new User(newUser.getEmail().toLowerCase(), passwordEncoder.encode(newUser.getPassword()), newUser.getFirstName(), newUser.getLastName());
-            userRepository.save(user);
+            Integer userID = userRepository.save(user).getId(); // The save() method returns the saved entity, including the id field which was null up until now.
+            UserRole userRole = new UserRole(userID, 3); // roleId = 3 is the basic user role, meaning that the default for nay new user would be lowest possible permission and then change it by the admin to whatever it is supposed to be
+            userRoleRepository.save(userRole);
         } catch (Exception e) {
             throw e;
         }
