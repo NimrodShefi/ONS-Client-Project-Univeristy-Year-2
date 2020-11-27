@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>ONS Onboarding</title>
 </head>
 <body>
 <div>
-    <form>
+    <h1>Please Login</h1>
+
+    <form th:action="@{/login}" method="post">
+        <div th:if="${error != null}">
+            Invalid credentials.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
         <div>
             <label>
-                User Name : <input type="text" name="username"/>
+                Email : <input type="text" name="username"/>
             </label>
         </div>
         <div>
