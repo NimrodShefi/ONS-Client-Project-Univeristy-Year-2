@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -25,21 +26,23 @@ public class User {
 
     @NotNull
     @NotEmpty
+    @Column(name = "first_name")
     private String firstName;
 
     @NotNull
     @NotEmpty
+    @Column(name = "last_name")
     private String lastName;
 
     @NotNull
     @NotEmpty
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<User> roles;
+    private Set<Role> roles = new HashSet<>();
 
 }

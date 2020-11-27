@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -21,8 +20,6 @@ public class Role {
 
     @NotNull
     @NotEmpty
-    private String role;
+    private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
 }
