@@ -8,8 +8,8 @@
 <body>
 <div align="center">
     <div sec:authorize="isAuthenticated()">
-        Welcome <b><span sec:authentication="name">Username</span></b>
-        &nbsp;
+        &nbsp;Welcome <b><span th:text ="${#authentication.getPrincipal().getUser().getFirstName()}">Username</span></b>
+
         <i><span sec:authentication="principal.authorities">Roles</span></i>
     </div>
 
