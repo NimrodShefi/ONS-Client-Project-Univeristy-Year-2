@@ -16,11 +16,11 @@ import javax.persistence.Id;
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
-    private Integer userId;
-    private Integer roleId;
+    Long id;
+    private Long userId;
+    private Long roleId;
 
-    public UserRole(Integer userId, Integer roleId) {
+    public UserRole(Long userId, Long roleId) {
         this(null, userId, roleId);
     }
 }

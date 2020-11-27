@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
         try {
             validateData(newUser);
             User user = new User(newUser.getEmail().toLowerCase(), passwordEncoder.encode(newUser.getPassword()), newUser.getFirstName(), newUser.getLastName());
-            Integer userID = userRepository.save(user).getId(); // The save() method returns the saved entity, including the id field which was null up until now.
-            UserRole userRole = new UserRole(userID, 3); // roleId = 3 is the basic user role, meaning that the default for nay new user would be lowest possible permission and then change it by the admin to whatever it is supposed to be
+            Long userID = userRepository.save(user).getId(); // The save() method returns the saved entity, including the id field which was null up until now.
+            UserRole userRole = new UserRole(userID, (long)3); // roleId = 3 is the basic user role, meaning that the default for nay new user would be lowest possible permission and then change it by the admin to whatever it is supposed to be
             userRoleRepository.save(userRole);
         } catch (Exception e) {
             throw e;
