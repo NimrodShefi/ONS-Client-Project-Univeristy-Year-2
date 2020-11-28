@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<meta charset="UTF-8">
+<title>Send a Greeting</title>
+</head>
+<body>
+
+<form action="#" method="post" th:action="@{/get-user}" th:object="${user}">
+
+    <input th:field="*{id}" type="hidden"/>
+
+    <label th:for="firstName">First Name:</label>
+    <input th:field="*{firstName}" type="text"></input>
+    <span th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}">Name error</span>
+    <br>
+
+    <label th:for="lastName">Last Name:</label>
+    <input th:field="*{lastName}" type="text"></input>
+    <span th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}">Name error</span>
+    <br>
+
+
+<!--    <input th:field="*{type}" th:value="formal" type="radio">-->
+<!--    <label th:for="${#ids.prev('type')}">Formal greeting?</label>-->
+
+<!--    <br>-->
+
+<!--    <input th:field="*{type}" th:value="informal" type="radio"/>-->
+<!--    <label th:for="${#ids.prev('type')}">Informal greeting?</label>-->
+
+<!--    <br>-->
+
+    <div th:each="role: ${user.roles}">
+        <input th:field="*{id}" th:value="${role.id}" type="checkbox"/>
+        <label th:for="*{id}" th:text="${role.role}">
+        </label>
+        </div>
+
+
+<!--    </div>-->
+<!--        <input th:value="${user.email}" type="hidden"/>-->
+<!--        <label th:text="${user.email}"> </label>-->
+<!--        <div th:each="role: ${allRoles}">-->
+<!--            <input th:value="${role.id}" type="checkbox"/>-->
+<!--            <label th:text="${role.role}"></label> </div>-->
+
+<!--    </div>-->
+
+    <input id="submit" name="submit" type="submit" value="Submit"/>
+
+</form>
+</body>
+</html>
