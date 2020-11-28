@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController {
 
     @GetMapping("/")
-    public String getPage() {
+    public String getPage(Model model) {
         return "index";
     }
 
