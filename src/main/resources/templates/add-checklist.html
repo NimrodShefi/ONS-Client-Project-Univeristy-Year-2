@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="/js/new_checklist_section.js"></script>
+    <title>Create Checklist</title>
+</head>
+<body>
+<h1>Create New Checklist</h1>
+<form action="/author/create-checklist" enctype="multipart/form-data" method="post" th:object="${users}"
+      name="form1" class="form-new-checklist" onsubmit="return convertFormDataToJSON()">
+    <div>
+        <label for="title"> Checklist Title:</label>
+        <input id="title" type="text" required>
+    </div>
+    <br>
+
+    <div>
+        <label for="titleDescription"> Checklist Description:</label>
+        <textarea id="titleDescription" rows="5" cols="60"
+                  placeholder="Enter details about checklist here..." required></textarea>
+    </div>
+    <br>
+
+    <div class="checklistTopic" id="checklistTopic">
+        <label for="topic">Checklist Topic:</label>
+        <input id="topic">
+        <label for="topicDescription">Topic Description:</label>
+        <textarea id="topicDescription" rows="5" cols="30"
+                  placeholder="Enter details about topic here..." required></textarea>
+        <div class="item">
+            <label for="item">Topic Item:</label>
+            <input id="item" required>
+        </div>
+        <br>
+
+        <button type="button" class="add-item" id="new-item">Add new item</button>
+    </div>
+    <br>
+
+    <button type="button" class="addTopic">Add new topic</button>
+    <br>
+
+    <div>
+        <label for="assignTo">Assign checklist:</label>
+        <select id="assignTo" size="4" multiple required>
+            <option disabled>Select Users:</option>
+            <option th:each="user : ${users}" th:text="${user.getEmail()}"
+                    th:value="${user.getId()}"></option>
+        </select>
+    </div>
+    <br>
+
+    <div>
+        <label for="deadline">Deadline:</label>
+        <input id="deadline" type="date">
+    </div>
+    <br>
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
