@@ -26,10 +26,9 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id"))
     private List<Roles> roles;
 
-    public Users(Long id, String firstName, String lastName, List<Roles> roles) {
+    public Users(Long id, String email, List<Roles> roles) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.email = email;
         this.roles = roles;
     }
 }

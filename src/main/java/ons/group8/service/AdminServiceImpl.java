@@ -25,8 +25,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateUser(Long id, Users user){
-        userRepositoryJPA.save(userRepositoryJPA.findById(id).get());
+    public void updateUser(Long userId, Long roleId){
+        userRepositoryJPA.updateUserRole(userId, roleId);
+    }
+
+    @Override
+    public Long findUsersIdByEmail(String email){
+        return userRepositoryJPA.findUsersByEmail(email).getId();
     }
 
 

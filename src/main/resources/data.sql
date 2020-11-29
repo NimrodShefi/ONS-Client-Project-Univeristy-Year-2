@@ -5,3 +5,9 @@ insert into USERS (id, firstName, lastName, email, password ) values (3, 'farhan
 insert into ROLES(id, role) values(1, 'New Starter');
 insert into ROLES(id, role) values(2, 'Admin');
 insert into ROLES(id, role) values(3, 'Author');
+
+insert into USER_ROLE(userId, roleId) values(1,2);
+insert into USER_ROLE(userId, roleId) values(2,3);
+insert into USER_ROLE(userId, roleId) values(3,1);
+
+
