@@ -23,4 +23,10 @@ public class Topic {
     private String name;
     @Column(name="description")
     private String description;
+
+    public Topic(ChecklistTemplate checklistTemplate, String name, String description) {
+        this.checklistTemplate = checklistTemplate;
+        this.name = name;
+        this.description = description;
+    }
 }

@@ -29,4 +29,10 @@ public class PersonalChecklist {
     @Column(name="dateChecked")
     private Date dateChecked;
 
+    public PersonalChecklist(Users users, ChecklistTemplate checklistTemplate, Date dateAssigned, Date dateChecked) {
+        this.users = users;
+        this.checklistTemplate = checklistTemplate;
+        this.dateAssigned = dateAssigned;
+        this.dateChecked = dateChecked;
+    }
 }

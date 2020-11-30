@@ -24,5 +24,9 @@ public class ChecklistItem {
     @ManyToOne
     @JoinColumn(name="checklsitTemplateItemId")
     private ChecklistTemplateItem checklistTemplateItem;
-    
+
+    public ChecklistItem(PersonalChecklist personalChecklist, ChecklistTemplateItem checklistTemplateItem) {
+        this.personalChecklist = personalChecklist;
+        this.checklistTemplateItem = checklistTemplateItem;
+    }
 }

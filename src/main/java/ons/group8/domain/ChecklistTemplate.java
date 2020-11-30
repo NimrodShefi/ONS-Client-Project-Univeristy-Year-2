@@ -24,4 +24,10 @@ public class ChecklistTemplate {
     private String name;
     @Column(name="decsription")
     private String description;
+
+    public ChecklistTemplate(Users users, String name, String description) {
+        this.users = users;
+        this.name = name;
+        this.description = description;
+    }
 }

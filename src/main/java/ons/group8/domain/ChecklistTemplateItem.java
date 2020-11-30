@@ -23,4 +23,9 @@ public class ChecklistTemplateItem {
 
     @Column(name="description")
     private String description;
+
+    public ChecklistTemplateItem(Topic topic, String description) {
+        this.topic = topic;
+        this.description = description;
+    }
 }
