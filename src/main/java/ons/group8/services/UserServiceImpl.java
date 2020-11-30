@@ -1,6 +1,7 @@
 package ons.group8.services;
 
 
+import ons.group8.domain.ChecklistItem;
 import ons.group8.domain.Users;
 import ons.group8.repositories.UserRepositoryJPA;
 import org.apache.catalina.User;

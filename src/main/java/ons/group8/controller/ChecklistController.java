@@ -30,10 +30,10 @@ public class ChecklistController {
 
         Users user = userService.findByEmail(email);
 
-        ChecklistItem checklistItem = new ChecklistItem("this task", "do this task", false);
+//        ChecklistItem checklistItem = new ChecklistItem("this task", "do this task", false);
 
         model.addAttribute("user", user);
-        model.addAttribute("checklistItem", checklistItem);
+//        model.addAttribute("checklistItem", checklistItem);
 
         return "viewChecklistStarter";
     }
