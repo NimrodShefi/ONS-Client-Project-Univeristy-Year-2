@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<nav th:fragment="navbar">
+    <ul>
+        <li sec:authorize="hasAuthority('USER')"><a href="/user/view-checklists">My Checklists</a></li>
+        <li sec:authorize="hasAuthority('AUTHOR')"><a href="/author/view-checklist-templates">My Checklist Templates</a></li>
+        <li sec:authorize="hasAuthority('ADMIN')"><a href="/admin/user-management">User Admin</a></li>
+    </ul>
+</nav>
+</body>
+</html>
