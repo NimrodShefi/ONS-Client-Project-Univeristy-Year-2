@@ -6,16 +6,23 @@
     <title>ONS Home</title>
 </head>
 <body>
-<div align="center">
-    <div sec:authorize="isAuthenticated()">
-        &nbsp;Welcome <b><span th:text ="${#authentication.getPrincipal().getUser().getFirstName()}">Username</span></b>
+    <nav>
+        <ul>
+            <li sec:authorize="hasAuthority('USER')"><a href="/user/view-checklists">My Checklists</a></li>
+            <li sec:authorize="hasAuthority('AUTHOR')"><a href="/author/view-checklist-templates">My Checklist Templates</a></li>
+            <li sec:authorize="hasAuthority('ADMIN')"><a href="/admin/user-management">User Admin</a></li>
+        </ul>
+    </nav>
+    <div align="center">
+        <div sec:authorize="isAuthenticated()">
+            &nbsp;Welcome <b><span th:text ="${#authentication.getPrincipal().getUser().getFirstName()}">Username</span></b>
 
-        <i><span sec:authentication="principal.authorities">Roles</span></i>
+            <i><span sec:authentication="principal.authorities">Roles</span></i>
+        </div>
+
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout" />
+        </form>
     </div>
-
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Logout" />
-    </form>
-</div>
 </body>
 </html>
