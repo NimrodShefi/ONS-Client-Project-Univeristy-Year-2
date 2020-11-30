@@ -22,7 +22,7 @@ public class ChecklistTemplate {
     private Users users;
     @Column(name="name")
     private String name;
-    @Column(name="decsription")
+    @Column(name="description")
     private String description;
 
     public ChecklistTemplate(Users users, String name, String description) {
