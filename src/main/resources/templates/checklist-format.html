@@ -1,0 +1,67 @@
+<!--later look at https://www.baeldung.com/thymeleaf-list for when editing-->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Format Checklist</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="/js/add_item_and_topic.js"></script>
+</head>
+<body>
+<form action="#" th:action="@{/author/finish-checklist}" enctype="multipart/form-data" method="post"
+      th:object="${checklistForm}" class="form-new-checklist">
+    <fieldset>
+        <div>
+            <label th:for="title"> Checklist Title:</label>
+            <input th:field="*{title}" type="text" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label th:for="titleDescription"> Checklist Description:</label>
+            <textarea th:field="*{titleDescription}" rows="5" cols="60"
+                      placeholder="Enter details about checklist here..." required></textarea>
+        </div>
+        <br>
+
+        <table id="topicTable" class="myTable">
+            <thead>
+                <tr>
+                    <th>Checklist Topic</th>
+                    <th>Topic Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input th:field="*{topics}" placeholder="Enter name of topic" required></td>
+                    <td><textarea th:field="*{topics}" rows="5" cols="30"
+                                  placeholder="Enter details about topic here..." required></textarea></td>
+                    <td><button type='button' onclick='deleteRow(this)'>-</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" onclick="addTopicRow()">Add new topic</button>
+
+        <div>
+            <label th:for="assignedTo">Assign checklist:</label>
+            <select th:field="*{assignedTo}" size="4" multiple required>
+                <option value="0" disabled>Select Users:</option>
+                <option th:each="user : ${checklistForm.allUsers}" th:text="${user.getEmail()}"
+                        th:value="${user.getId()}"></option>
+            </select>
+        </div>
+        <br>
+
+        <div>
+            <label th:for="deadline">Deadline:</label>
+            <input th:field="*{deadline}" type="date">
+        </div>
+        <br>
+
+        <button type="submit">Submit</button>
+    </fieldset>
+</form>
+</body>
+</html>

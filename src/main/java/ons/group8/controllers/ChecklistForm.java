@@ -3,8 +3,9 @@ package ons.group8.controllers;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ons.group8.domain.Topic;
 import ons.group8.domain.User;
-import org.json.simple.JSONObject;
+
 
 import java.util.List;
 
@@ -12,6 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChecklistForm {
-    private JSONObject checklistData;
+    private String title;
+    private String titleDescription;
+    private List<String> topics;
+    private Long[] assignedTo;
+    private String deadline;
     private List<User> allUsers;
 }
