@@ -11,14 +11,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="personal_checklist")
-public class PersonalChecklist {
-
+@Table(name="topic")
+public class Topic {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     long id;
-    @ManyToOne
-    @JoinColumn(name="userId")
-    private Users users;
-
 }

@@ -13,7 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="checklist_template_item ")
+@Table(name="checklist_item")
 public class ChecklistItem {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
