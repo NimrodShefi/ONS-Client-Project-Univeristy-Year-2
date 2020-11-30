@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -24,11 +24,6 @@ public class Users {
     @JoinTable(name = "USER_ROLE"
             , joinColumns = @JoinColumn(name = "userId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id"))
-    private List<Roles> roles;
+    private Set<Roles> roles;
 
-    public Users(Long id, String email, List<Roles> roles) {
-        this.id = id;
-        this.email = email;
-        this.roles = roles;
-    }
 }

@@ -2,21 +2,23 @@ package ons.group8.service;
 
 import ons.group8.domain.Roles;
 import ons.group8.domain.Users;
+import ons.group8.repository.RoleRepositoryJPA;
 import ons.group8.repository.UserRepositoryJPA;
-import ons.group8.repository.UserRoleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
 
     private UserRepositoryJPA userRepositoryJPA;
-
+    private RoleRepositoryJPA roleRepositoryJPA;
 
     @Autowired
-    public AdminServiceImpl(UserRepositoryJPA aUserRepositoryJPA) {
+    public AdminServiceImpl(UserRepositoryJPA aUserRepositoryJPA, RoleRepositoryJPA aRoleRepositoryJPA) {
         userRepositoryJPA = aUserRepositoryJPA;
+        roleRepositoryJPA = aRoleRepositoryJPA;
     }
 
     @Override
@@ -25,33 +27,18 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateUser(Long userId, Long roleId){
-        userRepositoryJPA.updateUserRole(userId, roleId);
+    public Long findUsersIdByEmail(String email){
+        return userRepositoryJPA.findUsersByEmail(email).get().getId();
     }
 
     @Override
-    public Long findUsersIdByEmail(String email){
-        return userRepositoryJPA.findUsersByEmail(email).getId();
+    public Optional<Users> findUsersByEmail(String email){
+        return userRepositoryJPA.findUsersByEmail(email);
     }
 
+    @Override
+    public Optional<Roles> findRolesById(int id){
+        return roleRepositoryJPA.findById(id);
+    }
 
-
-
-
-//    @Override
-//    public void assignRoles(AssignRolesRequestDTO assignRolesRequestDTO) {
-////        Optional<User> userExist=userRepository.findById(assignRolesRequestDTO.getUserId());
-////        if(userExist.isEmpty()){
-////            System.out.print("User dont exist");
-////        }
-////        else{
-////            Optional<Role> roleExist= RoleRepository.findByName(assignRolesRequestDTO.getRole());
-////            if(roleExist.isEmpty()){
-////                System.out.print("ROle dont exist");
-////            }
-////            //userExist.get().setRoles(roleExist);
-////           // userRepository.save(userExist.get());
-////        }
-//
-//   }
 }

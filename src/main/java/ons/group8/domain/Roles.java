@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +15,5 @@ public class Roles {
     private int id;
     private String role;
 
-    //@ManyToMany(mappedBy = "roles")
-    //private List<Users> users;
 
 }

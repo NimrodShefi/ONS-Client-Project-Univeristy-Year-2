@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserForm {
-    private Long roleId;
+    private int roleId;
     private String email;
     private List<Roles> roles;
 }
