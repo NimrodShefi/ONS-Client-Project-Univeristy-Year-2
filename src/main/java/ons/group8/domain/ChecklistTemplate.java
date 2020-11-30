@@ -6,14 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="personal_checklist")
-public class PersonalChecklist {
+@Table(name="checklist_template")
+public class ChecklistTemplate {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -21,12 +20,8 @@ public class PersonalChecklist {
     @ManyToOne
     @JoinColumn(name="userId")
     private Users users;
-    @ManyToOne
-    @JoinColumn(name="checklistTemplateId")
-    private ChecklistTemplate checklistTemplate;
-    @Column(name="dateAssigned")
-    private Date dateAssigned;
-    @Column(name="dateChecked")
-    private Date dateChecked;
-
+    @Column(name="name")
+    private String name;
+    @Column(name="decsription")
+    private String description;
 }

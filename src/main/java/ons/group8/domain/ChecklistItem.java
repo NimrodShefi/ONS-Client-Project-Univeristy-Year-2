@@ -18,15 +18,11 @@ public class ChecklistItem {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     long id;
-    @Column(name="topicId")
-    private String topicId;
-    @Column(name="description")
-    private String description;
-
-
-    public ChecklistItem(String topicId, String description) {
-
-        this.topicId = topicId;
-        this.description=description;
-    }
+    @ManyToOne
+    @JoinColumn(name="personalChecklistId")
+    private PersonalChecklist personalChecklist;
+    @ManyToOne
+    @JoinColumn(name="checklsitTemplateItemId")
+    private ChecklistTemplateItem checklistTemplateItem;
+    
 }

@@ -17,4 +17,10 @@ public class ChecklistTemplateItem {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     long id;
 
+    @ManyToOne
+    @JoinColumn(name="topicId")
+    private Topic topic;
+
+    @Column(name="description")
+    private String description;
 }
