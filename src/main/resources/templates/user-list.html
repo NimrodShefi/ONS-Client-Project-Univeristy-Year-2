@@ -27,12 +27,14 @@
         <td th:text="${user.lastName}"></td>
         <td th:text="${user.email}"></td>
         <td><span th:each="role : ${user.roles}">
-            <span th:text="${role.role}"></span>
-<!--            <span>,</span>-->
+            <span th:text="${role.name}"></span>
         </span></td>
     </tr>
     </tbody>
 
+
 </table>
+<!--<a href='/user-form'><button>Edit The Role</button></a>-->
+<a th:href="@{/get-user}"> <button>Edit The Role</button></a>
 </body>
 </html>

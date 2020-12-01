@@ -21,7 +21,7 @@
 
     <div th:each="role: ${user.roles}">
         <input th:field="*{roleId}" th:value="${role.id}" type="checkbox"/>
-        <label th:for="*{roleId}" th:text="${role.role}">
+        <label th:for="*{roleId}" th:text="${role.name}">
         </label>
         </div>
 

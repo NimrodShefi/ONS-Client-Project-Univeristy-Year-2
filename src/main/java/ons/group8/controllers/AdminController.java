@@ -1,12 +1,11 @@
 package ons.group8.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import ons.group8.controllers.dto.UserForm;
-import ons.group8.domain.Roles;
-import ons.group8.domain.Users;
-import ons.group8.repository.RoleRepositoryJPA;
-import ons.group8.repository.UserRepositoryJPA;
-import ons.group8.service.AdminService;
+import ons.group8.domain.Role;
+import ons.group8.domain.User;
+import ons.group8.repositories.RoleRepositoryJPA;
+import ons.group8.repositories.UserRepositoryJPA;
+import ons.group8.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,22 +34,22 @@ public class AdminController {
 
     @GetMapping("get-user")
     public String serveUserForm(Model model) {
-        UserForm userForm = new UserForm();
-        userForm.setRoles(theRoleRepositoryJPA.findAll());
-        model.addAttribute("user", userForm);
+        UserRoleForm userRoleForm = new UserRoleForm();
+        userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
+        model.addAttribute("user", userRoleForm);
         return "user-form";
     }
 
 
     @PostMapping("get-user")
-    public String handleUserForm(@Valid @ModelAttribute("user") UserForm userForm, BindingResult bindings, Model model) {
-        Optional<Users> userExist = theAdminService.findUsersByEmail(userForm.getEmail());
+    public String handleUserForm(@Valid @ModelAttribute("user") UserRoleForm userRoleForm, BindingResult bindings, Model model) {
+        Optional<User> userExist = theAdminService.findUsersByEmail(userRoleForm.getEmail());
         if(userExist.isEmpty())
             log.error("user not exist");
-        Optional<Roles> roleExist = theAdminService.findRolesById(userForm.getRoleId());
+        Optional<Role> roleExist = theAdminService.findRolesById(userRoleForm.getRoleId());
         if(roleExist.isEmpty())
             log.error("roles does not exist");
-        Set<Roles> setRoles =new HashSet<>();
+        Set<Role> setRoles =new HashSet<>();
         setRoles.add(roleExist.get());
         userExist.get().setRoles(setRoles);
         theUserRepositoryJPA.save(userExist.get());

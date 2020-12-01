@@ -1,17 +1,17 @@
-package ons.group8.controllers.dto;
+package ons.group8.controllers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ons.group8.domain.Roles;
+import ons.group8.domain.Role;
 import java.util.List;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserForm {
+public class UserRoleForm {
     private int roleId;
     private String email;
-    private List<Roles> roles;
+    private List<Role> roles;
 }

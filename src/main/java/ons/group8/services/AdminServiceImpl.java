@@ -1,9 +1,9 @@
-package ons.group8.service;
+package ons.group8.services;
 
-import ons.group8.domain.Roles;
-import ons.group8.domain.Users;
-import ons.group8.repository.RoleRepositoryJPA;
-import ons.group8.repository.UserRepositoryJPA;
+import ons.group8.domain.Role;
+import ons.group8.domain.User;
+import ons.group8.repositories.RoleRepositoryJPA;
+import ons.group8.repositories.UserRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -22,7 +22,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Users> findAll() {
+    public List<User> findAll() {
         return userRepositoryJPA.findAll();
     }
 
@@ -32,12 +32,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Optional<Users> findUsersByEmail(String email){
+    public Optional<User> findUsersByEmail(String email){
         return userRepositoryJPA.findUsersByEmail(email);
     }
 
     @Override
-    public Optional<Roles> findRolesById(int id){
+    public Optional<Role> findRolesById(int id){
         return roleRepositoryJPA.findById(id);
     }
 
