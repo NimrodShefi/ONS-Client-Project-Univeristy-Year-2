@@ -24,6 +24,7 @@ public class AdminController {
     private RoleRepositoryJPA theRoleRepositoryJPA;
     private UserRepositoryJPA theUserRepositoryJPA;
 
+
     @Autowired
     public AdminController(AdminService aAdminService, RoleRepositoryJPA aRoleRepositoryJPA, UserRepositoryJPA aUserRepositoryJPA) {
         theAdminService = aAdminService;
@@ -32,16 +33,16 @@ public class AdminController {
     }
 
 
-    @GetMapping("get-user")
+    @GetMapping("userrole-form")
     public String serveUserForm(Model model) {
         UserRoleForm userRoleForm = new UserRoleForm();
         userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
         model.addAttribute("user", userRoleForm);
-        return "user-form";
+        return "userrole-form";
     }
 
 
-    @PostMapping("get-user")
+    @PostMapping("userrole-form")
     public String handleUserForm(@Valid @ModelAttribute("user") UserRoleForm userRoleForm, BindingResult bindings, Model model) {
         Optional<User> userExist = theAdminService.findUsersByEmail(userRoleForm.getEmail());
         if(userExist.isEmpty())
@@ -54,6 +55,6 @@ public class AdminController {
         userExist.get().setRoles(setRoles);
         theUserRepositoryJPA.save(userExist.get());
         model.addAttribute("users", theAdminService.findAll());
-        return "user-list";
+        return "user-roles";
         }
     }
