@@ -15,10 +15,7 @@ function addTopicRow() {
 
 function addItemRow(element) {
     const itemTable = document.getElementById(element.closest("TABLE").id);
-    console.log(itemTable);
     const itemRowIndex = $(element).parent().parent().index();
-    console.log($(element).parent().parent());
-    console.log(itemRowIndex);
 
     const row = itemTable.insertRow(itemRowIndex+1);
 
