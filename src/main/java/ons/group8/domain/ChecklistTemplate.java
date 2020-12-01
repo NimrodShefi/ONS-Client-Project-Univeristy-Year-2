@@ -18,15 +18,15 @@ public class ChecklistTemplate {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     long id;
     @ManyToOne
-    @JoinColumn(name="userId")
-    private Users users;
+    @JoinColumn(name="user_id")
+    private User user;
     @Column(name="name")
     private String name;
     @Column(name="description")
     private String description;
 
-    public ChecklistTemplate(Users users, String name, String description) {
-        this.users = users;
+    public ChecklistTemplate(User user, String name, String description) {
+        this.user = user;
         this.name = name;
         this.description = description;
     }

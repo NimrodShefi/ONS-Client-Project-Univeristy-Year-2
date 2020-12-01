@@ -19,10 +19,10 @@ public class ChecklistItem {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     long id;
     @ManyToOne
-    @JoinColumn(name="personalChecklistId")
+    @JoinColumn(name="personal_checklist_id")
     private PersonalChecklist personalChecklist;
     @ManyToOne
-    @JoinColumn(name="checklsitTemplateItemId")
+    @JoinColumn(name="checklist_template_item_id")
     private ChecklistTemplateItem checklistTemplateItem;
 
     public ChecklistItem(PersonalChecklist personalChecklist, ChecklistTemplateItem checklistTemplateItem) {

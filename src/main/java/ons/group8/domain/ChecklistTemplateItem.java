@@ -18,7 +18,7 @@ public class ChecklistTemplateItem {
     long id;
 
     @ManyToOne
-    @JoinColumn(name="topicId")
+    @JoinColumn(name="topic_id")
     private Topic topic;
 
     @Column(name="description")

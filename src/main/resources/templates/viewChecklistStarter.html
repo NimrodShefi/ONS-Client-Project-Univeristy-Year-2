@@ -6,7 +6,7 @@
 
 </head>
 <body>
-<h1>Hello <div id="header" th:text="${user.Fname}"> </div></h1>
+<h1>Hello <div id="header" th:text="${user.firstName}"> </div></h1>
 
     <table style="width:100%">
         <tr style="text-align:left">
@@ -15,11 +15,6 @@
             <th><h2>Content</h2></th>
             <th><h2>Checked</h2></th>
         </tr>
-
-        <td><div th:text="${personalChecklist.userId}"></div></td>
-        <td><div th:text="${checklistItem.checkHeader}"></div></td>
-        <td><div th:text="${checklistItem.checkContent}"></div></td>
-        <td><input type="checkbox" id="check" value="${checklistItem.checked}"></td>
 
     </table>
 

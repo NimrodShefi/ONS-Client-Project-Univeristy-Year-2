@@ -17,7 +17,7 @@ public class Topic {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     long id;
     @ManyToOne
-    @JoinColumn(name="checklistTemplateId")
+    @JoinColumn(name="checklist_templateId")
     private ChecklistTemplate checklistTemplate;
     @Column(name="name")
     private String name;

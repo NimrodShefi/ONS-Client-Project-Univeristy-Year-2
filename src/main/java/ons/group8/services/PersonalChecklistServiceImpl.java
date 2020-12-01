@@ -11,7 +11,7 @@ public class PersonalChecklistServiceImpl implements PersonalChecklistService {
     @Autowired
     private PersonalChecklistRepositoryJPA personalChecklistRepository;
 
-    public PersonalChecklist findByUsers(Integer userId){
-        return personalChecklistRepository.findByUsers(userId);
+    public PersonalChecklist findByUser(Integer userId){
+        return personalChecklistRepository.findByUser(userId);
     };
 }

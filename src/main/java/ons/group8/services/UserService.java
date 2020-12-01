@@ -1,16 +1,10 @@
 package ons.group8.services;
 
-import ons.group8.domain.ChecklistItem;
-import ons.group8.domain.Users;
-import org.apache.catalina.User;
-
-import java.util.List;
+import ons.group8.domain.User;
 
 public interface UserService {
+    public void save(UserCreationEvent user) throws Exception;
 
-    List<Users> findByFname(String name);
-
-    Users findByEmail(String email);
-
+    User findByEmail(String email);
 
 }

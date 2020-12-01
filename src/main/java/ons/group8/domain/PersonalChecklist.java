@@ -19,20 +19,20 @@ public class PersonalChecklist {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     long id;
     @ManyToOne
-    @JoinColumn(name="userId")
-    private Users users;
+    @JoinColumn(name="user_id")
+    private User user;
     @ManyToOne
-    @JoinColumn(name="checklistTemplateId")
+    @JoinColumn(name="checklist_template_id")
     private ChecklistTemplate checklistTemplate;
-    @Column(name="dateAssigned")
+    @Column(name="date_assigned")
     private Date dateAssigned;
-    @Column(name="dateChecked")
-    private Date dateChecked;
+    @Column(name="date_complete")
+    private Date dateComplete;
 
-    public PersonalChecklist(Users users, ChecklistTemplate checklistTemplate, Date dateAssigned, Date dateChecked) {
-        this.users = users;
+    public PersonalChecklist(User user, ChecklistTemplate checklistTemplate, Date dateAssigned, Date dateComplete) {
+        this.user = user;
         this.checklistTemplate = checklistTemplate;
         this.dateAssigned = dateAssigned;
-        this.dateChecked = dateChecked;
+        this.dateComplete = dateComplete;
     }
 }

@@ -4,5 +4,5 @@ import ons.group8.domain.PersonalChecklist;
 
 public interface PersonalChecklistService {
 
-    PersonalChecklist findByUsers(Integer userId);
+    PersonalChecklist findByUser(Integer userId);
 }
