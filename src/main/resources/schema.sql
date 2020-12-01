@@ -3,13 +3,13 @@ CREATE SCHEMA IF NOT EXISTS ons;
 USE ons;
 
 CREATE TABLE IF NOT EXISTS USER (
-                                    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                                    first_name VARCHAR(255) NOT NULL,
-                                    last_name VARCHAR(255) NOT NULL,
-                                    email VARCHAR(255) NOT NULL,
-                                    password VARCHAR(255) NOT NULL,
-                                    PRIMARY KEY (id),
-                                    CONSTRAINT email_unique UNIQUE (email))
+id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+first_name VARCHAR(255) NOT NULL,
+last_name VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL,
+password VARCHAR(255) NOT NULL,
+PRIMARY KEY (id),
+CONSTRAINT email_unique UNIQUE (email))
     ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS ROLE(

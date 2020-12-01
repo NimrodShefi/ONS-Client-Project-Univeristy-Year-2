@@ -44,6 +44,10 @@ public class AdminController {
 
     @PostMapping("userrole-form")
     public String handleUserForm(@Valid @ModelAttribute("user") UserRoleForm userRoleForm, BindingResult bindings, Model model) {
+        if(bindings.hasErrors()){
+            userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
+            return "userrole-form";
+        }
         Optional<User> userExist = theAdminService.findUsersByEmail(userRoleForm.getEmail());
         if(userExist.isEmpty())
             log.error("user not exist");
