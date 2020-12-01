@@ -13,6 +13,6 @@ public interface AdminService {
 
     Optional<User> findUsersByEmail(String email);
 
-    Optional<Role> findRolesById(int id);
+    Optional<Role> findRolesById(Long id);
 
 }

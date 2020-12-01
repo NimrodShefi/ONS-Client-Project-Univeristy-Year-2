@@ -37,7 +37,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Optional<Role> findRolesById(int id){
+    public Optional<Role> findRolesById(Long id){
         return roleRepositoryJPA.findById(id);
     }
 
