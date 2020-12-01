@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<nav th:fragment="navbar">
+<nav th:fragment="header">
     <ul>
         <li sec:authorize="hasRole('ROLE_USER')">My Checklists</li>
         <li sec:authorize="hasRole('ROLE_AUTHOR')">My Checklist Templates</li>
