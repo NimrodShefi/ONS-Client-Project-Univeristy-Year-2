@@ -13,7 +13,7 @@
         <h1 th:text="${checklistForm.title}"></h1>
         <pre th:text="${checklistForm.titleDescription}"></pre>
 
-        <table th:id="'itemTable ' + ${topic.topicTitle}" th:each="topic : ${topics}">
+        <table th:id="'itemTable-' + ${topic.topicTitle}" th:each="topic : ${topics}">
             <thead>
             <tr>
                 <th><h2 th:text="${topic.topicTitle}"></h2>
