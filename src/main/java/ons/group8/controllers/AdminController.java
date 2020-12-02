@@ -7,6 +7,7 @@ import ons.group8.repositories.RoleRepositoryJPA;
 import ons.group8.repositories.UserRepositoryJPA;
 import ons.group8.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,6 +37,7 @@ public class AdminController {
 
 
     @GetMapping("userrole-form")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String serveUserForm(Model model) {
         UserRoleForm userRoleForm = new UserRoleForm();
         userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
@@ -45,6 +47,7 @@ public class AdminController {
 
 
     @PostMapping("userrole-form")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String handleUserForm(@Valid @ModelAttribute("user") UserRoleForm userRoleForm, BindingResult bindings, Model model) {
         if(bindings.hasErrors()){
             userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
