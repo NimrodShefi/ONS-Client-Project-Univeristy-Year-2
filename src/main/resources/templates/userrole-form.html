@@ -14,10 +14,10 @@
 
 
     <div th:each="role: ${user.roles}">
-        <input th:field="*{roleId}" th:value="${role.id}" type="checkbox"/>
+        <input th:field="*{roles}" th:value="${role.id}" type="checkbox"/>
         <label th:for="*{roleId}" th:text="${role.name}">
         </label>
-        </div>
+    </div>
 
     <input id="submit" name="Update" type="submit" value="Submit"/>
 
