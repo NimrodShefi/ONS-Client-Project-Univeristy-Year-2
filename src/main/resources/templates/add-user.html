@@ -6,7 +6,6 @@
     <script src="../static/js/data_validation.js"></script>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
     <form action="/user/create-user" enctype="multipart/form-data" method="post" th:object="${userForm}" onsubmit="return ValidateData()" name="form1">
 
         <div>

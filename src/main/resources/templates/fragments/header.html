@@ -1,17 +1,30 @@
+<!--Ref: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       lang="en">
-<head>
-    <meta charset="UTF-8">
+<head th:fragment="head">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<nav th:fragment="header">
-    <ul>
-        <li sec:authorize="hasRole('ROLE_USER')">My Checklists</li>
-        <li sec:authorize="hasRole('ROLE_AUTHOR')">My Checklist Templates</li>
-        <li sec:authorize="hasRole('ROLE_ADMIN')">User Management</li>
-    </ul>
-</nav>
+    <header th:fragment="header">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">ONS</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li sec:authorize="isAuthenticated()"><a href="/">Home</a></li>
+                    <li sec:authorize="hasRole('ROLE_USER')"><a href="#">My Checklists</a></li>
+                    <li sec:authorize="hasRole('ROLE_AUTHOR')"><a href="#">My Checklist Templates</a></li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userrole-form">User Management</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 </body>
 </html>
