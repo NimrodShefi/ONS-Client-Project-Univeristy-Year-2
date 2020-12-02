@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
+
     <meta charset="UTF-8">
     <title>View Checklists</title>
 
+    <h1 th:text="${checklistTemplate.name}"/>
+    <h1 th:text="${checklistTemplate.description}"/>
+
 </head>
 <body>
-<h1>Hello </h1>
+    <h2 th:text="${topic.name}"/>
+    <h2 th:text="${topic.description}"/>
 
-    <table style="width:100%">
+    <table style="width:50%">
         <tr style="text-align:left">
-            <th><h2>Assignee Name</h2></th>
-            <th><h2>Topic</h2></th>
-            <th><h2>Description</h2></th>
-            <th><h2>Item</h2></th>
+            <th><h2>Item Description</h2></th>
             <th><h2>Checked</h2></th>
         </tr>
 
         <tr th:each="checklistTemplateItem: ${checklistTemplateItems}">
             <td th:text="${checklistTemplateItem.description}"/>
+            <td><input type="checkbox" id="check" value=""></td>
         </tr>
 
 <!--        <td><div th:text="${user.firstName}"></div></td>-->

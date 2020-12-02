@@ -27,6 +27,9 @@ public class ChecklistController {
     @Autowired
     private ChecklistTemplateItemService checklistTemplateItemService;
 
+    @Autowired
+    private ChecklistTemplateService checklistTemplateService;
+
 
 
     @GetMapping("view-checklist-starter")
@@ -36,11 +39,14 @@ public class ChecklistController {
         PersonalChecklist personalChecklist = personalChecklistService.findByUserId_Id(user.getId());
         Topic topic = topicService.findByChecklistTemplate_Id(personalChecklist.getChecklistTemplate().getId());
         List<ChecklistTemplateItem> checklistTemplateItem = checklistTemplateItemService.findAllByTopicId_Id(topic.getId());
+        ChecklistTemplate checklistTemplate = checklistTemplateService.findByUserId(user.getId());
+
 
         model.addAttribute("user", user);
         model.addAttribute("personalChecklist", personalChecklist);
         model.addAttribute("topic", topic);
         model.addAttribute("checklistTemplateItems", checklistTemplateItem);
+        model.addAttribute("checklistTemplate", checklistTemplate);
 
 
         return "viewChecklistStarter";
