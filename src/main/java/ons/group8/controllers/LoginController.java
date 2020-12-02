@@ -18,7 +18,7 @@ public class LoginController {
     }
 
     @GetMapping("/login-failed")
-    public String getLoginFailedPage(final Model model) {
+    public String loginFailed(final Model model) {
         System.out.println("Getting login failed page");
         model.addAttribute("error", "login-failed");
         return "login";

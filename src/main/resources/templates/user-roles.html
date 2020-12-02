@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<h1>List of users and their roles</h1>
+<table>
+
+    <thead>
+    <tr>
+        <td>Id</td>
+        <td>First Name</td>
+        <td>Last Name</td>
+        <td>Email</td>
+        <td>Role</td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td><span th:each="role : ${user.roles}">
+            <span th:text="${role.name}"></span>
+        </span></td>
+    </tr>
+    </tbody>
+
+
+</table>
+<a th:href="@{/userrole-form}"> <button>Edit The Role</button></a>
+</body>
+</html>
