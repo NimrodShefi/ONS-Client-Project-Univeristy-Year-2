@@ -17,17 +17,11 @@ public class ChecklistTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @NotEmpty
-    private Integer authorID;
-    @NotNull
-    @NotEmpty
-    private String title;
-    @NotNull
-    @NotEmpty
+    private Long user_id;
+    private String list_name;
     private String description;
 
-    public ChecklistTemplate(Integer authorID, String title, String description){
-        this(null, authorID, title, description);
+    public ChecklistTemplate(Long user_id, String list_name, String description){
+        this(null, user_id, list_name, description);
     }
 }

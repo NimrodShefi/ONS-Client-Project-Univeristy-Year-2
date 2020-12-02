@@ -37,6 +37,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public User findUserByEmail(String email){
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
     public void save(ChecklistCreationEvent data){
         // save the checklist template and then use the Id that is returned to save the next part of the data which are the topics
         System.out.println(data);

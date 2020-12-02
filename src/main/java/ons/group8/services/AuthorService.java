@@ -10,4 +10,6 @@ public interface AuthorService {
     List<User> findAll();
 
     void save(ChecklistCreationEvent checklistForm);
+
+    User findUserByEmail(String email);
 }

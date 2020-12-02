@@ -12,5 +12,5 @@ public class ChecklistCreationEvent {
     List<Topic> topics;
     List<Long> assignedTo;
     String deadline;
-    Integer authorId;
+    Long authorId;
 }

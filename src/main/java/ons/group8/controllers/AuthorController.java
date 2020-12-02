@@ -3,10 +3,13 @@ package ons.group8.controllers;
 import ons.group8.controllers.forms.AssignedToForm;
 import ons.group8.controllers.forms.ChecklistForm;
 import ons.group8.controllers.forms.TopicForm;
+import ons.group8.domain.User;
 import ons.group8.domain.checklist.Topic;
 import ons.group8.services.AuthorService;
 import ons.group8.services.ChecklistCreationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +28,18 @@ public class AuthorController {
     @Autowired
     public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
+    }
+
+    //getting the user id of the logged in person
+    public Long getLoggedInUserId(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails){
+            username = ((UserDetails)principal).getUsername();
+        }else {
+            username = principal.toString();
+        }
+        return authorService.findUserByEmail(username).getId();
     }
 
     @ModelAttribute("checklistForm")
@@ -49,7 +64,6 @@ public class AuthorController {
         } else {
             checklistForm.setTitle(formValues.getTitle());
             checklistForm.setTitleDescription(formValues.getTitleDescription());
-
             model.addAttribute("title", formValues.getTitle());
             model.addAttribute("titleDescription", formValues.getTitleDescription());
             model.addAttribute("topicForm", new TopicForm());
@@ -93,7 +107,7 @@ public class AuthorController {
             checklistForm.setDeadline(formValues.getDeadline());
             System.out.println(checklistForm);
             authorService.save(new ChecklistCreationEvent(checklistForm.getTitle(), checklistForm.getTitleDescription(),
-                    checklistForm.getTopics(), checklistForm.getAssignedTo(), checklistForm.getDeadline(), 1));
+                    checklistForm.getTopics(), checklistForm.getAssignedTo(), checklistForm.getDeadline(), getLoggedInUserId()));
 
             return "redirect:/";
         }
