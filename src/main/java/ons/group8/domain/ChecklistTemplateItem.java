@@ -19,13 +19,13 @@ public class ChecklistTemplateItem {
 
     @ManyToOne
     @JoinColumn(name="topic_id")
-    private Topic topic;
+    private Topic topicId;
 
     @Column(name="description")
     private String description;
 
-    public ChecklistTemplateItem(Topic topic, String description) {
-        this.topic = topic;
+    public ChecklistTemplateItem(Topic topicId, String description) {
+        this.topicId = topicId;
         this.description = description;
     }
 }
