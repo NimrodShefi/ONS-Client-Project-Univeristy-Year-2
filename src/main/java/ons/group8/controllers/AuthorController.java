@@ -47,6 +47,11 @@ public class AuthorController {
         return new ChecklistForm();
     }
 
+    @GetMapping("view-my-checklists")
+    public String viewMyChecklists(){
+        return "checklist/view-all-checklists";
+    }
+
     @GetMapping("checklist-title-and-description")
     public String startChecklistForm(Model model, @ModelAttribute("checklistForm") ChecklistForm checklistForm) {
         model.addAttribute("checklist", checklistForm);
