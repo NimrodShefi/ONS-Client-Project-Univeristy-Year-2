@@ -1,4 +1,4 @@
-package ons.group8.controller;
+package ons.group8.controllers;
 
 
 import ons.group8.domain.ChecklistItem;
@@ -26,15 +26,16 @@ public class ChecklistController {
     private PersonalChecklistService personalChecklistService;
 
 
-    @GetMapping("view-checklist-starter")
-    public String viewChecklist(@RequestParam("email") String email, Integer userId, Model model){
+    @GetMapping("view-checklists-starter")
+    public String viewChecklist(@RequestParam("email") String email, Model model){
 
         User user = userService.findByEmail(email);
-        PersonalChecklist personalChecklist = personalChecklistService.findByUser(userId);
+
+        PersonalChecklist personalChecklist = personalChecklistService.findByUserId_Id(user.getId());
 
         model.addAttribute("user", user);
-//        model.addAttribute("personalChecklist", personalChecklist);
-//        model.addAttribute("checklistItem", checklistItem);
+        model.addAttribute("personalChecklist", personalChecklist);
+
 
         return "viewChecklistStarter";
     }

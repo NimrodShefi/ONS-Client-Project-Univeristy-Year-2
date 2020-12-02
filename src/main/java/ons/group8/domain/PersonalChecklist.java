@@ -20,17 +20,17 @@ public class PersonalChecklist {
     long id;
     @ManyToOne
     @JoinColumn(name="user_id")
-    private User user;
+    private User userId;
     @ManyToOne
     @JoinColumn(name="checklist_template_id")
     private ChecklistTemplate checklistTemplate;
     @Column(name="date_assigned")
-    private Date dateAssigned;
+    private String dateAssigned;
     @Column(name="date_complete")
-    private Date dateComplete;
+    private String dateComplete;
 
-    public PersonalChecklist(User user, ChecklistTemplate checklistTemplate, Date dateAssigned, Date dateComplete) {
-        this.user = user;
+    public PersonalChecklist(User userId, ChecklistTemplate checklistTemplate, String dateAssigned, String dateComplete) {
+        this.userId = userId;
         this.checklistTemplate = checklistTemplate;
         this.dateAssigned = dateAssigned;
         this.dateComplete = dateComplete;

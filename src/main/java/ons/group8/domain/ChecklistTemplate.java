@@ -20,7 +20,7 @@ public class ChecklistTemplate {
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
-    @Column(name="name")
+    @Column(name="list_name")
     private String name;
     @Column(name="description")
     private String description;

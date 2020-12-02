@@ -6,15 +6,19 @@
 
 </head>
 <body>
-<h1>Hello <div id="header" th:text="${user.firstName}"> </div></h1>
+<h1>Hello </h1>
 
     <table style="width:100%">
         <tr style="text-align:left">
-            <th><h2>Id ref</h2></th>
-            <th><h2>Header</h2></th>
+            <th><h2>Name</h2></th>
+            <th><h2></h2></th>
             <th><h2>Content</h2></th>
             <th><h2>Checked</h2></th>
         </tr>
+
+        <td><div th:text="${user.firstName}"></div></td>
+        <td><div th:text="${personalChecklist.dateAssigned}"></div></td>
+<!--        <td><input type="checkbox" id="check" value=""></td>-->
 
     </table>
 

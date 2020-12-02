@@ -1,8 +1,9 @@
 package ons.group8.services;
 
 import ons.group8.domain.PersonalChecklist;
+import ons.group8.domain.User;
 
 public interface PersonalChecklistService {
 
-    PersonalChecklist findByUser(Integer userId);
+    PersonalChecklist findByUserId_Id(Long userId);
 }
