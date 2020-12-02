@@ -2,12 +2,10 @@
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>List of users and their roles</title>
-</head>
-<h1>List of users and their roles</h1>
+<head th:replace="fragments/header :: head"></head>
 <body>
+<div th:replace="fragments/header :: header"></div>
+<h1>List of users and their roles</h1>
 <table>
 
     <thead>
