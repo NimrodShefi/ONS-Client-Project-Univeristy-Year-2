@@ -19,7 +19,7 @@ public class Topic {
     @ManyToOne
     @JoinColumn(name="checklist_template_id")
     private ChecklistTemplate checklistTemplate;
-    @Column(name="name")
+    @Column(name="topic_name")
     private String name;
     @Column(name="description")
     private String description;

@@ -10,13 +10,15 @@
 
     <table style="width:100%">
         <tr style="text-align:left">
-            <th><h2>Name</h2></th>
-            <th><h2></h2></th>
-            <th><h2>Content</h2></th>
-            <th><h2>Checked</h2></th>
+            <th><h2>Assignee Name</h2></th>
+            <th><h2>Topic</h2></th>
+            <th><h2>Description</h2></th>
+            <th><h2>Date Assigned</h2></th>
         </tr>
 
         <td><div th:text="${user.firstName}"></div></td>
+        <td><div th:text="${topic.name}"></div></td>
+        <td><div th:text="${topic.description}"></div></td>
         <td><div th:text="${personalChecklist.dateAssigned}"></div></td>
 <!--        <td><input type="checkbox" id="check" value=""></td>-->
 
