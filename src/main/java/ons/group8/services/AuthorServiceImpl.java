@@ -18,12 +18,12 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<User> getAllUsersName() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public void save(ChecklistCreationEvent checklistForm){
+
     }
 }

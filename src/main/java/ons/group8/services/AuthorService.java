@@ -6,7 +6,8 @@ import java.util.List;
 
 
 public interface AuthorService {
-    List<User> getAllUsersName();
 
     List<User> findAll();
+
+    void save(ChecklistCreationEvent checklistForm);
 }

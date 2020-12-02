@@ -1,4 +1,4 @@
-package ons.group8.domain;
+package ons.group8.controllers.forms;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Topic {
+public class TopicForm {
     private String topicTitle;
     private String topicDescription;
     private List<String> items;
-
-    public Topic(String topicTitle, String topicDescription){
-        this(topicTitle, topicDescription, null);
-    }
+    private String anotherTopic;
 }
