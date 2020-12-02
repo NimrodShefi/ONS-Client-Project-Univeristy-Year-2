@@ -38,7 +38,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login-failed")
                 .defaultSuccessUrl("/").permitAll()
                 .and()
-                .logout().logoutUrl("/logout").permitAll();
+                .logout().logoutUrl("/logout").permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/403-access-denied");
 
         http.httpBasic().disable();
         http.csrf().disable();
