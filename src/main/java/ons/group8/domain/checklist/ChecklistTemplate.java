@@ -19,7 +19,7 @@ public class ChecklistTemplate {
     private Long id;
     @NotNull
     @NotEmpty
-    private Long authorID;
+    private Integer authorID;
     @NotNull
     @NotEmpty
     private String title;
@@ -27,7 +27,7 @@ public class ChecklistTemplate {
     @NotEmpty
     private String description;
 
-    public ChecklistTemplate(Long authorID, String title, String description){
+    public ChecklistTemplate(Integer authorID, String title, String description){
         this(null, authorID, title, description);
     }
 }

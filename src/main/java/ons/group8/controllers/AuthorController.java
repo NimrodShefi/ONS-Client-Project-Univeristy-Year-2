@@ -91,8 +91,9 @@ public class AuthorController {
         } else {
             checklistForm.setAssignedTo(formValues.getId());
             checklistForm.setDeadline(formValues.getDeadline());
+            System.out.println(checklistForm);
             authorService.save(new ChecklistCreationEvent(checklistForm.getTitle(), checklistForm.getTitleDescription(),
-                    checklistForm.getTopics(), checklistForm.getAssignedTo(), checklistForm.getDeadline()));
+                    checklistForm.getTopics(), checklistForm.getAssignedTo(), checklistForm.getDeadline(), 1));
 
             return "redirect:/";
         }

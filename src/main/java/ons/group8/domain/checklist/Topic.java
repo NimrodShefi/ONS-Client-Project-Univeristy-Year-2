@@ -23,4 +23,7 @@ public class Topic {
         this(null, topicTitle, topicDescription, null);
     }
 
+    public Topic(String topicTitle, String topicDescription, List<String> items){
+        this(null, topicTitle, topicDescription, items);
+    }
 }

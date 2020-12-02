@@ -39,6 +39,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void save(ChecklistCreationEvent data){
         // save the checklist template and then use the Id that is returned to save the next part of the data which are the topics
+        System.out.println(data);
         Long checklistTemplateId = checklistTemplateRepository.save(new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription())).getId();
         /*
          because we can have multiple topics with each topic also capable of having multiple items 2 for loops are needed
