@@ -35,6 +35,12 @@ public class AdminController {
         theUserRepositoryJPA = aUserRepositoryJPA;
     }
 
+    @GetMapping("user-roles")
+    public String getList(Model model){
+        model.addAttribute("users", theAdminService.findAll());
+        return "user-roles";
+    }
+
 
     @GetMapping("userrole-form")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
