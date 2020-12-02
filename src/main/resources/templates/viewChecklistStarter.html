@@ -17,11 +17,15 @@
             <th><h2>Checked</h2></th>
         </tr>
 
-        <td><div th:text="${user.firstName}"></div></td>
-        <td><div th:text="${topic.name}"></div></td>
-        <td><div th:text="${topic.description}"></div></td>
-        <td><div th:text="${checklistTemplateItem.description}"></div></td>
-        <td><input type="checkbox" id="check" value=""></td>
+        <tr th:each="checklistTemplateItem: ${checklistTemplateItems}">
+            <td th:text="${checklistTemplateItem.description}"/>
+        </tr>
+
+<!--        <td><div th:text="${user.firstName}"></div></td>-->
+<!--        <td><div th:text="${topic.name}"></div></td>-->
+<!--        <td><div th:text="${topic.description}"></div></td>-->
+<!--        <td><div th:text="${checklistTemplateItem.description}"></div></td>-->
+<!--        <td><input type="checkbox" id="check" value=""></td>-->
 
     </table>
 

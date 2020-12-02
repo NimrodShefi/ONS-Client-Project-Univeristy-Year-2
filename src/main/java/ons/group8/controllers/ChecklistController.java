@@ -28,18 +28,19 @@ public class ChecklistController {
     private ChecklistTemplateItemService checklistTemplateItemService;
 
 
+
     @GetMapping("view-checklist-starter")
     public String viewChecklist(@RequestParam("email") String email, Model model){
 
         User user = userService.findByEmail(email);
         PersonalChecklist personalChecklist = personalChecklistService.findByUserId_Id(user.getId());
         Topic topic = topicService.findByChecklistTemplate_Id(personalChecklist.getChecklistTemplate().getId());
-        ChecklistTemplateItem checklistTemplateItem = checklistTemplateItemService.findByTopicId_Id(topic.getId());
+        List<ChecklistTemplateItem> checklistTemplateItem = checklistTemplateItemService.findAllByTopicId_Id(topic.getId());
 
         model.addAttribute("user", user);
         model.addAttribute("personalChecklist", personalChecklist);
         model.addAttribute("topic", topic);
-        model.addAttribute("checklistTemplateItem", checklistTemplateItem);
+        model.addAttribute("checklistTemplateItems", checklistTemplateItem);
 
 
         return "viewChecklistStarter";
