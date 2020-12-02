@@ -22,6 +22,9 @@
                 <li sec:authorize="hasRole('ROLE_AUTHOR')"><a href="#">My Checklist Templates</a></li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#request.requestURI.equals('/userrole-form') ? 'active':''}"><a href="/userrole-form">User Management</a></li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
         </div>
     </nav>
 </header>

@@ -7,13 +7,8 @@
     <div align="center">
         <div sec:authorize="isAuthenticated()">
             &nbsp;Welcome <b><span th:text ="${#authentication.getPrincipal().getUser().getFirstName()}">Username</span></b>
-
             <i><span sec:authentication="principal.authorities">Roles</span></i>
         </div>
-
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Logout" />
-        </form>
     </div>
 </body>
 </html>
