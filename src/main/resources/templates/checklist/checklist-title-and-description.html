@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title & Description</title>
+</head>
+<body>
+    <form action="#" th:action="@{/author/checklist-title-and-description}" enctype="multipart/form-data" method="post"
+          th:object="${checklist}" class="form-new-checklist">
+        <fieldset>
+            <div>
+                <label th:for="title"> Checklist Title:</label>
+                <input th:field="*{title}" type="text" required>
+            </div>
+            <br>
+            <div>
+                <label th:for="titleDescription"> Checklist Description:</label>
+                <textarea th:field="*{titleDescription}" rows="5" cols="60"
+                          placeholder="Enter details about checklist here..." required></textarea>
+            </div>
+            <br>
+            <button type="submit">Submit</button>
+        </fieldset>
+    </form>
+</body>
+</html>

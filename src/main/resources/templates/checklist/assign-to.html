@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign To User</title>
+</head>
+<body>
+    <form action="#" th:action="@{/author/assign-to}" enctype="multipart/form-data" method="post"
+          th:object="${assignedTo}" class="form-new-checklist">
+        <fieldset>
+            <label>Assign checklist:</label>
+            <select th:field="*{id}" size="4" multiple required>
+                <option value="0" disabled>Select Users:</option>
+                <option th:each="user : ${users}" th:text="${user.getEmail()}"
+                        th:value="${user.getId()}"></option>
+            </select>
+
+            <label th:for="deadline">Deadline:</label>
+            <input th:field="*{deadline}" type="date">
+
+            <button type="submit">Submit</button>
+        </fieldset>
+    </form>
+</body>
+</html>

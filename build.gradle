@@ -26,6 +26,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-test'
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5'
+    // https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple
+    compile group: 'org.apache.clerezza.ext', name: 'org.json.simple', version: '0.4'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'

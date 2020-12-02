@@ -18,6 +18,6 @@ public interface UserRepositoryJPA extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    @Query(value = "INSERT INTO user_role(userId, roleId) VALUES(:userId, :roleId)", nativeQuery = true)
-    void saveUserRole(@Param("userId") Long userId,@Param("roleId") Integer roleId);
+    User findUserByEmail(String email);
+
 }

@@ -1,5 +1,6 @@
 package ons.group8.controllers;
 
+import ons.group8.controllers.forms.UserForm;
 import ons.group8.services.UserCreationEvent;
 import ons.group8.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 public class SignupController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public SignupController(UserService userService) {
