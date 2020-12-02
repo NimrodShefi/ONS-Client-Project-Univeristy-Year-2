@@ -17,10 +17,10 @@
                 <a class="navbar-brand" href="#">ONS</a>
             </div>
             <ul class="nav navbar-nav">
-                <li sec:authorize="isAuthenticated()"><a href="/">Home</a></li>
+                <li sec:authorize="isAuthenticated()" th:classappend="${#request.requestURI.equals('/') ? 'active':''}"><a href="/">Home</a></li>
                 <li sec:authorize="hasRole('ROLE_USER')"><a href="#">My Checklists</a></li>
                 <li sec:authorize="hasRole('ROLE_AUTHOR')"><a href="#">My Checklist Templates</a></li>
-                <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userrole-form">User Management</a></li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#request.requestURI.equals('/userrole-form') ? 'active':''}"><a href="/userrole-form">User Management</a></li>
             </ul>
         </div>
     </nav>
