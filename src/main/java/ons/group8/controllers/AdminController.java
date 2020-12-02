@@ -1,6 +1,7 @@
 package ons.group8.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import ons.group8.controllers.forms.UserRoleForm;
 import ons.group8.domain.Role;
 import ons.group8.domain.User;
 import ons.group8.repositories.RoleRepositoryJPA;
@@ -15,12 +16,15 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
+@RequestMapping("/admin")
 public class AdminController {
 
     private AdminService theAdminService;
