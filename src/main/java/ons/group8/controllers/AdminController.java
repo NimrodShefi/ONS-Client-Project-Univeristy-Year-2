@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -46,20 +48,26 @@ public class AdminController {
     public String handleUserForm(@Valid @ModelAttribute("user") UserRoleForm userRoleForm, BindingResult bindings, Model model) {
         if(bindings.hasErrors()){
             userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
+            System.out.println("errors = " + bindings.getAllErrors());
             return "userrole-form";
         }
         Optional<User> userExist = theAdminService.findUsersByEmail(userRoleForm.getEmail());
-        if(userExist.isEmpty())
+        if(userExist.isEmpty()) {
             log.error("user not exist");
-        Optional<Role> roleExist = theAdminService.findRolesById(userRoleForm.getRoleId());
-        if(roleExist.isEmpty())
-            log.error("roles does not exist");
-        Set<Role> setRoles =new HashSet<>();
-        setRoles.add(roleExist.get());
-        userExist.get().setRoles(setRoles);
+            userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
+            bindings.addError(new FieldError("user","email", "email must be unique."));
+            System.out.println("are there errors = " + bindings.hasErrors());
+            System.out.println("errors = " + bindings.getAllErrors());
+            return "userrole-form";
+        }
+        Set<Role> newRoles = userRoleForm
+                .getRoles()
+                .stream()
+                .map(r -> theAdminService.findRolesById(r.getId()).get())
+                .collect(Collectors.toSet());
+        userExist.get().setRoles(newRoles);
         theUserRepositoryJPA.save(userExist.get());
         model.addAttribute("users", theAdminService.findAll());
         return "user-roles";
-        }
-
     }
+}
