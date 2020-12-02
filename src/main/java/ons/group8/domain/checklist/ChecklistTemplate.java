@@ -26,13 +26,8 @@ public class ChecklistTemplate {
     @NotNull
     @NotEmpty
     private String description;
-    @NotNull
-    @NotEmpty
-    private List<Topic> topics;
-    @NotNull
-    @NotEmpty
-    private List<Long> assignedTo;
-    @NotNull
-    @NotEmpty
-    private String deadline;
+
+    public ChecklistTemplate(Long authorID, String title, String description){
+        this(null, authorID, title, description);
+    }
 }

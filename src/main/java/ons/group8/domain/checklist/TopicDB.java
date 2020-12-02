@@ -8,19 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Topic {
+@Entity
+public class TopicDB {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String topicTitle;
-    private String topicDescription;
-    private List<String> items;
+    private Long checklistTemplateId;
+    private String name;
+    private String description;
 
-    public Topic(String topicTitle, String topicDescription){
-        this(null, topicTitle, topicDescription, null);
+    public TopicDB(Long checklistTemplateId, String name, String description){
+        this(null, checklistTemplateId, name, description);
     }
-
 }
