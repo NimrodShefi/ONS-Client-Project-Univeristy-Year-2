@@ -1,4 +1,4 @@
-package ons.group8.controllers.forms;
+package ons.group8.controllers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
