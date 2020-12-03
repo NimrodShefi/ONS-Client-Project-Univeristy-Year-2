@@ -1,5 +1,6 @@
 package ons.group8.controllers;
 
+import ons.group8.controllers.forms.UserForm;
 import ons.group8.services.UserCreationEvent;
 import ons.group8.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/sign-up")
 public class SignupController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public SignupController(UserService userService) {
@@ -38,7 +39,7 @@ public class SignupController {
             try {
                 userService.save(new UserCreationEvent(newUser.getEmail(), newUser.getFirstName(), newUser.getLastName(), newUser.getPassword(), newUser.getRepeatPassword()));
             } catch (Exception e) {
-                model.addAttribute("error", "There is a problem in the form");
+                model.addAttribute("error", e.toString().split(" ",2)[1]);
                 return "add-user";
             }
         }

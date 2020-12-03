@@ -64,12 +64,13 @@ CREATE TABLE IF NOT EXISTS PERSONAL_CHECKLIST(
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS CHECKLIST_ITEM(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    personal_checklist_id INT UNSIGNED NOT NULL,
-    checklist_template_id INT UNSIGNED NOT NULL,
-    checked BOOLEAN NOT NULL, -- boolean will show as TINYINT(1)
-    date_checked DATE NOT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY (personal_checklist_id) REFERENCES PERSONAL_CHECKLIST(id),
-    FOREIGN KEY (checklist_template_id) REFERENCES CHECKLIST_TEMPLATE_ITEM(id))
-ENGINE = InnoDB;
+     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+     personal_checklist_id INT UNSIGNED NOT NULL,
+     checklist_template_id INT UNSIGNED NOT NULL,
+     checked BOOLEAN NOT NULL, -- boolean will show as TINYINT(1)
+     date_checked DATE NOT NULL,
+     PRIMARY KEY(id),
+     FOREIGN KEY (personal_checklist_id) REFERENCES PERSONAL_CHECKLIST(id),
+     FOREIGN KEY (checklist_template_id) REFERENCES CHECKLIST_TEMPLATE_ITEM(id))
+     ENGINE = InnoDB;
+

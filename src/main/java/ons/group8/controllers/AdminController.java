@@ -1,12 +1,14 @@
 package ons.group8.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import ons.group8.controllers.UserRoleForm;
 import ons.group8.domain.Role;
 import ons.group8.domain.User;
 import ons.group8.repositories.RoleRepositoryJPA;
 import ons.group8.repositories.UserRepositoryJPA;
 import ons.group8.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,12 +16,15 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
+@RequestMapping("/admin")
 public class AdminController {
 
     private AdminService theAdminService;
@@ -34,8 +39,16 @@ public class AdminController {
         theUserRepositoryJPA = aUserRepositoryJPA;
     }
 
+    @GetMapping("user-roles")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String getList(Model model){
+        model.addAttribute("users", theAdminService.findAll());
+        return "user-roles";
+    }
+
 
     @GetMapping("userrole-form")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String serveUserForm(Model model) {
         UserRoleForm userRoleForm = new UserRoleForm();
         userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
@@ -45,6 +58,7 @@ public class AdminController {
 
 
     @PostMapping("userrole-form")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String handleUserForm(@Valid @ModelAttribute("user") UserRoleForm userRoleForm, BindingResult bindings, Model model) {
         if(bindings.hasErrors()){
             userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
