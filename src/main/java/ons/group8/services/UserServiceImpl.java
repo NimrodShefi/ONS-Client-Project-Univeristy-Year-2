@@ -4,15 +4,16 @@ import ons.group8.domain.Role;
 import ons.group8.domain.User;
 import ons.group8.repositories.RoleRepositoryJPA;
 import ons.group8.repositories.UserRepositoryJPA;
+import ons.group8.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
-
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -80,5 +81,10 @@ public class UserServiceImpl implements UserService {
                 throw new DataFormatException("Email Format is wrong");
             }
         }
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.getUserByEmail(email);
     }
 }
