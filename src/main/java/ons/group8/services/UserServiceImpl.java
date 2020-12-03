@@ -46,7 +46,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean emailValidation(String email) {
-        return Pattern.compile("^[^\\s@<>+*/=!\"£$%^&()`¬\\\\|;:?,#~]+@cardiff.ac.uk").matcher(email).find();
+        Matcher matcher = Pattern.compile("^[^\\s@<>+*/=!\"£$%^&()`¬\\\\|;:?,#~]+@cardiff.ac.uk").matcher(email);
+
+        return matcher.find();
     }
 
     private boolean passwordValidation(String password) {
@@ -70,7 +72,13 @@ public class UserServiceImpl implements UserService {
         boolean samePassword = samePasswordValidation(user.getPassword(), user.getRepeatPassword());
 
         if (!(passwordFormat && samePassword && emailFormat)) {
-            throw new DataFormatException();
+            if (!passwordFormat){
+                throw new DataFormatException("Password Format is wrong");
+            } else if (!samePassword){
+                throw new DataFormatException("Passwords don't match");
+            } else if (!emailFormat){
+                throw new DataFormatException("Email Format is wrong");
+            }
         }
     }
 }

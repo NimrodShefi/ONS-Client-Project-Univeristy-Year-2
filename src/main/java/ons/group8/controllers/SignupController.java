@@ -39,7 +39,7 @@ public class SignupController {
             try {
                 userService.save(new UserCreationEvent(newUser.getEmail(), newUser.getFirstName(), newUser.getLastName(), newUser.getPassword(), newUser.getRepeatPassword()));
             } catch (Exception e) {
-                model.addAttribute("error", "There is a problem in the form");
+                model.addAttribute("error", e.toString().split(" ",2)[1]);
                 return "add-user";
             }
         }
