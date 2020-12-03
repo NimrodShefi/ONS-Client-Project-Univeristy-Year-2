@@ -45,6 +45,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    private boolean emailValidation(String email) {
+        return Pattern.compile("^[^\\s@<>+*/=!\"£$%^&()`¬\\\\|;:?,#~]+@cardiff.ac.uk").matcher(email).find();
+    }
+
     private boolean passwordValidation(String password) {
         Matcher matcher1 = Pattern.compile(".*[a-z].*").matcher(password); // must contain lower-case
         Matcher matcher2 = Pattern.compile(".*[A-Z.].*").matcher(password); // must contain upper-case
@@ -60,13 +64,12 @@ public class UserServiceImpl implements UserService {
         return password.equals(repeatPassword);
     }
 
-    private boolean validateData(UserCreationEvent user) throws DataFormatException {
+    private void validateData(UserCreationEvent user) throws DataFormatException {
+        boolean emailFormat = emailValidation(user.getEmail());
         boolean passwordFormat = passwordValidation(user.getPassword());
         boolean samePassword = samePasswordValidation(user.getPassword(), user.getRepeatPassword());
 
-        if (passwordFormat && samePassword) {
-            return true;
-        } else {
+        if (!(passwordFormat && samePassword && emailFormat)) {
             throw new DataFormatException();
         }
     }
