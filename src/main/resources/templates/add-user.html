@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a User</title>
+    <script src="../static/js/data_validation.js"></script>
+</head>
+<body>
+    <form action="/user/create-user" enctype="multipart/form-data" method="post" th:object="${userForm}" onsubmit="return ValidateData()" name="form1">
+
+        <div>
+            <label for="firstName">First Name:</label>
+            <input th:field="*{firstName}" id="firstName" required>
+            <div th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}">
+                This is placeholder text. Thymeleaf/Spring will fill in the actual error.
+            </div>
+        </div>
+
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input th:field="*{lastName}" id="lastName" required>
+            <div th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}">
+                This is placeholder text. Thymeleaf/Spring will fill in the actual error.
+            </div>
+        </div>
+
+        <div>
+            <label for="email">Email:</label>
+            <input th:field="*{email}" id="email" name="email" required>
+            <div th:errors="*{email}" th:if="${#fields.hasErrors('email')}">
+                This is placeholder text. Thymeleaf/Spring will fill in the actual error.
+            </div>
+        </div>
+
+        <div>
+            <label for="password">Password</label>
+            <input th:field="*{password}" id="password" type="password" name="password" required>
+            <div th:errors="*{password}" th:if="${#fields.hasErrors('password')}">
+                This is placeholder text. Thymeleaf/Spring will fill in the actual error.
+            </div>
+            <div class="tooltip">?
+                <span class="tooltiptext">
+                1) At least 1 uppercase character. <br>
+                2) At least 1 lowercase character. <br>
+                3) At least 1 digit. <br>
+                4) At least 1 special character. <br>
+                5) Minimum 8 characters.</span>
+            </div> <br>
+        </div>
+
+        <div>
+            <label for="repeatPassword">Repeat Password:</label>
+            <input th:field="*{repeatPassword}" id="repeatPassword" type="password" name="repeatPassword" required>
+            <div th:errors="*{repeatPassword}" th:if="${#fields.hasErrors('repeatPassword')}">
+                This is placeholder text. Thymeleaf/Spring will fill in the actual error.
+            </div>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p th:text="${error}"></p>
+    <p id="error" style="color: red" hidden>There is a problem in the form</p>
+<script src="/js/data_validation.js"></script>
+</body>
+
+<style>
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+</style>
+</html>
