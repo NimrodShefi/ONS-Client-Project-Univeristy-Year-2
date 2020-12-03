@@ -40,6 +40,7 @@ public class AdminController {
     }
 
     @GetMapping("user-roles")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getList(Model model){
         model.addAttribute("users", theAdminService.findAll());
         return "user-roles";
