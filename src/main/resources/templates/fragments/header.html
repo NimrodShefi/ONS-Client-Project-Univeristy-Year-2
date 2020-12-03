@@ -19,8 +19,8 @@
             <ul class="nav navbar-nav">
                 <li sec:authorize="isAuthenticated()" th:classappend="${#request.requestURI.equals('/') ? 'active':''}"><a href="/">Home</a></li>
                 <li sec:authorize="hasRole('ROLE_USER')"><a href="#">My Checklists</a></li>
-                <li sec:authorize="hasRole('ROLE_AUTHOR')"><a href="#">My Checklist Templates</a></li>
-                <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#request.requestURI.equals('/user-roles') ? 'active':''}"><a href="/user-roles">User Management</a></li>
+                <li sec:authorize="hasRole('ROLE_AUTHOR')" th:classappend="${#request.requestURI.equals('/author/user-roles') ? 'active':''}"><a href="/author/view-my-checklists">My Checklist Templates</a></li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#request.requestURI.equals('/admin/user-roles') ? 'active':''}"><a href="/admin/user-roles">User Management</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
