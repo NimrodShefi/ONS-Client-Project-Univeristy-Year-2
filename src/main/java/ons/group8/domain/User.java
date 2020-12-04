@@ -45,8 +45,8 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
 
-    public User(String email, String password, String firstName, String lastName) {
-        this(null, email, firstName, lastName, password, new HashSet<>());
+    public User(String email, String password, String fname, String lname) {
+        this(null, email, fname, lname, password, new HashSet<>());
     }
 
     public void addRole(Role role) {
