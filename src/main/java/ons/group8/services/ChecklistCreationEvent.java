@@ -1,7 +1,7 @@
 package ons.group8.services;
 
 import lombok.Value;
-import ons.group8.domain.checklist.Topic;
+import ons.group8.domain.Topic;
 
 import java.util.List;
 

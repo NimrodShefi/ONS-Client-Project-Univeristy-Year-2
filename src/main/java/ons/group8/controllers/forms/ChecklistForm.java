@@ -3,7 +3,7 @@ package ons.group8.controllers.forms;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ons.group8.domain.checklist.Topic;
+import ons.group8.domain.Topic;
 import org.springframework.context.annotation.Scope;
 
 

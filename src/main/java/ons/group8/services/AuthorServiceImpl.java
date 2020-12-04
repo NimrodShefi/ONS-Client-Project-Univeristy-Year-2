@@ -1,18 +1,17 @@
 package ons.group8.services;
 
 import ons.group8.domain.User;
-import ons.group8.domain.checklist.ChecklistTemplate;
-import ons.group8.domain.checklist.ChecklistTemplateItem;
-import ons.group8.domain.checklist.Topic;
-import ons.group8.domain.checklist.TopicDB;
+import ons.group8.domain.ChecklistTemplate;
+import ons.group8.domain.ChecklistTemplateItem;
+import ons.group8.domain.Topic;
+import ons.group8.domain.TopicDB;
 import ons.group8.repositories.UserRepositoryJPA;
-import ons.group8.repositories.checklistRepositories.ChecklistTemplateItemRepositoryJPA;
-import ons.group8.repositories.checklistRepositories.ChecklistTemplateRepositoryJPA;
-import ons.group8.repositories.checklistRepositories.TopicRepositoryJPA;
+import ons.group8.repositories.ChecklistTemplateItemRepositoryJPA;
+import ons.group8.repositories.ChecklistTemplateRepositoryJPA;
+import ons.group8.repositories.TopicRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
