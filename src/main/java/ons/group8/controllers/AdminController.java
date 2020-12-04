@@ -1,7 +1,7 @@
 package ons.group8.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import ons.group8.controllers.forms.UserRoleForm;
+import ons.group8.controllers.UserRoleForm;
 import ons.group8.domain.Role;
 import ons.group8.domain.User;
 import ons.group8.repositories.RoleRepositoryJPA;
@@ -40,6 +40,7 @@ public class AdminController {
     }
 
     @GetMapping("user-roles")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getList(Model model){
         model.addAttribute("users", theAdminService.findAll());
         return "user-roles";

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header :: head">
+</head>
 <head>
     <meta charset="UTF-8">
     <title>Create Topic</title>
@@ -7,6 +9,7 @@
     <script src="/js/add_item_and_topic.js"></script>
 </head>
 <body>
+    <div th:replace="fragments/header :: header"></div>
     <form action="#" th:action="@{/author/set-topic}" enctype="multipart/form-data" method="post"
           th:object="${topicForm}" class="form-new-checklist">
         <fieldset>
