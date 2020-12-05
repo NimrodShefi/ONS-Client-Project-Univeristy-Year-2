@@ -20,7 +20,6 @@
 
         <tbody>
         <tr th:each="user : ${users}">
-            <td th:text="${user.id}"></td>
             <td th:text="${user.firstName}"></td>
             <td th:text="${user.lastName}"></td>
             <td th:text="${user.email}"></td>
@@ -30,7 +29,7 @@
             <td><a th:href="@{/admin/userrole-form}"> <button>Edit Roles</button></a></td>
         </tr>
         </tbody>
-        
+
     </table>
 </body>
 </html>
