@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ons.group8.domain.Role;
+import ons.group8.domain.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -20,5 +21,11 @@ public class UserRoleForm {
     @Email @NotNull @NotBlank
     private String email;
 
+    private User user;
+
     private List<Role> roles;
+
+    public UserRoleForm(User user, List<Role> roles) {
+        this(null, null, user, roles);
+    }
 }

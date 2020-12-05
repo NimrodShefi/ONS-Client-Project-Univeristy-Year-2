@@ -26,7 +26,7 @@
             <td><span th:each="role : ${user.roles}">
                 <span th:text="${role.name}"></span>
             </span></td>
-            <td><a th:href="@{/admin/userrole-form}"> <button>Edit Roles</button></a></td>
+            <td><a th:href="@{/admin/userrole-form/{userId} (userId=${user.id})}"> <button>Edit Roles</button></a></td>
         </tr>
         </tbody>
 
