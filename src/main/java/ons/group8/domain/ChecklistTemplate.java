@@ -19,13 +19,13 @@ public class ChecklistTemplate {
     Long id;
     @ManyToOne
     @JoinColumn(name="user_id")
-    private User user;
+    private User author;
     @Column(name="list_name")
     private String name;
     @Column(name="description")
     private String description;
 
-    public ChecklistTemplate(User user, String list_name, String description){
-        this(null, user, list_name, description);
+    public ChecklistTemplate(User author, String list_name, String description){
+        this(null, author, list_name, description);
     }
 }

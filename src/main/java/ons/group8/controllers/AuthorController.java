@@ -3,7 +3,9 @@ package ons.group8.controllers;
 import ons.group8.controllers.forms.AssignedToForm;
 import ons.group8.controllers.forms.ChecklistForm;
 import ons.group8.controllers.forms.TopicForm;
+import ons.group8.domain.ChecklistTemplateItem;
 import ons.group8.domain.Topic;
+import ons.group8.domain.User;
 import ons.group8.services.AuthorService;
 import ons.group8.services.ChecklistCreationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/author")
@@ -30,7 +34,7 @@ public class AuthorController {
     }
 
     //getting the user id of the logged in person
-    public Long getLoggedInUserId(){
+    public User getLoggedInUserId(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails){
@@ -38,7 +42,7 @@ public class AuthorController {
         }else {
             username = principal.toString();
         }
-        return authorService.findUserByEmail(username).getId();
+        return authorService.findUserByEmail(username);
     }
 
     @ModelAttribute("checklistForm")
@@ -84,7 +88,11 @@ public class AuthorController {
             }
             return "checklist/checklist-topic";
         } else {
-            checklistForm.getTopics().add(new Topic(topic.getTopicTitle(), topic.getTopicDescription(), topic.getItems()));
+            List<ChecklistTemplateItem> items = new ArrayList<>();
+            for (String item : topic.getItems()) {
+                items.add(new ChecklistTemplateItem(item));
+            }
+            checklistForm.getTopics().add(new Topic(topic.getTopicTitle(), topic.getTopicDescription(), items));
             model.addAttribute("title", checklistForm.getTitle());
             model.addAttribute("titleDescription", checklistForm.getTitleDescription());
             if ("true".equals(topic.getAnotherTopic())) {

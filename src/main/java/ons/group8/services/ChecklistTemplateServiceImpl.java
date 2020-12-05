@@ -12,6 +12,6 @@ public class ChecklistTemplateServiceImpl implements ChecklistTemplateService{
     private ChecklistTemplateRepositoryJPA checklistTemplateRepository;
 
     public ChecklistTemplate findByUserId(Long userId){
-        return checklistTemplateRepository.findByUserId(userId);
+        return checklistTemplateRepository.findByAuthor(userId);
     }
 }

@@ -2,6 +2,7 @@ package ons.group8.services;
 
 import lombok.Value;
 import ons.group8.domain.Topic;
+import ons.group8.domain.User;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public class ChecklistCreationEvent {
     List<Topic> topics;
     List<Long> assignedTo;
     String deadline;
-    Long authorId;
+    User authorId;
 }
