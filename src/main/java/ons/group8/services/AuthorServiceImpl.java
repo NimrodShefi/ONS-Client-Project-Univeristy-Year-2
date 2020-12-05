@@ -1,5 +1,7 @@
 package ons.group8.services;
 
+import ons.group8.domain.ChecklistTemplateItem;
+import ons.group8.domain.Topic;
 import ons.group8.domain.User;
 import ons.group8.domain.ChecklistTemplate;
 import ons.group8.repositories.UserRepositoryJPA;
@@ -8,7 +10,9 @@ import ons.group8.repositories.ChecklistTemplateRepositoryJPA;
 import ons.group8.repositories.TopicRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,8 +42,12 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void save(ChecklistCreationEvent data){
+    public void save(ChecklistCreationEvent data) throws Exception {
         System.out.println(data);
-        checklistTemplateRepository.save(new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription()));
+        try {
+            checklistTemplateRepository.save(new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription(), data.getTopics()));
+        } catch (Exception e){
+            throw new Exception();
+        }
     }
 }

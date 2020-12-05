@@ -118,11 +118,17 @@ public class AuthorController {
             checklistForm.setAssignedTo(formValues.getId());
             checklistForm.setDeadline(formValues.getDeadline());
             System.out.println(checklistForm);
-            authorService.save(new ChecklistCreationEvent(checklistForm.getTitle(), checklistForm.getTitleDescription(),
-                    checklistForm.getTopics(), checklistForm.getAssignedTo(), checklistForm.getDeadline(), getLoggedInUserId()));
-
-            return "redirect:/";
+            try {
+                authorService.save(new ChecklistCreationEvent(checklistForm.getTitle(), checklistForm.getTitleDescription(),
+                        checklistForm.getTopics(), checklistForm.getAssignedTo(), checklistForm.getDeadline(), getLoggedInUserId()));
+                model.addAttribute("title", "Process Completed");
+                model.addAttribute("message", "The checklist is created and saved");
+                return "message";
+            } catch (Exception e) {
+                model.addAttribute("title", "Process Failed!");
+                model.addAttribute("message", "The checklist failed to be created");
+                return "message";
+            }
         }
     }
-
 }

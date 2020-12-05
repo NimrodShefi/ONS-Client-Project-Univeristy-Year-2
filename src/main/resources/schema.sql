@@ -28,11 +28,11 @@ ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS CHECKLIST_TEMPLATE(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    user_id INT UNSIGNED NOT NULL, -- this will contain the id of the author who create the list
+    author_id INT UNSIGNED NOT NULL, -- this will contain the id of the author who create the list
     list_name VARCHAR(255) NOT NULL,
     description LONGTEXT NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY (user_id) REFERENCES USER(id))
+    FOREIGN KEY (author_id) REFERENCES USER(id))
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS TOPIC(

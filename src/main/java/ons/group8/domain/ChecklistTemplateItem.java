@@ -11,14 +11,16 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="checklist_template_item ")
+@Table(name="checklist_template_item")
 public class ChecklistTemplateItem {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long id;
+    @Column(name = "id")
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name="topic_id")
+    @JoinColumn(name="topic_id", referencedColumnName = "id")
     private Topic topic;
 
     @Column(name="description")

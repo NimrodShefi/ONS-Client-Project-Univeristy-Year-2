@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,16 +17,23 @@ public class ChecklistTemplate {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long id;
+    @Column(name = "id")
+    private Long id;
+
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="author_id")
     private User author;
+
     @Column(name="list_name")
     private String name;
+
     @Column(name="description")
     private String description;
 
-    public ChecklistTemplate(User author, String list_name, String description){
-        this(null, author, list_name, description);
+    @OneToMany(mappedBy = "checklistTemplate", cascade = {CascadeType.ALL})
+    private List<Topic> topics;
+
+    public ChecklistTemplate(User author, String list_name, String description, List<Topic> topics){
+        this(null, author, list_name, description, topics);
     }
 }
