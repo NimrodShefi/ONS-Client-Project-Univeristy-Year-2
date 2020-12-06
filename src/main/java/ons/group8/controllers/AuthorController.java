@@ -3,6 +3,7 @@ package ons.group8.controllers;
 import ons.group8.controllers.forms.AssignedToForm;
 import ons.group8.controllers.forms.ChecklistForm;
 import ons.group8.controllers.forms.TopicForm;
+import ons.group8.domain.ChecklistTemplate;
 import ons.group8.domain.ChecklistTemplateItem;
 import ons.group8.domain.Topic;
 import ons.group8.domain.User;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/author")
@@ -56,6 +58,21 @@ public class AuthorController {
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String viewMyChecklists(){
         return "checklist/view-all-checklists";
+    }
+
+    @GetMapping("view-my-checklists/{id}")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String viewMyChecklist(@PathVariable(name = "id", required = false) Long checklistId, Model model){
+        if (checklistId == null){
+            return "checklist/view-all-checklists";
+        } else {
+            ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
+            System.out.println(checklistTemplate);
+            System.out.println(checklistTemplate.getTopics());
+            model.addAttribute("checklist", checklistTemplate);
+            model.addAttribute("topics", checklistTemplate.getTopics());
+            return "checklist/view-checklist";
+        }
     }
 
     @GetMapping("checklist-title-and-description")

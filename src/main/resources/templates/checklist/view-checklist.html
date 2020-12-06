@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>View Checklist</title>
+</head>
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td><h1 th:text="${checklist.name}"></h1></td>
+                <td><button th:value="${checklist.id}">edit checklist name/description</button></td>
+            </tr>
+        <tr>
+            <td><pre th:text="${checklist.description}"></pre></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table th:each="topic: ${checklist.topics}">
+        <tbody>
+            <tr>
+                <td><h3 th:text="${topic.getName()}"></h3></td>
+                <td><button th:value="${topic.id}">edit topic</button></td>
+            </tr>
+            <tr>
+                <td><pre th:text="${topic.getDescription()}"></pre></td>
+            </tr>
+            <tr th:each="item: ${topic.getItems()}">
+                <td><p th:text="${item.description}"></p></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

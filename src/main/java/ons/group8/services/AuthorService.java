@@ -1,5 +1,6 @@
 package ons.group8.services;
 
+import ons.group8.domain.ChecklistTemplate;
 import ons.group8.domain.User;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface AuthorService {
     User findUserByEmail(String email);
 
     User findUserById(Long userId);
+
+    ChecklistTemplate getChecklistTemplateById(Long id);
 }

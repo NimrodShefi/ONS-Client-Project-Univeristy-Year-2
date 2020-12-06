@@ -57,4 +57,9 @@ public class AuthorServiceImpl implements AuthorService {
             throw new Exception();
         }
     }
+
+    @Override
+    public ChecklistTemplate getChecklistTemplateById(Long id){
+        return checklistTemplateRepository.getChecklistTemplateById(id);
+    }
 }
