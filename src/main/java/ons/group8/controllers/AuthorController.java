@@ -3,10 +3,7 @@ package ons.group8.controllers;
 import ons.group8.controllers.forms.AssignedToForm;
 import ons.group8.controllers.forms.ChecklistForm;
 import ons.group8.controllers.forms.TopicForm;
-import ons.group8.domain.ChecklistTemplate;
-import ons.group8.domain.ChecklistTemplateItem;
-import ons.group8.domain.Topic;
-import ons.group8.domain.User;
+import ons.group8.domain.*;
 import ons.group8.services.AuthorService;
 import ons.group8.services.ChecklistCreationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +65,10 @@ public class AuthorController {
         } else {
             try {
                 ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
+                List<PersonalChecklist> personalChecklists = authorService.getAllByChecklistTemplate(checklistTemplate);
+                System.out.println(personalChecklists);
                 model.addAttribute("checklist", checklistTemplate);
-                model.addAttribute("topics", checklistTemplate.getTopics());
+                model.addAttribute("users", personalChecklists);
                 return "checklist/view-checklist";
             } catch (NullPointerException e){
                 model.addAttribute("title", "Missing Checklist");

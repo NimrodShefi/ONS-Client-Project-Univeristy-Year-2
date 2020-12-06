@@ -62,4 +62,9 @@ public class AuthorServiceImpl implements AuthorService {
     public ChecklistTemplate getChecklistTemplateById(Long id){
         return checklistTemplateRepository.getChecklistTemplateById(id);
     }
+
+    @Override
+    public List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate){
+        return personalChecklistRepository.getAllByChecklistTemplate(checklistTemplate);
+    }
 }

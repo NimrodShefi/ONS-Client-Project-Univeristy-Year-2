@@ -32,5 +32,17 @@
         </tbody>
     </table>
 
+    <table>
+        <tbody>
+        <tr>
+            <td><h3>Assigned To:</h3></td>
+            <td><button>edit assigned users</button></td>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td><p th:text="${user.getUserId().getFirstName()} + ${user.getUserId().getLastName()}"></p></td>
+        </tr>
+        </tbody>
+    </table>
+
 </body>
 </html>
