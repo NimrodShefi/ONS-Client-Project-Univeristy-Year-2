@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -26,17 +26,21 @@ public class PersonalChecklist {
     @JoinColumn(name="checklist_template_id")
     private ChecklistTemplate checklistTemplate;
     @Column(name="date_assigned")
-    private String dateAssigned;
+    private LocalDate dateAssigned;
     @Column(name="date_complete")
-    private String dateComplete;
+    private LocalDate dateComplete;
     @OneToMany(mappedBy = "personalChecklist", cascade = {CascadeType.ALL})
     private List<ChecklistItem> checklistItems;
 
-    public PersonalChecklist(User userId, ChecklistTemplate checklistTemplate, String dateAssigned, String dateComplete, List<ChecklistItem> items) {
+    public PersonalChecklist(User userId, ChecklistTemplate checklistTemplate, LocalDate dateAssigned, LocalDate dateComplete, List<ChecklistItem> items) {
         this.userId = userId;
         this.checklistTemplate = checklistTemplate;
         this.dateAssigned = dateAssigned;
         this.dateComplete = dateComplete;
         this.checklistItems = items;
+    }
+
+    public PersonalChecklist(User userId, ChecklistTemplate checklistTemplate, LocalDate dateAssigned){
+        this(null, userId, checklistTemplate, dateAssigned, null);
     }
 }

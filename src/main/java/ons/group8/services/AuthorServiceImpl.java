@@ -1,18 +1,11 @@
 package ons.group8.services;
 
-import ons.group8.domain.ChecklistTemplateItem;
-import ons.group8.domain.Topic;
-import ons.group8.domain.User;
-import ons.group8.domain.ChecklistTemplate;
-import ons.group8.repositories.UserRepositoryJPA;
-import ons.group8.repositories.ChecklistTemplateItemRepositoryJPA;
-import ons.group8.repositories.ChecklistTemplateRepositoryJPA;
-import ons.group8.repositories.TopicRepositoryJPA;
+import ons.group8.domain.*;
+import ons.group8.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,11 +13,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final UserRepositoryJPA userRepository;
     private final ChecklistTemplateRepositoryJPA checklistTemplateRepository;
+    private final PersonalChecklistRepositoryJPA personalChecklistRepository;
 
     @Autowired
-    public AuthorServiceImpl(UserRepositoryJPA userRepository, ChecklistTemplateRepositoryJPA checklistTemplateRepository) {
+    public AuthorServiceImpl(UserRepositoryJPA userRepository, ChecklistTemplateRepositoryJPA checklistTemplateRepository, PersonalChecklistRepositoryJPA personalChecklistRepository) {
         this.userRepository = userRepository;
         this.checklistTemplateRepository = checklistTemplateRepository;
+        this.personalChecklistRepository = personalChecklistRepository;
     }
 
     @Override
@@ -38,6 +33,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public User findUserById(Long userId){
+        return userRepository.findUserById(userId);
+    }
+
+    @Override
     public void save(ChecklistCreationEvent data) throws Exception {
         System.out.println(data);
         try {
@@ -48,7 +48,11 @@ public class AuthorServiceImpl implements AuthorService {
                     item.setTopic(topic);
                 }
             }
-            checklistTemplateRepository.save(checklistTemplate);
+            ChecklistTemplate checklistTemplate1 = checklistTemplateRepository.save(checklistTemplate);
+            LocalDate dateAssigned = LocalDate.now();
+            for (User user : data.getAssignedTo()) {
+                personalChecklistRepository.save(new PersonalChecklist(user, checklistTemplate1, dateAssigned));
+            }
         } catch (Exception e){
             throw new Exception();
         }

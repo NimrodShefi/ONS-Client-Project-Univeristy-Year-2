@@ -9,6 +9,7 @@ import ons.group8.domain.User;
 import ons.group8.services.AuthorService;
 import ons.group8.services.ChecklistCreationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -46,22 +47,26 @@ public class AuthorController {
     }
 
     @ModelAttribute("checklistForm")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public ChecklistForm getChecklistForm() {
         return new ChecklistForm();
     }
 
     @GetMapping("view-my-checklists")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String viewMyChecklists(){
         return "checklist/view-all-checklists";
     }
 
     @GetMapping("checklist-title-and-description")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String startChecklistForm(Model model, @ModelAttribute("checklistForm") ChecklistForm checklistForm) {
         model.addAttribute("checklist", checklistForm);
         return "checklist/checklist-title-and-description";
     }
 
     @PostMapping("checklist-title-and-description")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String setTitleAndDescription(@ModelAttribute("checklistForm") ChecklistForm checklistForm, @Valid ChecklistForm formValues, BindingResult bindings, Model model) {
         if (bindings.hasErrors()) {
             System.out.println("Errors:" + bindings.getFieldErrorCount());
@@ -80,6 +85,7 @@ public class AuthorController {
     }
 
     @PostMapping("set-topic")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String setTopic(@ModelAttribute("checklistForm") ChecklistForm checklistForm, @Valid TopicForm topic, BindingResult bindings, Model model) {
         if (bindings.hasErrors()) {
             System.out.println("Errors:" + bindings.getFieldErrorCount());
@@ -107,6 +113,7 @@ public class AuthorController {
     }
 
     @PostMapping("assign-to")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String setUsersToChecklist(@ModelAttribute("checklistForm") ChecklistForm checklistForm, @Valid AssignedToForm formValues, BindingResult bindings, Model model) {
         if (bindings.hasErrors()) {
             System.out.println("Errors:" + bindings.getFieldErrorCount());
@@ -115,7 +122,11 @@ public class AuthorController {
             }
             return "checklist/assign-to";
         } else {
-            checklistForm.setAssignedTo(formValues.getId());
+            List<User> users = new ArrayList<>();
+            for (Long userId : formValues.getId()) {
+                users.add(authorService.findUserById(userId));
+            }
+            checklistForm.setAssignedTo(users);
             checklistForm.setDeadline(formValues.getDeadline());
             System.out.println(checklistForm);
             try {
