@@ -66,12 +66,16 @@ public class AuthorController {
         if (checklistId == null){
             return "checklist/view-all-checklists";
         } else {
-            ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
-            System.out.println(checklistTemplate);
-            System.out.println(checklistTemplate.getTopics());
-            model.addAttribute("checklist", checklistTemplate);
-            model.addAttribute("topics", checklistTemplate.getTopics());
-            return "checklist/view-checklist";
+            try {
+                ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
+                model.addAttribute("checklist", checklistTemplate);
+                model.addAttribute("topics", checklistTemplate.getTopics());
+                return "checklist/view-checklist";
+            } catch (NullPointerException e){
+                model.addAttribute("title", "Missing Checklist");
+                model.addAttribute("message", "The checklist you are looking for could not be found");
+                return "message";
+            }
         }
     }
 
