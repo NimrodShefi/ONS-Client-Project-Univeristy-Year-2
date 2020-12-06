@@ -22,8 +22,10 @@
                     <th><h3>Item Description</h3></th>
                 </tr>
                 <tr th:each="item: ${personalChecklist.checklistItems}">
-                    <td><input type="checkbox" id="check" value=""></td>
-                    <td th:text="${item.checklistTemplateItem.description}"/>
+                    <div th:if="${item.checklistTemplateItem.topic.id} == ${topic.id}">
+                        <td><input type="checkbox" id="check" value=""></td>
+                        <td th:text="${item.checklistTemplateItem.description}"/>
+                    </div>
                 </tr>
 
             </table>
