@@ -122,7 +122,11 @@ public class AuthorController {
             }
             return "checklist/assign-to";
         } else {
-            checklistForm.setAssignedTo(formValues.getId());
+            List<User> users = new ArrayList<>();
+            for (Long userId : formValues.getId()) {
+                users.add(authorService.findUserById(userId));
+            }
+            checklistForm.setAssignedTo(users);
             checklistForm.setDeadline(formValues.getDeadline());
             System.out.println(checklistForm);
             try {
