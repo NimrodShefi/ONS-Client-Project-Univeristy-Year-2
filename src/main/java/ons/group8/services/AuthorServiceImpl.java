@@ -19,16 +19,12 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
 
     private final UserRepositoryJPA userRepository;
-    private final ChecklistTemplateItemRepositoryJPA checklistTemplateItemRepository;
     private final ChecklistTemplateRepositoryJPA checklistTemplateRepository;
-    private final TopicRepositoryJPA topicRepository;
 
     @Autowired
-    public AuthorServiceImpl(UserRepositoryJPA userRepository, ChecklistTemplateItemRepositoryJPA checklistTemplateItemRepository, ChecklistTemplateRepositoryJPA checklistTemplateRepository, TopicRepositoryJPA topicRepository) {
+    public AuthorServiceImpl(UserRepositoryJPA userRepository, ChecklistTemplateRepositoryJPA checklistTemplateRepository) {
         this.userRepository = userRepository;
-        this.checklistTemplateItemRepository = checklistTemplateItemRepository;
         this.checklistTemplateRepository = checklistTemplateRepository;
-        this.topicRepository = topicRepository;
     }
 
     @Override
@@ -45,7 +41,14 @@ public class AuthorServiceImpl implements AuthorService {
     public void save(ChecklistCreationEvent data) throws Exception {
         System.out.println(data);
         try {
-            checklistTemplateRepository.save(new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription(), data.getTopics()));
+            ChecklistTemplate checklistTemplate = new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription(), data.getTopics());
+            for (Topic topic : checklistTemplate.getTopics()) {
+                topic.setChecklistTemplate(checklistTemplate);
+                for (ChecklistTemplateItem item : topic.getItems()) {
+                    item.setTopic(topic);
+                }
+            }
+            checklistTemplateRepository.save(checklistTemplate);
         } catch (Exception e){
             throw new Exception();
         }

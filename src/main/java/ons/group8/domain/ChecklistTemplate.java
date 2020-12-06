@@ -30,7 +30,7 @@ public class ChecklistTemplate {
     @Column(name="description")
     private String description;
 
-    @OneToMany(mappedBy = "checklistTemplate", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "checklistTemplate", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Topic> topics;
 
     public ChecklistTemplate(User author, String list_name, String description, List<Topic> topics){
