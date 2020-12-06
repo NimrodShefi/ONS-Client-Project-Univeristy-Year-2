@@ -1,29 +1,37 @@
 package ons.group8.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.*;
+
+import javax.persistence.*;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name="topic")
 public class Topic {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    private String topicTitle;
-    private String topicDescription;
-    private List<String> items;
 
-    public Topic(String topicTitle, String topicDescription){
-        this(null, topicTitle, topicDescription, null);
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="checklist_template_id")
+    private ChecklistTemplate checklistTemplate;
 
-    public Topic(String topicTitle, String topicDescription, List<String> items){
-        this(null, topicTitle, topicDescription, items);
+    @Column(name="topic_name")
+    private String name;
+
+    @Column(name="description")
+    private String description;
+
+    @OneToMany(mappedBy = "topic", cascade = {CascadeType.ALL})
+    private List<ChecklistTemplateItem> items;
+
+    public Topic(String name, String description, List<ChecklistTemplateItem> items){
+        this(null, null, name, description, items);
     }
 }

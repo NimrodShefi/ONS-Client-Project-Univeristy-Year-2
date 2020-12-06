@@ -9,7 +9,7 @@ public interface AuthorService {
 
     List<User> findAll();
 
-    void save(ChecklistCreationEvent checklistForm);
+    void save(ChecklistCreationEvent checklistForm) throws Exception;
 
     User findUserByEmail(String email);
 }
