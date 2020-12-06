@@ -9,23 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class ChecklistController {
+public class PersonalChecklistController {
 
     @Autowired
     private UserService userService;
 
     @Autowired
     private PersonalChecklistService personalChecklistService;
-
-    @Autowired
-    private TopicService topicService;
-
-    @Autowired
-    private ChecklistTemplateItemService checklistTemplateItemService;
-
-    @Autowired
-    private ChecklistTemplateService checklistTemplateService;
-
 
 
     @GetMapping("view-checklist-starter")
