@@ -22,4 +22,6 @@ public interface UserRepositoryJPA extends JpaRepository<User, Long> {
     void saveUserRole(@Param("userId") Long userId, @Param("roleId") Integer roleId);
 
     User findUserByEmail(String email);
+
+    User findUserById(Long userId);
 }

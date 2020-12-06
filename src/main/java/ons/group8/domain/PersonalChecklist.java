@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -17,7 +18,7 @@ public class PersonalChecklist {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @ManyToOne
     @JoinColumn(name="user_id")
     private User userId;
@@ -25,14 +26,18 @@ public class PersonalChecklist {
     @JoinColumn(name="checklist_template_id")
     private ChecklistTemplate checklistTemplate;
     @Column(name="date_assigned")
-    private String dateAssigned;
+    private LocalDate dateAssigned;
     @Column(name="date_complete")
-    private String dateComplete;
+    private LocalDate dateComplete;
 
-    public PersonalChecklist(User userId, ChecklistTemplate checklistTemplate, String dateAssigned, String dateComplete) {
+    public PersonalChecklist(User userId, ChecklistTemplate checklistTemplate, LocalDate dateAssigned, LocalDate dateComplete) {
         this.userId = userId;
         this.checklistTemplate = checklistTemplate;
         this.dateAssigned = dateAssigned;
         this.dateComplete = dateComplete;
+    }
+
+    public PersonalChecklist(User userId, ChecklistTemplate checklistTemplate, LocalDate dateAssigned){
+        this(null, userId, checklistTemplate, dateAssigned, null);
     }
 }

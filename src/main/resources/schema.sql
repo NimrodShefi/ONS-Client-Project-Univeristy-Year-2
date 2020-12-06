@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS PERSONAL_CHECKLIST(
     user_id INT UNSIGNED NOT NULL,
     checklist_template_id INT UNSIGNED NOT NULL,
     date_assigned DATE NOT NULL,
-    date_complete DATE NOT NULL,
+    date_complete DATE,
     PRIMARY KEY(id),
     FOREIGN KEY (user_id) REFERENCES USER(id),
     FOREIGN KEY (checklist_template_id) REFERENCES CHECKLIST_TEMPLATE(id))

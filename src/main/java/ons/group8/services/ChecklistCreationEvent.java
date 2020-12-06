@@ -11,7 +11,7 @@ public class ChecklistCreationEvent {
     String title;
     String titleDescription;
     List<Topic> topics;
-    List<Long> assignedTo;
+    List<User> assignedTo;
     String deadline;
     User authorId;
 }
