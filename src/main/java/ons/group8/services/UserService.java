@@ -6,6 +6,7 @@ import java.util.Optional;
 public interface UserService {
     public void save(UserCreationEvent user) throws Exception;
 
-    Optional<User> findById(Long userId);
+    User findByEmail(String email);
 
+    Optional<User> findById(Long userId);
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ons.group8.domain.Topic;
+import ons.group8.domain.User;
 import org.springframework.context.annotation.Scope;
 
 
@@ -18,7 +19,7 @@ public class ChecklistForm {
     private String title;
     private String titleDescription;
     private List<Topic> topics;
-    private List<Long> assignedTo;
+    private List<User> assignedTo;
     private String deadline;
 
     public List<Topic> getTopics(){
@@ -28,7 +29,7 @@ public class ChecklistForm {
         return topics;
     }
 
-    public List<Long> getAssignedTo(){
+    public List<User> getAssignedTo(){
         if (topics == null){
             topics = new ArrayList<>();
         }

@@ -1,27 +1,39 @@
 package ons.group8.domain;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name="checklist_template")
 public class ChecklistTemplate {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    private Long user_id;
-    private String list_name;
+
+    @ManyToOne
+    @JoinColumn(name="author_id")
+    private User author;
+
+    @Column(name="list_name")
+    private String name;
+
+    @Column(name="description")
     private String description;
 
-    public ChecklistTemplate(Long user_id, String list_name, String description){
-        this(null, user_id, list_name, description);
+    @OneToMany(mappedBy = "checklistTemplate", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Topic> topics;
+
+    public ChecklistTemplate(User author, String list_name, String description, List<Topic> topics){
+        this(null, author, list_name, description, topics);
     }
 }

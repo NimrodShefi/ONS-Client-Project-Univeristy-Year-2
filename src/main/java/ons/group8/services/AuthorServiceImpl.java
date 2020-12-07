@@ -1,33 +1,25 @@
 package ons.group8.services;
 
-import ons.group8.domain.User;
-import ons.group8.domain.ChecklistTemplate;
-import ons.group8.domain.ChecklistTemplateItem;
-import ons.group8.domain.Topic;
-import ons.group8.domain.TopicDB;
-import ons.group8.repositories.UserRepositoryJPA;
-import ons.group8.repositories.ChecklistTemplateItemRepositoryJPA;
-import ons.group8.repositories.ChecklistTemplateRepositoryJPA;
-import ons.group8.repositories.TopicRepositoryJPA;
+import ons.group8.domain.*;
+import ons.group8.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
     private final UserRepositoryJPA userRepository;
-    private final ChecklistTemplateItemRepositoryJPA checklistTemplateItemRepository;
     private final ChecklistTemplateRepositoryJPA checklistTemplateRepository;
-    private final TopicRepositoryJPA topicRepository;
+    private final PersonalChecklistRepositoryJPA personalChecklistRepository;
 
     @Autowired
-    public AuthorServiceImpl(UserRepositoryJPA userRepository, ChecklistTemplateItemRepositoryJPA checklistTemplateItemRepository, ChecklistTemplateRepositoryJPA checklistTemplateRepository, TopicRepositoryJPA topicRepository) {
+    public AuthorServiceImpl(UserRepositoryJPA userRepository, ChecklistTemplateRepositoryJPA checklistTemplateRepository, PersonalChecklistRepositoryJPA personalChecklistRepository) {
         this.userRepository = userRepository;
-        this.checklistTemplateItemRepository = checklistTemplateItemRepository;
         this.checklistTemplateRepository = checklistTemplateRepository;
-        this.topicRepository = topicRepository;
+        this.personalChecklistRepository = personalChecklistRepository;
     }
 
     @Override
@@ -41,21 +33,28 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void save(ChecklistCreationEvent data){
-        // save the checklist template and then use the Id that is returned to save the next part of the data which are the topics
+    public User findUserById(Long userId){
+        return userRepository.findUserById(userId);
+    }
+
+    @Override
+    public void save(ChecklistCreationEvent data) throws Exception {
         System.out.println(data);
-        Long checklistTemplateId = checklistTemplateRepository.save(new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription())).getId();
-        /*
-         because we can have multiple topics with each topic also capable of having multiple items 2 for loops are needed
-         first for loop is to save the topic and get Id returned so that it can be used to save the items
-         after the item was saved, we save the list of items from topic into the db
-         and reference the topic id we received from the saving of topic
-         */
-        for (Topic topic: data.getTopics()) {
-            topic.setId(topicRepository.save(new TopicDB(checklistTemplateId, topic.getTopicTitle(), topic.getTopicDescription())).getId());
-            for (String item : topic.getItems()) {
-                checklistTemplateItemRepository.save(new ChecklistTemplateItem(topic.getId(), item));
+        try {
+            ChecklistTemplate checklistTemplate = new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription(), data.getTopics());
+            for (Topic topic : checklistTemplate.getTopics()) {
+                topic.setChecklistTemplate(checklistTemplate);
+                for (ChecklistTemplateItem item : topic.getItems()) {
+                    item.setTopic(topic);
+                }
             }
+            ChecklistTemplate checklistTemplate1 = checklistTemplateRepository.save(checklistTemplate);
+            LocalDate dateAssigned = LocalDate.now();
+            for (User user : data.getAssignedTo()) {
+                personalChecklistRepository.save(new PersonalChecklist(user, checklistTemplate1, dateAssigned));
+            }
+        } catch (Exception e){
+            throw new Exception();
         }
     }
 }
