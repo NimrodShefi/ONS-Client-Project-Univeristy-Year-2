@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
@@ -86,5 +87,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepository.findUserByEmail(email);
+    }
+
+    public Optional<User> findById(Long userId) {
+        return userRepository.findById(userId);
     }
 }
