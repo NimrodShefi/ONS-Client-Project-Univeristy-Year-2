@@ -4,32 +4,33 @@
     <meta charset="UTF-8">
     <title>View Checklists</title>
 
-    <h1 th:text="${checklistTemplate.name}"/>
-    <h1 th:text="${checklistTemplate.description}"/>
 
 </head>
 <body>
-    <h2 th:text="${topic.name}"/>
-    <h2 th:text="${topic.description}"/>
+    <div th:object="${personalChecklist}">
 
-    <table style="width:50%">
-        <tr style="text-align:left">
-            <th><h2>Item Description</h2></th>
-            <th><h2>Checked</h2></th>
-        </tr>
+        <h1 th:text="*{checklistTemplate.name}"/>
+        <div th:text="*{checklistTemplate.description}"/>
 
-        <tr th:each="checklistTemplateItem: ${checklistTemplateItems}">
-            <td th:text="${checklistTemplateItem.description}"/>
-            <td><input type="checkbox" id="check" value=""></td>
-        </tr>
+        <div th:each="topic : *{checklistTemplate.topics}">
+            <h2 th:text="${topic.name}"/>
+            <div th:text="${topic.description}"/>
 
-<!--        <td><div th:text="${user.firstName}"></div></td>-->
-<!--        <td><div th:text="${topic.name}"></div></td>-->
-<!--        <td><div th:text="${topic.description}"></div></td>-->
-<!--        <td><div th:text="${checklistTemplateItem.description}"></div></td>-->
-<!--        <td><input type="checkbox" id="check" value=""></td>-->
+            <table style="width:50%">
+                <tr style="text-align:left">
+                    <th><h3>Checked</h3></th>
+                    <th><h3>Item Description</h3></th>
+                </tr>
+                <tr th:each="item: ${personalChecklist.checklistItems}">
+                    <div th:if="${item.checklistTemplateItem.topic.id} == ${topic.id}">
+                        <td><input type="checkbox" id="check" value=""></td>
+                        <td th:text="${item.checklistTemplateItem.description}"/>
+                    </div>
+                </tr>
 
-    </table>
+            </table>
+        </div>
 
+    </div>
 </body>
 </html>
