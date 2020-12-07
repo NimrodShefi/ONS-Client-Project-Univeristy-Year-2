@@ -57,19 +57,18 @@ public class AuthorController {
         return "checklist/view-all-checklists";
     }
 
-    @GetMapping("view-my-checklists/{id}")
+    @GetMapping("view-checklist-template/{id}")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String viewMyChecklist(@PathVariable(name = "id", required = false) Long checklistId, Model model){
+    public String viewMyChecklistTemplate(@PathVariable(name = "id", required = false) Long checklistId, Model model){
         if (checklistId == null){
             return "checklist/view-all-checklists";
         } else {
             try {
                 ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
                 List<PersonalChecklist> personalChecklists = authorService.getAllByChecklistTemplate(checklistTemplate);
-                System.out.println(personalChecklists);
                 model.addAttribute("checklist", checklistTemplate);
                 model.addAttribute("users", personalChecklists);
-                return "checklist/view-checklist";
+                return "checklist/view-checklist-template";
             } catch (NullPointerException e){
                 model.addAttribute("title", "Missing Checklist");
                 model.addAttribute("message", "The checklist you are looking for could not be found");
