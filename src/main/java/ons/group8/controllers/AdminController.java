@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -68,11 +67,10 @@ public class AdminController {
             System.out.println("errors = " + bindings.getAllErrors());
             return "userrole-form";
         }
-        Optional<User> userExist = theAdminService.findUsersByEmail(userRoleForm.getEmail());
-        if(userExist.isEmpty()) {
+        User userExist = userRoleForm.getUser();
+        if(userExist == null) {
             log.error("user not exist");
             userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
-            bindings.addError(new FieldError("userRoleForm","email", "email must be unique."));
             System.out.println("are there errors = " + bindings.hasErrors());
             System.out.println("errors = " + bindings.getAllErrors());
             return "userrole-form";
@@ -82,8 +80,8 @@ public class AdminController {
                 .stream()
                 .map(r -> theAdminService.findRolesById(r.getId()).get())
                 .collect(Collectors.toSet());
-        userExist.get().setRoles(newRoles);
-        theUserRepositoryJPA.save(userExist.get());
+        userExist.setRoles(newRoles);
+        theUserRepositoryJPA.save(userExist);
         model.addAttribute("users", theAdminService.findAll());
         return "user-roles";
     }
