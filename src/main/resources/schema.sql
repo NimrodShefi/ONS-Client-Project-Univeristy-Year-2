@@ -74,3 +74,15 @@ CREATE TABLE IF NOT EXISTS CHECKLIST_ITEM(
      FOREIGN KEY (checklist_template_id) REFERENCES CHECKLIST_TEMPLATE_ITEM(id))
      ENGINE = InnoDB;
 
+CREATE USER 'superuser'@'localhost' IDENTIFIED BY 'MySuperSecretPassword';
+grant usage on ons to 'superuser'@'localhost';
+grant select, insert, update, alter on ons.USER to 'superuser'@'localhost';
+grant select, insert, update, alter on ons.ROLE to 'superuser'@'localhost';
+grant select, insert, update, alter on ons.USER_ROLE to 'superuser'@'localhost';
+grant select, insert, update, alter on ons.CHECKLIST_TEMPLATE to 'superuser'@'localhost';
+grant select, insert, update, alter on ons.TOPIC to 'superuser'@'localhost';
+grant select, insert, update, alter on ons.CHECKLIST_TEMPLATE_ITEM to 'superuser'@'localhost';
+grant select, insert, update, alter on ons.PERSONAL_CHECKLIST to 'superuser'@'localhost';
+grant select, insert, update, alter on ons.CHECKLIST_ITEM to 'superuser'@'localhost';
+show grants for 'superuser'@'localhost';
+flush privileges;
