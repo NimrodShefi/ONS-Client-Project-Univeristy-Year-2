@@ -5,44 +5,50 @@
     <title>View Checklist</title>
 </head>
 <body>
-    <table>
-        <tbody>
-            <tr>
-                <td><h1 th:text="${checklist.name}"></h1></td>
-                <td><button th:value="${checklist.id}">edit checklist name/description</button></td>
-            </tr>
-        <tr>
-            <td><pre th:text="${checklist.description}"></pre></td>
-        </tr>
-        </tbody>
-    </table>
+<table>
+    <tbody>
+    <tr>
+        <td><h1 th:text="${checklist.name}"></h1></td>
+        <td>
+            <button th:value="${checklist.id}">edit checklist name/description</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre th:text="${checklist.description}"></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-    <table th:each="topic: ${checklist.topics}">
-        <tbody>
-            <tr>
-                <td><h3 th:text="${topic.getName()}"></h3></td>
-                <td><button th:value="${topic.id}">edit topic</button></td>
-            </tr>
-            <tr>
-                <td><pre th:text="${topic.getDescription()}"></pre></td>
-            </tr>
-            <tr th:each="item: ${topic.getItems()}">
-                <td><p th:text="${item.description}"></p></td>
-            </tr>
-        </tbody>
-    </table>
+<table th:each="topic: ${checklist.topics}">
+    <tbody>
+    <tr>
+        <td><h3 th:text="${topic.getName()}"></h3></td>
+        <td>
+            <button th:value="${topic.id}">edit topic</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre th:text="${topic.getDescription()}"></pre>
+        </td>
+    </tr>
+    <tr th:each="item: ${topic.getItems()}">
+        <td><p th:text="${item.description}"></p></td>
+    </tr>
+    </tbody>
+</table>
 
-    <table>
-        <tbody>
-        <tr>
-            <td><h3>Assigned To:</h3></td>
-            <td><button>edit assigned users</button></td>
-        </tr>
-        <tr th:each="user : ${users}">
-            <td><p th:text="${user.getUserId().getFirstName()} + ${user.getUserId().getLastName()}"></p></td>
-        </tr>
-        </tbody>
-    </table>
+
+<h3>Assigned To:</h3>
+<button>edit assigned users</button>
+<br>
+<select size="5">
+    <option value="0" disabled>Users:</option>
+    <option th:each=" user : ${users}" th:text="${user.getUserId().getFirstName()} + ${user.getUserId().getLastName()}"
+            th:value="${user.getUserId().getId()}" disabled></option>
+</select>
 
 </body>
 </html>
