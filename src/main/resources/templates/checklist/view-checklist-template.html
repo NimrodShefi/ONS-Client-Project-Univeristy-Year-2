@@ -5,50 +5,37 @@
     <title>View Checklist</title>
 </head>
 <body>
-<table>
-    <tbody>
-    <tr>
-        <td><h1 th:text="${checklist.name}"></h1></td>
-        <td>
-            <button th:value="${checklist.id}">edit checklist name/description</button>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <pre th:text="${checklist.description}"></pre>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <div>
+        <h1 th:text="${checklist.name}"></h1>
+        <button th:value="${checklist.id}">Edit Title & Description</button>
+        <div th:text="${checklist.description}"></div>
+    </div>
 
-<table th:each="topic: ${checklist.topics}">
-    <tbody>
-    <tr>
-        <td><h3 th:text="${topic.getName()}"></h3></td>
-        <td>
-            <button th:value="${topic.id}">edit topic</button>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <pre th:text="${topic.getDescription()}"></pre>
-        </td>
-    </tr>
-    <tr th:each="item: ${topic.getItems()}">
-        <td><p th:text="${item.description}"></p></td>
-    </tr>
-    </tbody>
-</table>
+    <div th:each="topic : ${checklist.topics}">
+        <h2 th:text="${topic.name}"></h2>
+        <button th:value="${topic.id}">Edit Topic</button>
+        <div th:text="${topic.description}"></div>
 
+        <table>
+            <tr style="text-align:left">
+                <th><h3>Checked</h3></th>
+                <th><h3>Item Description</h3></th>
+            </tr>
+            <tr th:each="item: ${topic.items}">
+                <td><input type="checkbox" id="check"></td>
+                <td th:text="${item.description}"></td>
+            </tr>
+        </table>
+    </div>
 
-<h3>Assigned To:</h3>
-<button>edit assigned users</button>
-<br>
-<select size="5">
-    <option value="0" disabled>Users:</option>
-    <option th:each=" user : ${users}" th:text="${user.getUserId().getFirstName()} + ${user.getUserId().getLastName()}"
-            th:value="${user.getUserId().getId()}" disabled></option>
-</select>
+    <h2>Assigned To:</h2>
+    <button>edit assigned users</button>
+    <br>
+    <select size="5">
+        <option value="0" disabled>Users:</option>
+        <option th:each=" user : ${users}" th:text="${user.getUserId().getFirstName()} + ${user.getUserId().getLastName()}"
+                th:value="${user.getUserId().getId()}" disabled></option>
+    </select>
 
 </body>
 </html>

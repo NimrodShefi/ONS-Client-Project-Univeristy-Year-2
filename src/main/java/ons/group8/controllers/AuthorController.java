@@ -51,21 +51,22 @@ public class AuthorController {
         return new ChecklistForm();
     }
 
-    @GetMapping("view-my-checklists")
+    @GetMapping("view-checklist-templates")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String viewMyChecklists(){
-        return "checklist/view-all-checklists";
+    public String viewChecklistTemplates(){
+        return "checklist/view-all-checklist-templates";
     }
 
     @GetMapping("view-checklist-template/{id}")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String viewMyChecklistTemplate(@PathVariable(name = "id", required = false) Long checklistId, Model model){
         if (checklistId == null){
-            return "checklist/view-all-checklists";
+            return "checklist/view-all-checklist-templates";
         } else {
             try {
                 ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
                 List<PersonalChecklist> personalChecklists = authorService.getAllByChecklistTemplate(checklistTemplate);
+                System.out.println(checklistTemplate.getTopics().get(0).getItems());
                 model.addAttribute("checklist", checklistTemplate);
                 model.addAttribute("users", personalChecklists);
                 return "checklist/view-checklist-template";
