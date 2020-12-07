@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
+<head th:replace="fragments/header :: head">
     <meta charset="UTF-8">
     <title>View Checklist</title>
 </head>
 <body>
+    <div th:replace="fragments/header :: head"></div>
     <div>
         <h1 th:text="${checklist.name}"></h1>
         <button th:value="${checklist.id}">Edit Title & Description</button>
