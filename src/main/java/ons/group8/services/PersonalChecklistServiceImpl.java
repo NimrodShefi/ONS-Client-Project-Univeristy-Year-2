@@ -5,6 +5,8 @@ import ons.group8.repositories.PersonalChecklistRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PersonalChecklistServiceImpl implements PersonalChecklistService {
 
@@ -15,8 +17,8 @@ public class PersonalChecklistServiceImpl implements PersonalChecklistService {
         personalChecklistRepository = aPersonalChecklistRepository;
     }
 
-    public PersonalChecklist findByUserId_Id(Long userId){
-        return personalChecklistRepository.findByUserId_Id(userId);
+    public List<PersonalChecklist> findAllPersonalChecklistsByUserEmail(String email){
+        return personalChecklistRepository.findAllByUserId_Email(email);
     };
 
 }

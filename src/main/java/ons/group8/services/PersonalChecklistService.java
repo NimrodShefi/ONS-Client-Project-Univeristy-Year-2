@@ -2,8 +2,10 @@ package ons.group8.services;
 
 import ons.group8.domain.PersonalChecklist;
 
+import java.util.List;
+
 public interface PersonalChecklistService {
 
-    PersonalChecklist findByUserId_Id(Long userId);
+    List<PersonalChecklist> findAllPersonalChecklistsByUserEmail(String email);
 
 }
