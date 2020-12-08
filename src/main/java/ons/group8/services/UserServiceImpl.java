@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -18,6 +19,10 @@ import java.util.zip.DataFormatException;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    public static final int MAX_FAILED_ATTEMPTS = 3;
+
+    private static final long LOCK_TIME_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
     private final UserRepositoryJPA userRepository;
     private final RoleRepositoryJPA roleRepository;
