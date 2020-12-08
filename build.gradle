@@ -25,14 +25,20 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-test'
+
+    runtime 'com.h2database:h2'
+
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5'
     // https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple
     compile group: 'org.apache.clerezza.ext', name: 'org.json.simple', version: '0.4'
+
     compileOnly 'org.projectlombok:lombok'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
     runtimeOnly 'mysql:mysql-connector-java'
 }
 

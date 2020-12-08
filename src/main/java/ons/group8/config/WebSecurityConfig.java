@@ -33,8 +33,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+
+
                 .authorizeRequests()
+                .antMatchers("/sign-up/**").permitAll()
                 .antMatchers("/sign-up/**", "/login**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -52,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.httpBasic().disable();
         http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
     }
 
     @Bean

@@ -8,12 +8,6 @@ CREATE TABLE IF NOT EXISTS USER (
   last_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  failed_attempt tinyint NOT NULL DEFAULT 0,
-  account_non_locked tinyint NOT NULL default 1,
-  lock_time datetime,
-  enabled tinyint NOT NULL default 1,
-
-
   PRIMARY KEY (id),
   CONSTRAINT email_unique UNIQUE (email))
 ENGINE = InnoDB;
@@ -26,13 +20,11 @@ CREATE TABLE IF NOT EXISTS ROLE(
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS USER_ROLE(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id INT UNSIGNED NOT NULL,
     role_id INT UNSIGNED NOT NULL,
-    PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES USER(id),
     FOREIGN KEY (role_id) REFERENCES ROLE(id))
-    ENGINE = InnoDB;
+ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS CHECKLIST_TEMPLATE(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
