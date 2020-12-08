@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonalChecklistServiceImpl implements PersonalChecklistService {
@@ -21,7 +22,7 @@ public class PersonalChecklistServiceImpl implements PersonalChecklistService {
         return personalChecklistRepository.findAllByUserId_Email(email);
     };
 
-    public PersonalChecklist getById(Long pChecklistId) {
+    public Optional<PersonalChecklist> getById(Long pChecklistId) {
         return personalChecklistRepository.getById(pChecklistId);
     }
 }

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PersonalChecklistController {
@@ -37,10 +38,18 @@ public class PersonalChecklistController {
 
     @GetMapping("personal-checklist/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String viewChecklist(@PathVariable("id") Long pChecklistId, Model model){
+    public String viewChecklist(@PathVariable("id") Long pChecklistId, Model model) {
         logger.info(String.format("Getting personal checklist with id: %d", pChecklistId));
-        PersonalChecklist personalChecklist = personalChecklistService.getById(pChecklistId);
-        model.addAttribute("personalChecklist", personalChecklist);
-        return "viewChecklistStarter";
+        Optional<PersonalChecklist> personalChecklist = personalChecklistService.getById(pChecklistId);
+        if (personalChecklist.isPresent()){
+            logger.info(String.format("Found personal checklist with id: %d", pChecklistId));
+            model.addAttribute("personalChecklist", personalChecklist.get());
+            return "viewChecklistStarter";
+        } else {
+            logger.error(String.format("Could not find resource for URL: %s%d", "personal-checklist/", pChecklistId));
+            model.addAttribute("title", "404 - Not found");
+            model.addAttribute("message", "The requested checklist was not found.");
+            return "message";
+        }
     }
 }

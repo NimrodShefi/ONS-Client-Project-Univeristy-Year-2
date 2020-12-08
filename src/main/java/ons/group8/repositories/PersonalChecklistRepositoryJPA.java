@@ -1,12 +1,11 @@
 package ons.group8.repositories;
 
 import ons.group8.domain.ChecklistTemplate;
-import ons.group8.domain.ChecklistItem;
 import ons.group8.domain.PersonalChecklist;
-import ons.group8.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonalChecklistRepositoryJPA extends JpaRepository<PersonalChecklist, Long> {
 
@@ -14,6 +13,6 @@ public interface PersonalChecklistRepositoryJPA extends JpaRepository<PersonalCh
 
     List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate);
 
-    PersonalChecklist getById(Long pChecklistId);
+    Optional<PersonalChecklist> getById(Long pChecklistId);
 
 }
