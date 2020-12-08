@@ -23,6 +23,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<User> findAll() {
+        System.out.print(userRepositoryJPA.findAll());
         return userRepositoryJPA.findAll();
     }
 

@@ -82,3 +82,17 @@ CREATE TABLE IF NOT EXISTS CHECKLIST_ITEM(
      FOREIGN KEY (checklist_template_item_id) REFERENCES CHECKLIST_TEMPLATE_ITEM(id))
      ENGINE = InnoDB;
 
+CREATE USER 'onsUser'@'localhost' IDENTIFIED BY '2Nng2?9P6q47QJLAL=^3';
+
+grant usage on ons to 'superuser'@'localhost';
+
+grant select, insert, update(id,first_name, last_name, email) on ons.USER to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.ROLE to 'onsUser'@'localhost';
+grant select, insert, update, alter, delete on ons.USER_ROLE to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.CHECKLIST_TEMPLATE to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.TOPIC to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.CHECKLIST_TEMPLATE_ITEM to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.PERSONAL_CHECKLIST to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.CHECKLIST_ITEM to 'onsUser'@'localhost';
+show grants for 'onsUser'@'localhost';
+flush privileges;
