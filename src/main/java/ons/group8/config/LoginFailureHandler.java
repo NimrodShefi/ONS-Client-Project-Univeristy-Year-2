@@ -1,40 +1,49 @@
 package ons.group8.config;
 
-import ons.group8.services.UserServiceImpl;
-import org.apache.catalina.User;
+import ons.group8.domain.User;
+import ons.group8.services.LockOutService;
+import ons.group8.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-
+import org.springframework.stereotype.Service;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Service
 public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private LockOutService lockOutService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        String email = request.getParameter("email");
-        User user = userServiceImpl.getByEmail(email);
+        String email = request.getParameter("username");
+        User user = userService.findByEmail(email);
+        System.out.println("authentication failure");
+//        User user = userServiceImpl.findByEmail(email);
 
         if (user != null) {
             if (user.isEnabled() && user.isAccountNonLocked()) {
-                if (user.getFailedAttempt() < UserServices.MAX_FAILED_ATTEMPTS - 1) {
-                    userService.increaseFailedAttempts(user);
+                if (user.getFailedAttempt() < LockOutService.MAX_FAILED_ATTEMPTS - 1) {
+                    lockOutService.increaseFailedAttempts(user);
                 } else {
-                    userService.lock(user);
+                    lockOutService.lock(user);
                     exception = new LockedException("Your account has been locked due to 3 failed attempts."
                             + " It will be unlocked after 24 hours.");
                 }
             } else if (!user.isAccountNonLocked()) {
-                if (userService.unlockWhenTimeExpired(user)) {
+                if (lockOutService.unlockWhenTimeExpired(user)) {
                     exception = new LockedException("Your account has been unlocked. Please try to login again.");
+                }else {
+                    exception = new LockedException("Your account has been locked due to 3 failed attempts.");
                 }
             }
 
@@ -42,6 +51,9 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
         super.setDefaultFailureUrl("/login?error");
         super.onAuthenticationFailure(request, response, exception);
+//        String redirectUrl = request.getContextPath() + "/login?error";
+//        response.sendRedirect(redirectUrl);
+
     }
 
 }

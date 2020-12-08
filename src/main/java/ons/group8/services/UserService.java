@@ -10,12 +10,5 @@ public interface UserService {
 
     Optional<User> findById(Long userId);
 
-    void increaseFailedAttempts(User user);
-
-    void resetFailedAttempts(String email);
-
-    void lock(User user);
-
-    boolean unlockWhenTimeExpired(User user);
 
 }

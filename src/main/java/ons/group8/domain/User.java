@@ -38,18 +38,13 @@ public class User {
     @NotEmpty
     private String password;
 
-
-    @NotNull
-    @NotEmpty
     private boolean accountNonLocked;
 
-    @NotNull
-    @NotEmpty
     private int failedAttempt;
 
-    @NotNull
-    @NotEmpty
     private Date lockTime;
+
+    private boolean enabled;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
@@ -59,8 +54,8 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
 
-    public User(String email, String password, String firstName, String lastName, boolean accountNonLocked, int failedAttempt, Date lockTime) {
-        this(null, email, firstName, lastName, password, accountNonLocked, failedAttempt, lockTime, new HashSet<>());
+    public User(String email, String password, String firstName, String lastName) {
+        this(null, email, firstName, lastName, password, true, 0, null , true, new HashSet<>());
     }
 
     public void addRole(Role role) {

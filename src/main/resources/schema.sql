@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS USER (
   password VARCHAR(255) NOT NULL,
   failed_attempt tinyint NOT NULL DEFAULT 0,
   account_non_locked tinyint NOT NULL default 1,
-  lock_time tinyint NOT NULL default 1,
+  lock_time datetime,
+  enabled tinyint NOT NULL default 1,
 
 
   PRIMARY KEY (id),
