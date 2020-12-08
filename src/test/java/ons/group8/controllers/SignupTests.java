@@ -22,7 +22,7 @@ public class SignupTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     private UserServiceImpl userService;
 
     @Autowired
