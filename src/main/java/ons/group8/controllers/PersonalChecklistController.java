@@ -18,12 +18,10 @@ public class PersonalChecklistController {
 
     Logger logger = LoggerFactory.getLogger(PersonalChecklistController.class);
 
-    private final UserService userService;
     private final PersonalChecklistService personalChecklistService;
 
     @Autowired
-    public PersonalChecklistController(UserService aUserService, PersonalChecklistService aPersonalChecklistService) {
-        userService = aUserService;
+    public PersonalChecklistController(PersonalChecklistService aPersonalChecklistService) {
         personalChecklistService = aPersonalChecklistService;
     }
 
@@ -37,6 +35,7 @@ public class PersonalChecklistController {
 
     @GetMapping("personal-checklist/{id}")
     public String viewChecklist(@PathVariable("id") Long pChecklistId, Model model){
+        logger.info(String.format("Getting personal checklist with id: %d", pChecklistId));
         PersonalChecklist personalChecklist = personalChecklistService.getById(pChecklistId);
         model.addAttribute("personalChecklist", personalChecklist);
         return "viewChecklistStarter";
