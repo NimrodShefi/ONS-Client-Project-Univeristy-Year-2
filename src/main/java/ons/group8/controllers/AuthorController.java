@@ -3,9 +3,7 @@ package ons.group8.controllers;
 import ons.group8.controllers.forms.AssignedToForm;
 import ons.group8.controllers.forms.ChecklistForm;
 import ons.group8.controllers.forms.TopicForm;
-import ons.group8.domain.ChecklistTemplateItem;
-import ons.group8.domain.Topic;
-import ons.group8.domain.User;
+import ons.group8.domain.*;
 import ons.group8.services.AuthorService;
 import ons.group8.services.ChecklistCreationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/author")
@@ -52,10 +51,31 @@ public class AuthorController {
         return new ChecklistForm();
     }
 
-    @GetMapping("view-my-checklists")
+    @GetMapping("view-checklist-templates")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String viewMyChecklists(){
-        return "checklist/view-all-checklists";
+    public String viewChecklistTemplates(){
+        return "checklist/view-all-checklist-templates";
+    }
+
+    @GetMapping("view-checklist-template/{id}")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String viewMyChecklistTemplate(@PathVariable(name = "id", required = false) Long checklistId, Model model){
+        if (checklistId == null){
+            return "checklist/view-all-checklist-templates";
+        } else {
+            try {
+                ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
+                List<PersonalChecklist> personalChecklists = authorService.getAllByChecklistTemplate(checklistTemplate);
+                System.out.println(checklistTemplate.getTopics().get(0).getItems());
+                model.addAttribute("checklist", checklistTemplate);
+                model.addAttribute("users", personalChecklists);
+                return "checklist/view-checklist-template";
+            } catch (NullPointerException e){
+                model.addAttribute("title", "Missing Checklist");
+                model.addAttribute("message", "The checklist you are looking for could not be found");
+                return "message";
+            }
+        }
     }
 
     @GetMapping("checklist-title-and-description")

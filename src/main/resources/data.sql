@@ -1,8 +1,8 @@
-INSERT INTO user(first_name, last_name, email, password) VALUES("Nimrod", "Shefi", "nimrod@test.com", "$2a$10$Hfi.30gNk2MQFht5FseEzOzMXp3p9WLDFam8NM5gQWSrHoUvrIEYa");            --pw: "nimpass" roles: USER
-INSERT INTO user(first_name, last_name, email, password) VALUES("Hannah", "Bonnett", "hannah@test.com", "$2a$10$OMucrxeSJ.7dRqFy6u.TXe2RjE5fEnKPCrlYexWP/bTgTuFPi4x.K");          --pw: "hanpass" roles: ADMIN
-INSERT INTO user(first_name, last_name, email, password) VALUES("Mahruk", "Zulfiqar", "mahruk@test.com", "$2a$10$ZL9Jwym3ALO5uYVhh7MtouquWswsuWAJHHXIQu1h1BYqKGyleuabm");         --pw: "mahpass" roles: USER, AUTHOR
-INSERT INTO user(first_name, last_name, email, password) VALUES("Sameer", "Shah", "sameer@test.com", "$2a$10$4mab7bDkdp4TSbvYPcPzeu8Jm/P4vREk4AmJ8DCvxEYt0dCb/5/E.");             --pw: "sampass" roles: AUTHOR
-INSERT INTO user(first_name, last_name, email, password) VALUES("Jean-Luc", "Picard", "picard@enterprise.com", "$2a$10$GSn7LP4oN4CymVRkfU.YBOAFUjBmhl9B5vyp59yP/vjMeymEsNSVq");   --pw: "earlgreyhot" roles: USER, AUTHOR, ADMIN
+INSERT INTO user(first_name, last_name, email, password) VALUES("Nimrod", "Shefi", "nimrod@test.com", "$2a$10$Hfi.30gNk2MQFht5FseEzOzMXp3p9WLDFam8NM5gQWSrHoUvrIEYa");            -- pw: "nimpass" roles: USER
+INSERT INTO user(first_name, last_name, email, password) VALUES("Hannah", "Bonnett", "hannah@test.com", "$2a$10$OMucrxeSJ.7dRqFy6u.TXe2RjE5fEnKPCrlYexWP/bTgTuFPi4x.K");          -- pw: "hanpass" roles: ADMIN
+INSERT INTO user(first_name, last_name, email, password) VALUES("Mahruk", "Zulfiqar", "mahruk@test.com", "$2a$10$ZL9Jwym3ALO5uYVhh7MtouquWswsuWAJHHXIQu1h1BYqKGyleuabm");         -- pw: "mahpass" roles: USER, AUTHOR
+INSERT INTO user(first_name, last_name, email, password) VALUES("Sameer", "Shah", "sameer@test.com", "$2a$10$4mab7bDkdp4TSbvYPcPzeu8Jm/P4vREk4AmJ8DCvxEYt0dCb/5/E.");             -- pw: "sampass" roles: AUTHOR
+INSERT INTO user(first_name, last_name, email, password) VALUES("Jean-Luc", "Picard", "picard@enterprise.com", "$2a$10$GSn7LP4oN4CymVRkfU.YBOAFUjBmhl9B5vyp59yP/vjMeymEsNSVq");   -- pw: "earlgreyhot" roles: USER, AUTHOR, ADMIN
 
 INSERT INTO role(name) VALUES("USER");
 INSERT INTO role(name) VALUES("AUTHOR");
