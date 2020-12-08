@@ -8,7 +8,10 @@
     <div>
         <ul th:each="checklist : ${personalChecklists}">
             <li>
-                <span th:text="${checklist.checklistTemplate.name}"></span>
+                <a th:id="@{checklistLink{id} (id=${checklist.id})}"
+                   th:href="@{/personal-checklist/{id} (id=${checklist.id})}">
+                    <span th:text="${checklist.checklistTemplate.name}"></span>
+                </a>
             </li>
         </ul>
     </div>

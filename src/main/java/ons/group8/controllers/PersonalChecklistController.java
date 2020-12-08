@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,15 +35,10 @@ public class PersonalChecklistController {
         return "personal-checklist-list";
     }
 
-//    @GetMapping("view-checklist-starter")
-//    public String viewChecklist(@RequestParam("email") String email, Model model){
-//
-//        User user = userService.findByEmail(email);
-//        PersonalChecklist personalChecklist = personalChecklistService.findByUserId_Id(user.getId());
-//
-//        model.addAttribute("user", user);
-//        model.addAttribute("personalChecklist", personalChecklist);
-//
-//        return "viewChecklistStarter";
-//    }
+    @GetMapping("personal-checklist/{id}")
+    public String viewChecklist(@PathVariable("id") Long pChecklistId, Model model){
+        PersonalChecklist personalChecklist = personalChecklistService.getById(pChecklistId);
+        model.addAttribute("personalChecklist", personalChecklist);
+        return "viewChecklistStarter";
+    }
 }

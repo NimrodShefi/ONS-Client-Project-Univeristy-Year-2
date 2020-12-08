@@ -14,4 +14,6 @@ public interface PersonalChecklistRepositoryJPA extends JpaRepository<PersonalCh
 
     List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate);
 
+    PersonalChecklist getById(Long pChecklistId);
+
 }

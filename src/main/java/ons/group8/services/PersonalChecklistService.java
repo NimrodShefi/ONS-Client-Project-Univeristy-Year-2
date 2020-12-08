@@ -8,4 +8,6 @@ public interface PersonalChecklistService {
 
     List<PersonalChecklist> findAllPersonalChecklistsByUserEmail(String email);
 
+    PersonalChecklist getById(Long pChecklistId);
+
 }

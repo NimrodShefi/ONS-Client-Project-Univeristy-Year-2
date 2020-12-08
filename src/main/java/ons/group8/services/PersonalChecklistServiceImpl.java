@@ -21,4 +21,7 @@ public class PersonalChecklistServiceImpl implements PersonalChecklistService {
         return personalChecklistRepository.findAllByUserId_Email(email);
     };
 
+    public PersonalChecklist getById(Long pChecklistId) {
+        return personalChecklistRepository.getById(pChecklistId);
+    }
 }
