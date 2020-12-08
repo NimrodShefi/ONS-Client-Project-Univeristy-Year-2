@@ -11,4 +11,6 @@ public interface PersonalChecklistService {
 
     Optional<PersonalChecklist> getById(Long pChecklistId);
 
+    boolean isUserAssignedToPersonalChecklist(PersonalChecklist personalChecklist, String email);
+
 }

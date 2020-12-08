@@ -25,4 +25,8 @@ public class PersonalChecklistServiceImpl implements PersonalChecklistService {
     public Optional<PersonalChecklist> getById(Long pChecklistId) {
         return personalChecklistRepository.getById(pChecklistId);
     }
+
+    public boolean isUserAssignedToPersonalChecklist(PersonalChecklist personalChecklist, String email) {
+        return personalChecklist.getUser().getEmail().equals(email);
+    }
 }
