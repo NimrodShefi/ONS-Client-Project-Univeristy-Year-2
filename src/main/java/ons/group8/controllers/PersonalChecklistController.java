@@ -3,6 +3,7 @@ package ons.group8.controllers;
 import ons.group8.domain.*;
 import ons.group8.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class PersonalChecklistController {
     }
 
     @GetMapping("personal-checklist-list")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String listPersonalChecklists(Principal principal, Model model){
         logger.info(String.format("Getting personal checklist list for user: %s", principal.getName()));
         List<PersonalChecklist> personalChecklists = personalChecklistService.findAllPersonalChecklistsByUserEmail(principal.getName());
@@ -34,6 +36,7 @@ public class PersonalChecklistController {
     }
 
     @GetMapping("personal-checklist/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String viewChecklist(@PathVariable("id") Long pChecklistId, Model model){
         logger.info(String.format("Getting personal checklist with id: %d", pChecklistId));
         PersonalChecklist personalChecklist = personalChecklistService.getById(pChecklistId);
