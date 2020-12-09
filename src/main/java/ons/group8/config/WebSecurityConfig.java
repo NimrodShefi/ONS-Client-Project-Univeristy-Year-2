@@ -1,5 +1,8 @@
 package ons.group8.config;
 
+import ons.group8.repositories.ChecklistTemplateRepositoryJPA;
+import ons.group8.repositories.PersonalChecklistRepositoryJPA;
+import ons.group8.repositories.UserRepositoryJPA;
 import ons.group8.services.MyUserDetailsService;
 import ons.group8.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +22,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private MyUserDetailsService userDetailsService;
-    @Autowired
+
+    private MyUserDetailsService myuserDetailsService;
     private LoginFailureHandler loginFailureHandler;
-    @Autowired
     private LoginSuccessHandler loginSuccessHandler;
+
+    @Autowired
+    public WebSecurityConfig(MyUserDetailsService myUserDetailsService, LoginSuccessHandler loginSuccessHandler, LoginFailureHandler loginFailureHandler) {
+        this.myuserDetailsService = myUserDetailsService;
+        this.loginFailureHandler = loginFailureHandler;
+        this.loginSuccessHandler = loginSuccessHandler;
+    }
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
@@ -33,19 +41,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http
 
 
                 .authorizeRequests()
-                .antMatchers("/sign-up/**").permitAll()
                 .antMatchers("/sign-up/**", "/login**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .failureHandler(loginFailureHandler)
                 .successHandler(loginSuccessHandler)
-//                .usernameParameter("email")
-//                .failureUrl("/login-failed")
                 .defaultSuccessUrl("/").permitAll()
                 .and()
                 .logout().logoutUrl("/logout").permitAll()
@@ -60,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(myuserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

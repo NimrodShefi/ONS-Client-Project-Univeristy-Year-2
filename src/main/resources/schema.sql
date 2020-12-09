@@ -84,9 +84,9 @@ CREATE TABLE IF NOT EXISTS CHECKLIST_ITEM(
 
 CREATE USER 'onsUser'@'localhost' IDENTIFIED BY '2Nng2?9P6q47QJLAL=^3';
 
-grant usage on ons to 'superuser'@'localhost';
+grant usage on ons.* to 'onsUser'@'localhost';
 
-grant select, insert, update(id,first_name, last_name, email) on ons.USER to 'onsUser'@'localhost';
+grant select, insert, update(id,first_name, last_name, password, email, failed_attempt, account_non_locked, lock_time, enabled) on ons.USER to 'onsUser'@'localhost';
 grant select, insert, update, alter on ons.ROLE to 'onsUser'@'localhost';
 grant select, insert, update, alter, delete on ons.USER_ROLE to 'onsUser'@'localhost';
 grant select, insert, update, alter on ons.CHECKLIST_TEMPLATE to 'onsUser'@'localhost';

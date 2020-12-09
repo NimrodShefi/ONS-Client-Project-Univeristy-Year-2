@@ -1,10 +1,12 @@
 package ons.group8.controllers;
 
+import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@Getter
 public class LoginController {
 
     @GetMapping("/")

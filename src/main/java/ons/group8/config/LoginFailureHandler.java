@@ -27,9 +27,6 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                                         AuthenticationException exception) throws IOException, ServletException {
         String email = request.getParameter("username");
         User user = userService.findByEmail(email);
-        System.out.println("authentication failure");
-//        User user = userServiceImpl.findByEmail(email);
-
         if (user != null) {
             if (user.isEnabled() && user.isAccountNonLocked()) {
                 if (user.getFailedAttempt() < LockOutService.MAX_FAILED_ATTEMPTS - 1) {
@@ -48,7 +45,6 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
             }
 
         }
-
         super.setDefaultFailureUrl("/login?error");
         super.onAuthenticationFailure(request, response, exception);
 //        String redirectUrl = request.getContextPath() + "/login?error";
