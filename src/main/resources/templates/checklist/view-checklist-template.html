@@ -34,8 +34,8 @@
     <br>
     <select size="5">
         <option value="0" disabled>Users:</option>
-        <option th:each=" user : ${users}" th:text="${user.getUserId().getFirstName()} + ${user.getUserId().getLastName()}"
-                th:value="${user.getUserId().getId()}" disabled></option>
+        <option th:each=" user : ${users}" th:text="${user.getUser().getFirstName()} + ${user.getUser().getLastName()}"
+                th:value="${user.getUser().getId()}" disabled></option>
     </select>
 
 </body>

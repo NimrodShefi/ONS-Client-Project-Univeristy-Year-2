@@ -10,5 +10,5 @@ public interface UserService {
 
     Optional<User> findById(Long userId);
 
-
+    User getLoggedInUserId();
 }
