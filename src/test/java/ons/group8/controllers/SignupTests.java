@@ -40,7 +40,6 @@ public class SignupTests {
     @Test
     public void shouldAddUser() throws Exception {
         User user = new User("shefin@cardiff.ac.uk", "Password1!", "Nimrod", "Shefi");
-
         userRepository.save(user);
     }
 }

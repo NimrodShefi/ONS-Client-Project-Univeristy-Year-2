@@ -1,10 +1,6 @@
 package ons.group8.config;
 
-import ons.group8.repositories.ChecklistTemplateRepositoryJPA;
-import ons.group8.repositories.PersonalChecklistRepositoryJPA;
-import ons.group8.repositories.UserRepositoryJPA;
 import ons.group8.services.MyUserDetailsService;
-import ons.group8.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
