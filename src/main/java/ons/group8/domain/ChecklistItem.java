@@ -20,6 +20,8 @@ public class ChecklistItem {
     @ManyToOne
     @JoinColumn(name="checklist_template_item_id")
     private ChecklistTemplateItem checklistTemplateItem;
+    @Column(name="checked")
+    private boolean isChecked;
 
     public ChecklistItem(PersonalChecklist personalChecklist, ChecklistTemplateItem checklistTemplateItem) {
         this.personalChecklist = personalChecklist;
