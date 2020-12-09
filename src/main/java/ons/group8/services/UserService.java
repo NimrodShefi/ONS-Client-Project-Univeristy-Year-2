@@ -9,4 +9,6 @@ public interface UserService {
     User findByEmail(String email);
 
     Optional<User> findById(Long userId);
+
+    User getLoggedInUserId();
 }

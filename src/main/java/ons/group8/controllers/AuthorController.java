@@ -6,10 +6,11 @@ import ons.group8.controllers.forms.TopicForm;
 import ons.group8.domain.*;
 import ons.group8.services.AuthorService;
 import ons.group8.services.ChecklistCreationEvent;
+import ons.group8.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,32 +18,25 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/author")
 @SessionAttributes("checklistForm")
 public class AuthorController {
 
+    Logger logger = LoggerFactory.getLogger(AuthorController.class);
+
     private final AuthorService authorService;
 
-    @Autowired
-    public AuthorController(AuthorService authorService) {
-        this.authorService = authorService;
-    }
+    private final UserService userService;
 
-    //getting the user id of the logged in person
-    public User getLoggedInUserId(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails){
-            username = ((UserDetails)principal).getUsername();
-        }else {
-            username = principal.toString();
-        }
-        return authorService.findUserByEmail(username);
+    @Autowired
+    public AuthorController(AuthorService authorService, UserService userService) {
+        this.authorService = authorService;
+        this.userService = userService;
     }
 
     @ModelAttribute("checklistForm")
@@ -53,7 +47,10 @@ public class AuthorController {
 
     @GetMapping("view-checklist-templates")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String viewChecklistTemplates(){
+    public String viewChecklistTemplates(Principal principal, Model model){
+        logger.info(String.format("Getting checklist template list for author: %s", principal.getName()));
+        List<ChecklistTemplate> checklistTemplates = authorService.getAllByAuthorEmail(principal.getName());
+        model.addAttribute("checklistTemplates", checklistTemplates);
         return "checklist/view-all-checklist-templates";
     }
 
@@ -144,14 +141,14 @@ public class AuthorController {
         } else {
             List<User> users = new ArrayList<>();
             for (Long userId : formValues.getId()) {
-                users.add(authorService.findUserById(userId));
+                users.add(userService.findById(userId).get());
             }
             checklistForm.setAssignedTo(users);
             checklistForm.setDeadline(formValues.getDeadline());
             System.out.println(checklistForm);
             try {
                 authorService.save(new ChecklistCreationEvent(checklistForm.getTitle(), checklistForm.getTitleDescription(),
-                        checklistForm.getTopics(), checklistForm.getAssignedTo(), checklistForm.getDeadline(), getLoggedInUserId()));
+                        checklistForm.getTopics(), checklistForm.getAssignedTo(), checklistForm.getDeadline(), userService.getLoggedInUserId()));
                 model.addAttribute("title", "Process Completed");
                 model.addAttribute("message", "The checklist is created and saved");
                 return "message";

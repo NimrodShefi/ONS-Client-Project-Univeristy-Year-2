@@ -13,11 +13,9 @@ public interface AuthorService {
 
     void save(ChecklistCreationEvent checklistForm) throws Exception;
 
-    User findUserByEmail(String email);
-
-    User findUserById(Long userId);
-
     ChecklistTemplate getChecklistTemplateById(Long id);
 
     List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate);
+
+    List<ChecklistTemplate> getAllByAuthorEmail(String authorEmail);
 }
