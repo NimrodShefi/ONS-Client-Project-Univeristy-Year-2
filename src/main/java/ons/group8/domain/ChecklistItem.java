@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class ChecklistItem {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @ManyToOne
     @JoinColumn(name="personal_checklist_id")
     private PersonalChecklist personalChecklist;

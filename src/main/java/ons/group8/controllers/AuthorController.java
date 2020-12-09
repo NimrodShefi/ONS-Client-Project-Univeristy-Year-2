@@ -1,7 +1,7 @@
 package ons.group8.controllers;
 
 import ons.group8.controllers.forms.AssignedToForm;
-import ons.group8.controllers.forms.ChecklistForm;
+import ons.group8.controllers.forms.ChecklistTemplateForm;
 import ons.group8.controllers.forms.TopicForm;
 import ons.group8.domain.*;
 import ons.group8.services.AuthorService;
@@ -41,8 +41,8 @@ public class AuthorController {
 
     @ModelAttribute("checklistForm")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public ChecklistForm getChecklistForm() {
-        return new ChecklistForm();
+    public ChecklistTemplateForm getChecklistForm() {
+        return new ChecklistTemplateForm();
     }
 
     @GetMapping("view-checklist-templates")
@@ -77,14 +77,14 @@ public class AuthorController {
 
     @GetMapping("checklist-title-and-description")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String startChecklistForm(Model model, @ModelAttribute("checklistForm") ChecklistForm checklistForm) {
-        model.addAttribute("checklist", checklistForm);
+    public String startChecklistForm(Model model, @ModelAttribute("checklistForm") ChecklistTemplateForm checklistTemplateForm) {
+        model.addAttribute("checklist", checklistTemplateForm);
         return "checklist/checklist-title-and-description";
     }
 
     @PostMapping("checklist-title-and-description")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String setTitleAndDescription(@ModelAttribute("checklistForm") ChecklistForm checklistForm, @Valid ChecklistForm formValues, BindingResult bindings, Model model) {
+    public String setTitleAndDescription(@ModelAttribute("checklistForm") ChecklistTemplateForm checklistTemplateForm, @Valid ChecklistTemplateForm formValues, BindingResult bindings, Model model) {
         if (bindings.hasErrors()) {
             System.out.println("Errors:" + bindings.getFieldErrorCount());
             for (ObjectError oe : bindings.getAllErrors()) {
@@ -92,8 +92,8 @@ public class AuthorController {
             }
             return "checklist/checklist-title-and-description";
         } else {
-            checklistForm.setTitle(formValues.getTitle());
-            checklistForm.setTitleDescription(formValues.getTitleDescription());
+            checklistTemplateForm.setTitle(formValues.getTitle());
+            checklistTemplateForm.setTitleDescription(formValues.getTitleDescription());
             model.addAttribute("title", formValues.getTitle());
             model.addAttribute("titleDescription", formValues.getTitleDescription());
             model.addAttribute("topicForm", new TopicForm());
@@ -103,7 +103,7 @@ public class AuthorController {
 
     @PostMapping("set-topic")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String setTopic(@ModelAttribute("checklistForm") ChecklistForm checklistForm, @Valid TopicForm topic, BindingResult bindings, Model model) {
+    public String setTopic(@ModelAttribute("checklistForm") ChecklistTemplateForm checklistTemplateForm, @Valid TopicForm topic, BindingResult bindings, Model model) {
         if (bindings.hasErrors()) {
             System.out.println("Errors:" + bindings.getFieldErrorCount());
             for (ObjectError oe : bindings.getAllErrors()) {
@@ -115,9 +115,9 @@ public class AuthorController {
             for (String item : topic.getItems()) {
                 items.add(new ChecklistTemplateItem(item));
             }
-            checklistForm.getTopics().add(new Topic(topic.getTopicTitle(), topic.getTopicDescription(), items));
-            model.addAttribute("title", checklistForm.getTitle());
-            model.addAttribute("titleDescription", checklistForm.getTitleDescription());
+            checklistTemplateForm.getTopics().add(new Topic(topic.getTopicTitle(), topic.getTopicDescription(), items));
+            model.addAttribute("title", checklistTemplateForm.getTitle());
+            model.addAttribute("titleDescription", checklistTemplateForm.getTitleDescription());
             if ("true".equals(topic.getAnotherTopic())) {
                 model.addAttribute("topicForm", new TopicForm());
                 return "checklist/checklist-topic";
@@ -131,7 +131,7 @@ public class AuthorController {
 
     @PostMapping("assign-to")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String setUsersToChecklist(@ModelAttribute("checklistForm") ChecklistForm checklistForm, @Valid AssignedToForm formValues, BindingResult bindings, Model model) {
+    public String setUsersToChecklist(@ModelAttribute("checklistForm") ChecklistTemplateForm checklistTemplateForm, @Valid AssignedToForm formValues, BindingResult bindings, Model model) {
         if (bindings.hasErrors()) {
             System.out.println("Errors:" + bindings.getFieldErrorCount());
             for (ObjectError oe : bindings.getAllErrors()) {
@@ -143,12 +143,12 @@ public class AuthorController {
             for (Long userId : formValues.getId()) {
                 users.add(userService.findById(userId).get());
             }
-            checklistForm.setAssignedTo(users);
-            checklistForm.setDeadline(formValues.getDeadline());
-            System.out.println(checklistForm);
+            checklistTemplateForm.setAssignedTo(users);
+            checklistTemplateForm.setDeadline(formValues.getDeadline());
+            System.out.println(checklistTemplateForm);
             try {
-                authorService.save(new ChecklistCreationEvent(checklistForm.getTitle(), checklistForm.getTitleDescription(),
-                        checklistForm.getTopics(), checklistForm.getAssignedTo(), checklistForm.getDeadline(), userService.getLoggedInUserId()));
+                authorService.save(new ChecklistCreationEvent(checklistTemplateForm.getTitle(), checklistTemplateForm.getTitleDescription(),
+                        checklistTemplateForm.getTopics(), checklistTemplateForm.getAssignedTo(), checklistTemplateForm.getDeadline(), userService.getLoggedInUserId()));
                 model.addAttribute("title", "Process Completed");
                 model.addAttribute("message", "The checklist is created and saved");
                 return "message";

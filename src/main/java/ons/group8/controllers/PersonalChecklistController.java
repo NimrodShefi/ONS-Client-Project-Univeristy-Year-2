@@ -1,5 +1,6 @@
 package ons.group8.controllers;
 
+import ons.group8.controllers.forms.ChecklistForm;
 import ons.group8.domain.*;
 import ons.group8.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 import java.util.List;
@@ -46,13 +49,32 @@ public class PersonalChecklistController {
             logger.info(String.format("Found personal checklist with id: %d", pChecklistId));
             if (personalChecklistService.isUserAssignedToPersonalChecklist(personalChecklist.get(), principal.getName())) {
                 model.addAttribute("personalChecklist", personalChecklist.get());
+                model.addAttribute("checklistForm", new ChecklistForm(personalChecklistService.getCheckedItemIds(personalChecklist.get())));
                 return "viewChecklistStarter";
             } else {
                 logger.error(String.format("User %s is not authorised to access personal checklist with id: %d", principal.getName(), pChecklistId));
                 throw new AccessDeniedException("You are not authorised to access this checklist");
             }
         } else {
-            logger.error(String.format("Could not find resource for URL: %s%d", "personal-checklist/", pChecklistId));
+            logger.error(String.format("Could not find personal checklist with id: %d", pChecklistId));
+            model.addAttribute("title", "404 - Not found");
+            model.addAttribute("message", "The requested checklist was not found.");
+            return "message";
+        }
+    }
+
+    @PostMapping("/personal-checklist/{id}/save")
+    public String saveChecklist(@PathVariable("id") Long pChecklistId, @ModelAttribute("checklistForm") ChecklistForm checklistForm, Model model) {
+        logger.info(String.format("Saving personal checklist with id %d", pChecklistId));
+        Optional<PersonalChecklist> personalChecklist = personalChecklistService.getById(pChecklistId);
+        if (personalChecklist.isPresent()){
+            logger.info(String.format("Found personal checklist with id: %d", pChecklistId));
+            personalChecklistService.updateCheckedItems(personalChecklist.get(), checklistForm.getCheckedItemIds());
+            model.addAttribute("personalChecklist", personalChecklist.get());
+            model.addAttribute("checklistForm", checklistForm);
+            return "viewChecklistStarter";
+        } else {
+            logger.error(String.format("Could not find personal checklist with id: %d", pChecklistId));
             model.addAttribute("title", "404 - Not found");
             model.addAttribute("message", "The requested checklist was not found.");
             return "message";
