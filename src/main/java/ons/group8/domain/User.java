@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,7 +43,7 @@ public class User {
 
     private int failedAttempt;
 
-    private Date lockTime;
+    private LocalDateTime lockTime;
 
     private boolean enabled;
 

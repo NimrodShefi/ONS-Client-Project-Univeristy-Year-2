@@ -17,8 +17,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Autowired
     private LockOutService lockOutService;
+    @Autowired
     private UserService userService;
-
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -30,6 +30,4 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         }
         super.onAuthenticationSuccess(request, response, authentication);
     }
-
-
 }
