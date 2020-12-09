@@ -48,7 +48,7 @@ public class AuthorController {
     @GetMapping("view-checklist-templates")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String viewChecklistTemplates(Principal principal, Model model){
-        logger.info(String.format("Getting checklist template list for author: %s", principal.getName()));
+        logger.debug("Getting checklist template list for author: " + principal.getName());
         List<ChecklistTemplate> checklistTemplates = authorService.getAllByAuthorEmail(principal.getName());
         model.addAttribute("checklistTemplates", checklistTemplates);
         return "checklist/view-all-checklist-templates";
