@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +38,14 @@ public class User {
     @NotEmpty
     private String password;
 
+    private boolean accountNonLocked;
+
+    private int failedAttempt;
+
+    private Date lockTime;
+
+    private boolean enabled;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
@@ -46,7 +55,7 @@ public class User {
 
 
     public User(String email, String password, String firstName, String lastName) {
-        this(null, email, firstName, lastName, password, new HashSet<>());
+        this(null, email, firstName, lastName, password, true, 0, null , true, new HashSet<>());
     }
 
     public void addRole(Role role) {
