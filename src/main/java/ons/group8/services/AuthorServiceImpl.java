@@ -28,16 +28,6 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public User findUserByEmail(String email){
-        return userRepository.findUserByEmail(email);
-    }
-
-    @Override
-    public User findUserById(Long userId){
-        return userRepository.findUserById(userId);
-    }
-
-    @Override
     public void save(ChecklistCreationEvent data) throws Exception {
         System.out.println(data);
         try {
@@ -66,5 +56,10 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate){
         return personalChecklistRepository.getAllByChecklistTemplate(checklistTemplate);
+    }
+
+    @Override
+    public List<ChecklistTemplate> getAllByAuthorEmail(String authorEmail) {
+        return checklistTemplateRepository.findAllByAuthor_Email(authorEmail);
     }
 }
