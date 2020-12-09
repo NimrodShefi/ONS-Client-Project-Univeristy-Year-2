@@ -37,18 +37,16 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                             + " It will be unlocked after 1 hour.");
                 }
             } else if (!user.isAccountNonLocked()) {
-                if (lockOutService.unlockWhenTimeExpired(user)) {
-                    exception = new LockedException("Your account has been unlocked. Please try to login again.");
-                }else {
+                if (!lockOutService.unlockWhenTimeExpired(user)) {
                     exception = new LockedException("Your account has been locked due to 3 failed attempts.");
                 }
+
             }
+
 
         }
         super.setDefaultFailureUrl("/login?error");
         super.onAuthenticationFailure(request, response, exception);
-//        String redirectUrl = request.getContextPath() + "/login?error";
-//        response.sendRedirect(redirectUrl);
 
     }
 

@@ -3,9 +3,13 @@ package ons.group8.services;
 import ons.group8.domain.User;
 import ons.group8.repositories.UserRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,23 +32,38 @@ public class LockOutService {
 
     public void lock(User user) {
         user.setAccountNonLocked(false);
-        user.setLockTime(new Date());
-
+        LocalDateTime localDate = LocalDateTime.now();
+        user.setLockTime(localDate);
         userRepositoryJPA.save(user);
     }
 
     public boolean unlockWhenTimeExpired(User user) {
-        long lockTimeInMillis = user.getLockTime().getTime();
+        long lockTimeInMillis = user.getLockTime().getMinute();
         long currentTimeInMillis = System.currentTimeMillis();
-
         if (lockTimeInMillis + LOCK_TIME_DURATION < currentTimeInMillis) {
-            user.setAccountNonLocked(true);
-            user.setLockTime(null);
-            user.setFailedAttempt(0);
-            userRepositoryJPA.save(user);
             return true;
         }
-
         return false;
+    }
+
+    @Scheduled(fixedRate = 300000)
+    public void checkLockedAccount() {
+        List<User> listUsers = userRepositoryJPA.findAll();
+        LocalDateTime localDate = LocalDateTime.now();
+        LocalDate localDate1 = localDate.toLocalDate();
+        for (User element : listUsers) {
+            if (element.getLockTime() != null) {
+                LocalDate localDate2 = element.getLockTime().toLocalDate();
+                if (localDate1.isEqual(localDate2)
+                        && (element.getLockTime().truncatedTo(ChronoUnit.DAYS).isEqual(localDate.truncatedTo(ChronoUnit.DAYS)))
+                        && (element.getLockTime().truncatedTo(ChronoUnit.MINUTES).plusMinutes(LOCK_TIME_DURATION).isEqual(localDate.truncatedTo(ChronoUnit.MINUTES)))
+                        || (localDate1.isEqual(localDate2) && (element.getLockTime().truncatedTo(ChronoUnit.MINUTES).plusMinutes(LOCK_TIME_DURATION).MAX.isAfter(localDate.truncatedTo(ChronoUnit.MINUTES))))) {
+                    element.setAccountNonLocked(true);
+                    element.setLockTime(null);
+                    element.setFailedAttempt(0);
+                    userRepositoryJPA.save(element);
+                }
+            }
+        }
     }
 }
