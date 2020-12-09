@@ -12,7 +12,7 @@ import java.util.Date;
 public class LockOutService {
 
     public static final int MAX_FAILED_ATTEMPTS = 3;
-    private static final long LOCK_TIME_DURATION = (2 / 60) * 60 * 60 * 1000;
+    private static final long LOCK_TIME_DURATION = 1 * 60 * 60 * 1000;
 
     @Autowired
     private UserRepositoryJPA userRepositoryJPA;
