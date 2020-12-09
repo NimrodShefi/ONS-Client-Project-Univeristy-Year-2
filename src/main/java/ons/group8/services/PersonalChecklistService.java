@@ -13,4 +13,8 @@ public interface PersonalChecklistService {
 
     boolean isUserAssignedToPersonalChecklist(PersonalChecklist personalChecklist, String email);
 
+    List<Long> getCheckedItemIds(PersonalChecklist personalChecklist);
+
+    void updateCheckedItems(PersonalChecklist personalChecklist, List<Long> checkedItemIds);
+
 }

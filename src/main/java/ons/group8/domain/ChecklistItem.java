@@ -13,13 +13,15 @@ import javax.persistence.*;
 public class ChecklistItem {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    long id;
+    private Long id;
     @ManyToOne
     @JoinColumn(name="personal_checklist_id")
     private PersonalChecklist personalChecklist;
     @ManyToOne
     @JoinColumn(name="checklist_template_item_id")
     private ChecklistTemplateItem checklistTemplateItem;
+    @Column(name="checked")
+    private boolean isChecked;
 
     public ChecklistItem(PersonalChecklist personalChecklist, ChecklistTemplateItem checklistTemplateItem) {
         this.personalChecklist = personalChecklist;
