@@ -41,19 +41,13 @@ public class PersonalChecklistServiceImpl implements PersonalChecklistService {
     }
 
     public void updateCheckedItems(PersonalChecklist personalChecklist, List<Long> checkedItemIds) {
-        for (Long itemId : checkedItemIds) {
-            ChecklistItem item = getChecklistItemWithId(itemId, personalChecklist);
-            item.setChecked(true);
+        for (ChecklistItem item : personalChecklist.getChecklistItems()) {
+            if (checkedItemIds.contains(item.getId())) {
+                item.setChecked(true);
+            } else {
+                item.setChecked(false);
+            }
         }
         personalChecklistRepository.save(personalChecklist);
     }
-
-    public ChecklistItem getChecklistItemWithId(Long itemId, PersonalChecklist personalChecklist) {
-        return personalChecklist.getChecklistItems()
-                .stream()
-                .filter(i -> i.getId().equals(itemId))
-                .findFirst()
-                .orElse(null);
-    }
-
 }
