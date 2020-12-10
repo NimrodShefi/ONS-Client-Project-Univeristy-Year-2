@@ -36,11 +36,11 @@ public class GenerateModel {
 
         // create the basic model (the stuff we can't get from the code)
         SoftwareSystem checklistApp = model.addSoftwareSystem("ONS Onboarding", "Online checklist system");
-
         Person user = model.addPerson("User", "A person who is assigned checklists to complete");
         Person author = model.addPerson("Author", "A person who is creates checklist templates to assign to users");
         Person admin = model.addPerson("Admin", "A person who is responsible for managing users of the system");
 
+        //set a relationship between the user(s) and the system
         user.uses(checklistApp, "Uses");
         author.uses(checklistApp, "Uses");
         admin.uses(checklistApp, "Uses");
@@ -54,7 +54,32 @@ public class GenerateModel {
         author.uses(webApplication, "Uses", "HTTP");
         admin.uses(webApplication, "Uses", "HTTP");
 
+        webApplication.uses(relationalDatabase, "Reads from and writes to", "JPA, port 8443");
 
+        // and now automatically find all Spring @Controller, @Component, @Service and @Repository components
+        ComponentFinder componentFinder = new ComponentFinder(
+                webApplication,
+                "ons.group8",
+                new SpringComponentFinderStrategy(
+                        new ReferencedTypesSupportingTypesStrategy()
+                ));
+
+        componentFinder.findComponents();
+
+        // connect the user to all of the Spring MVC controllers
+        webApplication.getComponents().stream()
+                .filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_MVC_CONTROLLER))
+                .forEach(c -> user.uses(c, "Uses", "HTTP"));
+
+        for (Component c : webApplication.getComponents()) {
+            System.out.println(c.getRelationships());
+        }
+
+        Component cservice = webApplication.getComponentOfType("ons.group8.services.AdminService");
+
+        System.out.println(cservice);
+
+        //create a SystemContext for the system
         ViewSet viewSet = workspace.getViews();
         SystemContextView contextView = viewSet.createSystemContextView(checklistApp, "context", "The System Context diagram for the ONS Checklist system.");
         contextView.addAllSoftwareSystems();
@@ -69,6 +94,26 @@ public class GenerateModel {
         componentView.addAllComponents();
         componentView.addAllPeople();
         componentView.add(relationalDatabase);
+
+        // link the architecture model with the code
+        for (Component component : webApplication.getComponents()) {
+            for (CodeElement codeElement : component.getCode()) {
+                String sourcePath = codeElement.getUrl();
+                if (sourcePath != null) {
+                    codeElement.setUrl(
+                            "https://git.cardiff.ac.uk/c1946094/ons-client-project-group-8/-/tree/master");
+                }
+            }
+        }
+
+        // tag and style some elements
+        checklistApp.addTags("ONS Onboarding");
+        webApplication.getComponents().stream().filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_MVC_CONTROLLER)).forEach(c -> c.addTags("Spring MVC Controller"));
+        webApplication.getComponents().stream().filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_MVC_CONTROLLER)).forEach(c -> c.addTags("Spring REST Controller"));
+
+        webApplication.getComponents().stream().filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_SERVICE)).forEach(c -> c.addTags("Spring Service"));
+        webApplication.getComponents().stream().filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_REPOSITORY)).forEach(c -> c.addTags("Spring Repository"));
+        relationalDatabase.addTags("Database");
 
         StructurizrClient structurizrClient = new StructurizrClient(API_KEY, API_SECRET);
         structurizrClient.putWorkspace(WORKSPACE_ID, workspace);
