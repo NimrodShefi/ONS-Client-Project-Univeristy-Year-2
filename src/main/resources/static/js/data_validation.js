@@ -3,9 +3,9 @@
 
 function ValidateEmail(){
     const email = document.form1.email;
-    const mailformat = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const mailFormat = /^[^\s@<>+*/=!"£$%^&()`¬\\|;:?,#~]+@cardiff.ac.uk/;
 
-    return !!email.value.match(mailformat);
+    return !!email.value.match(mailFormat);
 }
 
 function ValidatePassword() {
@@ -36,11 +36,14 @@ function ValidateData() {
         return true;
     } else {
         if (emailFormat === false){
+            document.getElementById("error").innerText = "There is a problem in the email";
             document.form1.email.focus();
         } else if (passwordFormat === false){
-            document.form1.password.focus();
+            document.getElementById("error").innerText = "There is a problem in the password";
+                document.form1.password.focus();
         } else if (samePasswordInput === false){
-            document.form1.repeatPassword.focus();
+            document.getElementById("error").innerText = "The passwords don't match each other";
+                document.form1.repeatPassword.focus();
         }
 
         document.getElementById("error").style.display="block";

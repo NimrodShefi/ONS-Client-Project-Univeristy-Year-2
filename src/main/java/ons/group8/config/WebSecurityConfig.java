@@ -18,8 +18,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    private MyUserDetailsService myuserDetailsService;
+    private LoginFailureHandler loginFailureHandler;
+    private LoginSuccessHandler loginSuccessHandler;
+
     @Autowired
-    private MyUserDetailsService userDetailsService;
+    public WebSecurityConfig(MyUserDetailsService myUserDetailsService, LoginSuccessHandler loginSuccessHandler, LoginFailureHandler loginFailureHandler) {
+        this.myuserDetailsService = myUserDetailsService;
+        this.loginFailureHandler = loginFailureHandler;
+        this.loginSuccessHandler = loginSuccessHandler;
+    }
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
@@ -29,13 +38,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+
+
                 .authorizeRequests()
-                .antMatchers("/user/add-user", "/user/create-user").permitAll()
+                .antMatchers("/sign-up/**", "/login**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .failureUrl("/login-failed")
+                .failureHandler(loginFailureHandler)
+                .successHandler(loginSuccessHandler)
                 .defaultSuccessUrl("/").permitAll()
                 .and()
                 .logout().logoutUrl("/logout").permitAll()
@@ -44,12 +57,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.httpBasic().disable();
         http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
     }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(myuserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

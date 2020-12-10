@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head">
+    <title>View Checklist</title>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+    <div th:object="${personalChecklist}">
+
+        <h1 th:text="*{checklistTemplate.name}"/>
+        <div th:text="*{checklistTemplate.description}"/>
+
+        <form th:action="@{/personal-checklist/{id}/save (id=${personalChecklist.id})}" th:method="post" th:object="${checklistForm}">
+            <div th:each="topic : ${personalChecklist.checklistTemplate.topics}">
+                <h2 th:text="${topic.name}"/>
+                <div th:text="${topic.description}"/>
+
+                <table style="width:50%">
+                    <tr th:each="item: ${personalChecklist.checklistItems}">
+                        <div th:if="${item.checklistTemplateItem.topic.id} == ${topic.id}">
+                            <td>
+<!--                                <input type="checkbox" th:id="${item.id}" th:checked="${item.isChecked()}">-->
+                                <input type="checkbox" th:field="${checklistForm.checkedItemIds}" th:value="${item.id}"/>
+
+                            </td>
+                            <td th:text="${item.checklistTemplateItem.description}"/>
+                        </div>
+                    </tr>
+                </table>
+            </div>
+            <button type="submit">Save</button>
+        </form>
+
+
+    </div>
+</body>
+</html>

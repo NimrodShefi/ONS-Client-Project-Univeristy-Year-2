@@ -6,7 +6,6 @@ import javax.validation.constraints.Email;
 
 @Value
 public class UserCreationEvent {
-    @Email
     String email;
     String firstName;
     String lastName;

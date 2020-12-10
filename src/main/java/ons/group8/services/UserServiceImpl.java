@@ -4,21 +4,27 @@ import ons.group8.domain.Role;
 import ons.group8.domain.User;
 import ons.group8.repositories.RoleRepositoryJPA;
 import ons.group8.repositories.UserRepositoryJPA;
+import ons.group8.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
-
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepositoryJPA userRepository;
     private final RoleRepositoryJPA roleRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder; //got password encoder from: https://www.baeldung.com/spring-security-registration-password-encoding-bcrypt
 
@@ -45,6 +51,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    private boolean emailValidation(String email) {
+        Matcher matcher = Pattern.compile("^[^\\s@<>+*/=!\"£$%^&()`¬\\\\|;:?,#~]+@cardiff.ac.uk").matcher(email);
+
+        return matcher.find();
+    }
+
     private boolean passwordValidation(String password) {
         Matcher matcher1 = Pattern.compile(".*[a-z].*").matcher(password); // must contain lower-case
         Matcher matcher2 = Pattern.compile(".*[A-Z.].*").matcher(password); // must contain upper-case
@@ -60,14 +72,40 @@ public class UserServiceImpl implements UserService {
         return password.equals(repeatPassword);
     }
 
-    private boolean validateData(UserCreationEvent user) throws DataFormatException {
+    private void validateData(UserCreationEvent user) throws DataFormatException {
+        boolean emailFormat = emailValidation(user.getEmail());
         boolean passwordFormat = passwordValidation(user.getPassword());
         boolean samePassword = samePasswordValidation(user.getPassword(), user.getRepeatPassword());
 
-        if (passwordFormat && samePassword) {
-            return true;
-        } else {
-            throw new DataFormatException();
+        if (!(passwordFormat && samePassword && emailFormat)) {
+            if (!passwordFormat){
+                throw new DataFormatException("Password Format is wrong");
+            } else if (!samePassword){
+                throw new DataFormatException("Passwords don't match");
+            } else if (!emailFormat){
+                throw new DataFormatException("Email Format is wrong");
+            }
         }
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    public Optional<User> findById(Long userId) {
+        return userRepository.findById(userId);
+    }
+
+    //getting the user id of the logged in person
+    public User getLoggedInUserId(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails){
+            username = ((UserDetails)principal).getUsername();
+        }else {
+            username = principal.toString();
+        }
+        return findByEmail(username);
     }
 }

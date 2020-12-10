@@ -25,11 +25,14 @@
                 Password: <input type="password" name="password"/>
             </label>
         </div>
+        <div th:if="${param.error}">
+            <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+        </div>
         <div>
             <input type="submit" value="Sign In"/>
         </div>
     </form>
-    <a th:href="@{/user/add-user}">Register</a>
+    <a th:href="@{/sign-up/add-user}">Register</a>
 </div>
 </body>
 </html>

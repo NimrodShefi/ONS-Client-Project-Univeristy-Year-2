@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/sign-up")
 public class SignupController {
 
     private final UserService userService;
@@ -38,12 +38,13 @@ public class SignupController {
         } else {
             try {
                 userService.save(new UserCreationEvent(newUser.getEmail(), newUser.getFirstName(), newUser.getLastName(), newUser.getPassword(), newUser.getRepeatPassword()));
+                model.addAttribute("title", "User Created");
+                model.addAttribute("message", newUser.getFirstName() + " " + newUser.getLastName() +" Your username is :" + newUser.getEmail());
+                return "message";
             } catch (Exception e) {
-                model.addAttribute("error", "There is a problem in the form");
+                model.addAttribute("error", e.toString().split(" ",2)[1]);
                 return "add-user";
             }
         }
-
-        return "redirect:/";
     }
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header :: head">
+    <title>My Checklist Templates</title>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+    <h1>My Checklist Templates</h1>
+    <div>
+        <ul th:each="checklist : ${checklistTemplates}">
+            <li>
+                <a th:id="@{checklistTemplateLink{id} (id=${checklist.id})}"
+                   th:href="@{/author/view-checklist-template/{id} (id=${checklist.id})}">
+                    <span th:text="${checklist.name}"></span>
+                </a>
+            </li>
+        </ul>
+        <a href="checklist-title-and-description">Create Blank Checklist</a>
+    </div>
+</body>
+</html>
