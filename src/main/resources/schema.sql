@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS CHECKLIST_ITEM(
      FOREIGN KEY (checklist_template_item_id) REFERENCES CHECKLIST_TEMPLATE_ITEM(id))
      ENGINE = InnoDB;
 
-CREATE USER 'onsUser'@'localhost' IDENTIFIED BY '2Nng2?9P6q47QJLAL=^3';
+CREATE USER IF NOT EXISTS 'onsUser'@'localhost' IDENTIFIED BY '2Nng2?9P6q47QJLAL=^3';
 
 grant usage on ons.* to 'onsUser'@'localhost';
 
