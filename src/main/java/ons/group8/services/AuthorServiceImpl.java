@@ -33,37 +33,40 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional(rollbackFor = Exception.class) // if something fails in this process, no data will be saved to the DB
     public void save(ChecklistCreationEvent data) throws Exception {
         try {
-            List<ChecklistItem> items = new ArrayList<>();
             ChecklistTemplate checklistTemplate = new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription(), data.getTopics());
             for (Topic topic : checklistTemplate.getTopics()) {
                 topic.setChecklistTemplate(checklistTemplate);
                 for (ChecklistTemplateItem item : topic.getItems()) {
                     item.setTopic(topic);
-                    items.add(new ChecklistItem(item, false));
                 }
             }
             ChecklistTemplate checklistTemplate1 = checklistTemplateRepository.save(checklistTemplate);
             LocalDate dateAssigned = LocalDate.now();
             for (User user : data.getAssignedTo()) {
-                List<ChecklistItem> itemsCopy = items;
-                PersonalChecklist personalChecklist = new PersonalChecklist(user, checklistTemplate1, dateAssigned, itemsCopy);
+                List<ChecklistItem> items = new ArrayList<>();
+                for (Topic topic : checklistTemplate1.getTopics()) {
+                    for (ChecklistTemplateItem item : topic.getItems()) {
+                        items.add(new ChecklistItem(item, false));
+                    }
+                }
+                PersonalChecklist personalChecklist = new PersonalChecklist(user, checklistTemplate1, dateAssigned, items);
                 for (ChecklistItem item : personalChecklist.getChecklistItems()) {
                     item.setPersonalChecklist(personalChecklist);
                 }
                 personalChecklistRepository.save(personalChecklist);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new Exception();
         }
     }
 
     @Override
-    public ChecklistTemplate getChecklistTemplateById(Long id){
+    public ChecklistTemplate getChecklistTemplateById(Long id) {
         return checklistTemplateRepository.getChecklistTemplateById(id);
     }
 
     @Override
-    public List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate){
+    public List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate) {
         return personalChecklistRepository.getAllByChecklistTemplate(checklistTemplate);
     }
 
