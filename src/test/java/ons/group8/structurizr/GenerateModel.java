@@ -66,19 +66,22 @@ public class GenerateModel {
 
         componentFinder.findComponents();
 
-        // connect the user to all of the Spring MVC controllers
-        webApplication.getComponents().stream()
-                .filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_MVC_CONTROLLER))
-                .forEach(c -> user.uses(c, "Uses", "HTTP"));
+//        webApplication.getComponents().stream()
+//                .filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_MVC_CONTROLLER))
+//                .filter(c -> c.getName().equals("AdminController"))
+//                .forEach(c -> admin.uses(c, "Uses", "HTTP"));
+//
 
-        for (Component c : webApplication.getComponents()) {
-            System.out.println(c.getRelationships());
-        }
+        Component adminController = webApplication.getComponentOfType("ons.group8.controllers.AdminController");
+        admin.uses(adminController, "Uses", "HTTP");
 
-        Component cservice = webApplication.getComponentOfType("ons.group8.services.AdminService");
+        Component authorController = webApplication.getComponentOfType("ons.group8.controllers.AuthorController");
+        author.uses(authorController, "Uses", "HTTP");
 
-        System.out.println(cservice);
+        Component personalChecklistController = webApplication.getComponentOfType("ons.group8.controllers.PersonalChecklistController");
+        user.uses(personalChecklistController, "Uses", "HTTP");
 
+        
         //create a SystemContext for the system
         ViewSet viewSet = workspace.getViews();
         SystemContextView contextView = viewSet.createSystemContextView(checklistApp, "context", "The System Context diagram for the ONS Checklist system.");
