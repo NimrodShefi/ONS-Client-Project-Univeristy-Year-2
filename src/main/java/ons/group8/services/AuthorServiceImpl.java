@@ -25,8 +25,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findUsersByRoles(Role role) {
+        return userRepository.findUsersByRoles(role);
     }
 
     @Override
