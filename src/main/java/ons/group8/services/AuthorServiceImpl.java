@@ -45,7 +45,8 @@ public class AuthorServiceImpl implements AuthorService {
             ChecklistTemplate checklistTemplate1 = checklistTemplateRepository.save(checklistTemplate);
             LocalDate dateAssigned = LocalDate.now();
             for (User user : data.getAssignedTo()) {
-                PersonalChecklist personalChecklist = new PersonalChecklist(user, checklistTemplate1, dateAssigned, items);
+                List<ChecklistItem> itemsCopy = items;
+                PersonalChecklist personalChecklist = new PersonalChecklist(user, checklistTemplate1, dateAssigned, itemsCopy);
                 for (ChecklistItem item : personalChecklist.getChecklistItems()) {
                     item.setPersonalChecklist(personalChecklist);
                 }
