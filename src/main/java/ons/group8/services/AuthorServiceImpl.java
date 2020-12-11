@@ -4,8 +4,10 @@ import ons.group8.domain.*;
 import ons.group8.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,20 +30,26 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class) // if something fails in this process, no data will be saved to the DB
     public void save(ChecklistCreationEvent data) throws Exception {
-        System.out.println(data);
         try {
+            List<ChecklistItem> items = new ArrayList<>();
             ChecklistTemplate checklistTemplate = new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription(), data.getTopics());
             for (Topic topic : checklistTemplate.getTopics()) {
                 topic.setChecklistTemplate(checklistTemplate);
                 for (ChecklistTemplateItem item : topic.getItems()) {
                     item.setTopic(topic);
+                    items.add(new ChecklistItem(item, false));
                 }
             }
             ChecklistTemplate checklistTemplate1 = checklistTemplateRepository.save(checklistTemplate);
             LocalDate dateAssigned = LocalDate.now();
             for (User user : data.getAssignedTo()) {
-                personalChecklistRepository.save(new PersonalChecklist(user, checklistTemplate1, dateAssigned));
+                PersonalChecklist personalChecklist = new PersonalChecklist(user, checklistTemplate1, dateAssigned, items);
+                for (ChecklistItem item : personalChecklist.getChecklistItems()) {
+                    item.setPersonalChecklist(personalChecklist);
+                }
+                personalChecklistRepository.save(personalChecklist);
             }
         } catch (Exception e){
             throw new Exception();

@@ -27,4 +27,8 @@ public class ChecklistItem {
         this.personalChecklist = personalChecklist;
         this.checklistTemplateItem = checklistTemplateItem;
     }
+
+    public ChecklistItem(ChecklistTemplateItem checklistTemplateItem, boolean isChecked){
+        this(null, null, checklistTemplateItem, isChecked);
+    }
 }
