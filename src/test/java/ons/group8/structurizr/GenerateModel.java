@@ -68,23 +68,23 @@ public class GenerateModel {
 
 
         Component adminController = webApplication.getComponentOfType("ons.group8.controllers.AdminController");
-        admin.uses(adminController, "Uses", "HTML");
+        admin.uses(adminController, "Uses", "HTTP");
 
         Component authorController = webApplication.getComponentOfType("ons.group8.controllers.AuthorController");
-        author.uses(authorController, "Uses", "HTML");
+        author.uses(authorController, "Uses", "HTTP");
 
         Component personalChecklistController = webApplication.getComponentOfType("ons.group8.controllers.PersonalChecklistController");
-        user.uses(personalChecklistController, "Uses", "HTML");
+        user.uses(personalChecklistController, "Uses", "HTTP");
 
         Component loginController = webApplication.getComponentOfType("ons.group8.controllers.LoginController");
-        user.uses(loginController, "Uses", "HTML");
-        author.uses(loginController, "Uses", "HTML");
-        admin.uses(loginController, "Uses", "HTML");
+        user.uses(loginController, "Uses", "HTTP");
+        author.uses(loginController, "Uses", "HTTP");
+        admin.uses(loginController, "Uses", "HTTP");
 
         Component signupController = webApplication.getComponentOfType("ons.group8.controllers.SignupController");
-        user.uses(signupController, "Uses", "HTML");
-        author.uses(signupController, "Uses", "HTML");
-        admin.uses(signupController, "Uses", "HTML");
+        user.uses(signupController, "Uses", "HTTP");
+        author.uses(signupController, "Uses", "HTTP");
+        admin.uses(signupController, "Uses", "HTTP");
 
         // connect all of the repository components to the relational database
         webApplication.getComponents().stream()
