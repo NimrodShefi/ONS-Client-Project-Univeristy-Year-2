@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,6 +22,7 @@ public class Role {
     private Long id;
 
     @NotNull @Size(max = 20)
+    @NotBlank(message="Name Role field is mandatory")
     @NotEmpty
     private String name;
 

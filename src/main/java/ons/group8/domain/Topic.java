@@ -4,6 +4,7 @@ package ons.group8.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -22,6 +23,7 @@ public class Topic {
     @JoinColumn(name="checklist_template_id")
     private ChecklistTemplate checklistTemplate;
 
+    @NotBlank(message="Topic name field is mandatory")
     @Column(name="topic_name")
     private String name;
 

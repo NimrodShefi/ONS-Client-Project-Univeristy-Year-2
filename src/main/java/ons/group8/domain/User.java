@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -21,23 +22,28 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message="Email field is mandatory")
     @NotNull
     @NotEmpty
     private String email;
 
+    @NotBlank(message="First Name field is mandatory")
     @NotNull
     @NotEmpty
     private String firstName;
 
+    @NotBlank(message="Last name field is manadatory")
     @NotNull
     @NotEmpty
     private String lastName;
 
+    @NotBlank(message="Password field is mandatory")
     @NotNull
     @NotEmpty
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL fetch = FetchType.EAGER)
+    @NotBlank(message="User role field is mandatory")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
