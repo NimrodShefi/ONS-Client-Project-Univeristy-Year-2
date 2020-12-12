@@ -45,9 +45,16 @@ public class AdminController {
 
     @GetMapping("user-roles")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getList(Model model){
-        model.addAttribute("users", theAdminService.findAll());
-        return "user-roles";
+    public String getList(@RequestParam(value = "firstName", required = false) String searchName,Model model) {
+        if (searchName == null ) {
+            model.addAttribute("users", theAdminService.findAll());
+            return "user-roles";
+        } else {
+
+            Set<User> users = theAdminService.findUsersByFirstName(searchName);
+            model.addAttribute("users", users);
+            return "user-roles";
+        }
     }
 
 
