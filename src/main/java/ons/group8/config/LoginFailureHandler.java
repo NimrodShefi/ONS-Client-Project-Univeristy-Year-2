@@ -34,7 +34,7 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                 } else {
                     lockOutService.lock(user);
                     exception = new LockedException("Your account has been locked due to 3 failed attempts."
-                            + " It will be unlocked after 1 hour.");
+                            + " It will be unlocked after 5 min.");
                 }
             } else if (!user.isAccountNonLocked()) {
                 if (!lockOutService.unlockWhenTimeExpired(user)) {
