@@ -91,6 +91,11 @@ public class GenerateModel {
         author.uses(signupController, "Uses", "HTML");
         admin.uses(signupController, "Uses", "HTML");
 
+        // connect all of the repository components to the relational database
+        webApplication.getComponents().stream()
+                .filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_REPOSITORY))
+                .forEach(c -> c.uses(relationalDatabase, "Reads from and writes to", "JPA"));
+
         //create a SystemContext for the system
         ViewSet viewSet = workspace.getViews();
         SystemContextView contextView = viewSet.createSystemContextView(checklistApp, "context", "The System Context diagram for the ONS Checklist system.");
