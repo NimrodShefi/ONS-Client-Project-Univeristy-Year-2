@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
 <head>
     <meta charset="UTF-8">
     <title>ONS Onboarding</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
 <div>
     <h1>Please Login</h1>
 
@@ -15,6 +17,9 @@
         <div th:if="${param.logout}">
             You have been logged out.
         </div>
+        <div th:if="${param.error}">
+            <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+        </div>
         <div>
             <label>
                 Email : <input type="text" name="username"/>
@@ -24,9 +29,6 @@
             <label>
                 Password: <input type="password" name="password"/>
             </label>
-        </div>
-        <div th:if="${param.error}">
-            <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
         </div>
         <div>
             <input type="submit" value="Sign In"/>

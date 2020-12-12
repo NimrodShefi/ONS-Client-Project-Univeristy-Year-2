@@ -22,7 +22,7 @@
                 <li sec:authorize="hasRole('ROLE_AUTHOR')" th:classappend="${#request.requestURI.equals('/author/user-roles') ? 'active':''}"><a href="/author/view-checklist-templates">My Checklist Templates</a></li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#request.requestURI.equals('/admin/user-roles') ? 'active':''}"><a href="/admin/user-roles">User Management</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" sec:authorize="!isAnonymous()">
                 <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
         </div>
@@ -30,5 +30,3 @@
 </header>
 </body>
 </html>
-
-
