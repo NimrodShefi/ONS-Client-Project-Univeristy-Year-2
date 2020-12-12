@@ -41,6 +41,8 @@ public class AdminController {
         userService = aUserService;
     }
 
+
+
     @GetMapping("user-roles")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getList(Model model){
