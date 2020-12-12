@@ -73,15 +73,24 @@ public class GenerateModel {
 //
 
         Component adminController = webApplication.getComponentOfType("ons.group8.controllers.AdminController");
-        admin.uses(adminController, "Uses", "HTTP");
+        admin.uses(adminController, "Uses", "HTML");
 
         Component authorController = webApplication.getComponentOfType("ons.group8.controllers.AuthorController");
-        author.uses(authorController, "Uses", "HTTP");
+        author.uses(authorController, "Uses", "HTML");
 
         Component personalChecklistController = webApplication.getComponentOfType("ons.group8.controllers.PersonalChecklistController");
-        user.uses(personalChecklistController, "Uses", "HTTP");
+        user.uses(personalChecklistController, "Uses", "HTML");
 
-        
+        Component loginController = webApplication.getComponentOfType("ons.group8.controllers.LoginController");
+        user.uses(loginController, "Uses", "HTML");
+        author.uses(loginController, "Uses", "HTML");
+        admin.uses(loginController, "Uses", "HTML");
+
+        Component signupController = webApplication.getComponentOfType("ons.group8.controllers.SignupController");
+        user.uses(signupController, "Uses", "HTML");
+        author.uses(signupController, "Uses", "HTML");
+        admin.uses(signupController, "Uses", "HTML");
+
         //create a SystemContext for the system
         ViewSet viewSet = workspace.getViews();
         SystemContextView contextView = viewSet.createSystemContextView(checklistApp, "context", "The System Context diagram for the ONS Checklist system.");
