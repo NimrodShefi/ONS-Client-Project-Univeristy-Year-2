@@ -4,6 +4,7 @@ import ons.group8.controllers.forms.AssignedToForm;
 import ons.group8.controllers.forms.ChecklistTemplateForm;
 import ons.group8.controllers.forms.TopicForm;
 import ons.group8.domain.*;
+import ons.group8.repositories.RoleRepositoryJPA;
 import ons.group8.services.AuthorService;
 import ons.group8.services.ChecklistCreationEvent;
 import ons.group8.services.UserService;
@@ -13,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -33,10 +36,13 @@ public class AuthorController {
 
     private final UserService userService;
 
+    private final RoleRepositoryJPA roleRepository;
+
     @Autowired
-    public AuthorController(AuthorService authorService, UserService userService) {
+    public AuthorController(AuthorService authorService, UserService userService, RoleRepositoryJPA roleRepository) {
         this.authorService = authorService;
         this.userService = userService;
+        this.roleRepository = roleRepository;
     }
 
     @ModelAttribute("checklistForm")
@@ -49,6 +55,7 @@ public class AuthorController {
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String viewChecklistTemplates(Principal principal, Model model){
         logger.debug("Getting checklist template list for author: " + principal.getName());
+        System.out.println(getChecklistForm());
         List<ChecklistTemplate> checklistTemplates = authorService.getAllByAuthorEmail(principal.getName());
         model.addAttribute("checklistTemplates", checklistTemplates);
         return "checklist/view-all-checklist-templates";
@@ -63,7 +70,6 @@ public class AuthorController {
             try {
                 ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
                 List<PersonalChecklist> personalChecklists = authorService.getAllByChecklistTemplate(checklistTemplate);
-                System.out.println(checklistTemplate.getTopics().get(0).getItems());
                 model.addAttribute("checklist", checklistTemplate);
                 model.addAttribute("users", personalChecklists);
                 return "checklist/view-checklist-template";
@@ -122,7 +128,7 @@ public class AuthorController {
                 model.addAttribute("topicForm", new TopicForm());
                 return "checklist/checklist-topic";
             } else {
-                model.addAttribute("users", authorService.findAll());
+                model.addAttribute("users", authorService.findUsersByRoles(roleRepository.getRoleByName("USER")));
                 model.addAttribute("assignedTo", new AssignedToForm());
                 return "checklist/assign-to";
             }
@@ -131,7 +137,7 @@ public class AuthorController {
 
     @PostMapping("assign-to")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String setUsersToChecklist(@ModelAttribute("checklistForm") ChecklistTemplateForm checklistTemplateForm, @Valid AssignedToForm formValues, BindingResult bindings, Model model) {
+    public String setUsersToChecklist(SessionStatus status, @ModelAttribute("checklistForm") ChecklistTemplateForm checklistTemplateForm, @Valid AssignedToForm formValues, BindingResult bindings, Model model) {
         if (bindings.hasErrors()) {
             System.out.println("Errors:" + bindings.getFieldErrorCount());
             for (ObjectError oe : bindings.getAllErrors()) {
@@ -145,16 +151,16 @@ public class AuthorController {
             }
             checklistTemplateForm.setAssignedTo(users);
             checklistTemplateForm.setDeadline(formValues.getDeadline());
-            System.out.println(checklistTemplateForm);
             try {
                 authorService.save(new ChecklistCreationEvent(checklistTemplateForm.getTitle(), checklistTemplateForm.getTitleDescription(),
                         checklistTemplateForm.getTopics(), checklistTemplateForm.getAssignedTo(), checklistTemplateForm.getDeadline(), userService.getLoggedInUserId()));
                 model.addAttribute("title", "Process Completed");
                 model.addAttribute("message", "The checklist is created and saved");
-                return "message";
             } catch (Exception e) {
                 model.addAttribute("title", "Process Failed!");
                 model.addAttribute("message", "The checklist failed to be created");
+            } finally {
+                status.setComplete(); // This ends the session of ChecklistTemplateForm. Used: https://www.logicbig.com/tutorials/spring-framework/spring-web-mvc/spring-model-attribute-with-session.html
                 return "message";
             }
         }
