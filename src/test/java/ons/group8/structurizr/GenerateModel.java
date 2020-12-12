@@ -66,11 +66,6 @@ public class GenerateModel {
 
         componentFinder.findComponents();
 
-//        webApplication.getComponents().stream()
-//                .filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_MVC_CONTROLLER))
-//                .filter(c -> c.getName().equals("AdminController"))
-//                .forEach(c -> admin.uses(c, "Uses", "HTTP"));
-//
 
         Component adminController = webApplication.getComponentOfType("ons.group8.controllers.AdminController");
         admin.uses(adminController, "Uses", "HTML");
@@ -132,8 +127,19 @@ public class GenerateModel {
         webApplication.getComponents().stream().filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_REPOSITORY)).forEach(c -> c.addTags("Spring Repository"));
         relationalDatabase.addTags("Database");
 
+        Styles styles = viewSet.getConfiguration().getStyles();
+        styles.addElementStyle("ONS Onboarding - Group 8").background("#6CB33E").color("#ffffff");
+        styles.addElementStyle(Tags.PERSON).background("#519823").color("#ffffff").shape(Shape.Person);
+        styles.addElementStyle(Tags.CONTAINER).background("#91D366").color("#ffffff");
+        styles.addElementStyle("Database").shape(Shape.Cylinder);
+
+        styles.addElementStyle("Spring REST Controller").background("#D4FFC0").color("#000000");
+
+        styles.addElementStyle("Spring MVC Controller").background("#D4F3C0").color("#000000");
+        styles.addElementStyle("Spring Service").background("#6CB33E").color("#000000");
+        styles.addElementStyle("Spring Repository").background("#95D46C").color("#000000");
+
         StructurizrClient structurizrClient = new StructurizrClient(API_KEY, API_SECRET);
         structurizrClient.putWorkspace(WORKSPACE_ID, workspace);
-
     }
 }
