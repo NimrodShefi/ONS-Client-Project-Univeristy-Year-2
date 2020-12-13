@@ -89,6 +89,7 @@ public class PersonalChecklistController {
             personalChecklistService.updateCheckedItems(personalChecklist.get(), checklistForm.getCheckedItemIds());
             model.addAttribute("personalChecklist", personalChecklist.get());
             model.addAttribute("checklistForm", checklistForm);
+            model.addAttribute("viewingAs", "user");
             return "viewChecklistStarter";
         } else {
             logger.error("Could not find personal checklist with id: " + pChecklistId);
