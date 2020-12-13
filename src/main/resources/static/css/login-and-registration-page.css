@@ -11,9 +11,15 @@ body{
     float: left;
 }
 
+.logo{
+    width: 65%;
+    height: 65%;
+}
+
 .form{
     padding-top: 10%;
     padding-left: 2%;
+    padding-bottom: 2%;
     width: 30%;
     position: relative;
     float: left;
