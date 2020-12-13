@@ -5,34 +5,38 @@
 <head th:replace="fragments/header :: head"></head>
 <head>
     <title>Users Roles</title>
+    <link rel="stylesheet" href="/css/administration.css">
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
 <h1>Users</h1>
-<table class="table" style="width: fit-content">
-    <thead>
-    <tr>
-        <td>First Name</td>
-        <td>Last Name</td>
-        <td>Email</td>
-        <td>Role</td>
-    </tr>
-    </thead>
+<div id="table-wrapper">
+    <table class="table">
+        <thead>
+        <tr>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Email</td>
+            <td>Role</td>
+            <td></td>
+        </tr>
+        </thead>
 
-    <tbody>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.firstName}"></td>
-        <td th:text="${user.lastName}"></td>
-        <td th:text="${user.email}"></td>
-        <td><span th:each="role : ${user.roles}">
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.email}"></td>
+            <td><span th:each="role : ${user.roles}">
                 <span th:text="${role.name}"></span>
             </span></td>
-        <td><a th:href="@{/admin/userrole-form/{userId} (userId=${user.id})}">
-            <button>Edit</button>
-        </a></td>
-    </tr>
-    </tbody>
+            <td><a th:href="@{/admin/userrole-form/{userId} (userId=${user.id})}">
+                <button>Edit</button>
+            </a></td>
+        </tr>
+        </tbody>
 
-</table>
+    </table>
+</div>
 </body>
 </html>
