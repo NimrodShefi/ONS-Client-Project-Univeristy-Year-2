@@ -61,6 +61,11 @@ public class PersonalChecklistController {
                     || personalChecklistService.isUserPersonalChecklistAuthor(personalChecklist.get(), activeUser)) {
                 model.addAttribute("personalChecklist", personalChecklist.get());
                 model.addAttribute("checklistForm", new ChecklistForm(personalChecklistService.getCheckedItemIds(personalChecklist.get())));
+                if (personalChecklistService.isUserAssignedToPersonalChecklist(personalChecklist.get(), activeUser)) {
+                    model.addAttribute("viewingAs", "user");
+                } else if (personalChecklistService.isUserPersonalChecklistAuthor(personalChecklist.get(), activeUser)) {
+                    model.addAttribute("viewingAs", "author");
+                }
                 return "viewChecklistStarter";
             } else {
                 logger.error("User " + activeUser.getEmail() + " is not authorised to access personal checklist with id: " + pChecklistId);
