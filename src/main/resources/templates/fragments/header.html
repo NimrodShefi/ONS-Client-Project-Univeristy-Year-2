@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/static/css/ui-calibration.css">
 </head>
 <body>
 <header th:fragment="header">
@@ -23,7 +22,7 @@
                 <li sec:authorize="hasRole('ROLE_AUTHOR')" th:classappend="${#request.requestURI.equals('/author/user-roles') ? 'active':''}"><a href="/author/view-checklist-templates">My Checklist Templates</a></li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#request.requestURI.equals('/admin/user-roles') ? 'active':''}"><a href="/admin/user-roles">User Management</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right" sec:authorize="!isAnonymous()">
+            <ul class="nav navbar-nav navbar-right">
                 <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
         </div>

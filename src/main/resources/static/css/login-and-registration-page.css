@@ -1,0 +1,30 @@
+body{
+    overflow: hidden;
+}
+
+.message{
+    padding: 10%;
+    padding-bottom: 100%;
+    color: #fff;
+    background-color: black;
+    width: 44%;
+    float: left;
+}
+
+.form{
+    padding-top: 10%;
+    padding-left: 2%;
+    width: 30%;
+    position: relative;
+    float: left;
+}
+
+.btn-black{
+    background-color: #000;
+    color: #fff;
+}
+
+.return{
+    background-color: #a9a9a9;
+    color: #fff;
+}

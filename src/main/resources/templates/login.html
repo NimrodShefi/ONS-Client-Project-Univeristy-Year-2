@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: head"></head>
 <head>
     <meta charset="UTF-8">
     <title>ONS Onboarding</title>
-    <link rel="stylesheet" th:href="@{css/login-page.css}" href="css/login-page.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/login-and-registration-page.css">
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
 <div>
-    <div id="message">
-        <h2>ONS Onboarding Login Page</h2>
+    <div class="message">
+        <h2>ONS Onboarding</h2>
         <h2>Login Page</h2>
         <p>Login or register from here to access.</p>
     </div>
 
-    <div id="login">
+    <div class="form">
         <form th:action="@{/login}" method="post">
             <div th:if="${error != null}">
                 Invalid credentials.
@@ -35,10 +36,10 @@
                 <input type="password" name="password" class="form-control"/>
             </div>
             <div>
-                <input type="submit" value="Login"/>
+                <button type="submit" class="btn btn-black">Login</button>
+                <a th:href="@{/sign-up/add-user}" class="return btn">Register</a>
             </div>
         </form>
-        <a th:href="@{/sign-up/add-user}">Register</a>
     </div>
 </div>
 </body>
