@@ -23,7 +23,7 @@ public class PersonalChecklist {
     private Long id;
     @ManyToOne
     @JoinColumn(name="user_id")
-    private User userId;
+    private User user;
     @ManyToOne
     @JoinColumn(name="checklist_template_id")
     private ChecklistTemplate checklistTemplate;
@@ -35,7 +35,7 @@ public class PersonalChecklist {
     @OneToMany(mappedBy = "personalChecklist", cascade = {CascadeType.ALL})
     private List<ChecklistItem> checklistItems;
 
-    public PersonalChecklist(User userId, ChecklistTemplate checklistTemplate, LocalDate dateAssigned){
-        this(null, userId, checklistTemplate, dateAssigned, null, new ArrayList<>());
+    public PersonalChecklist(User user, ChecklistTemplate checklistTemplate, LocalDate dateAssigned, List<ChecklistItem> items){
+        this(null, user, checklistTemplate, dateAssigned, null, items);
     }
 }

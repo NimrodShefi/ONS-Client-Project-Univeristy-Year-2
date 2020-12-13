@@ -9,12 +9,12 @@
 
     <form action="/admin/userrole-form" method="post" th:object="${userRoleForm}">
         <input type="hidden" th:field="*{user}" id="user">
-        <div th:each="role: ${userRoleForm.roles}">
-            <input th:field="*{roles}" th:value="${role.id}" type="checkbox"/>
-            <label th:for="*{roleId}" th:text="${role.name}"> </label>
+        <div th:each="role: ${allRoles}">
+            <input th:field="${userRoleForm.assignedRolesIds}" th:value="${role.id}" type="checkbox"/>
+            <label th:for="${role.id}" th:text="${role.name}"> </label>
         </div>
 
-        <input id="submit" name="Update" type="submit" value="Save Roles"/>
+        <input id="submit" type="submit" value="Save Roles"/>
     </form>
 
 </body>

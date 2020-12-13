@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private AdminService theAdminService;
-    private RoleRepositoryJPA theRoleRepositoryJPA;
-    private UserRepositoryJPA theUserRepositoryJPA;
-    private UserService userService;
+    private final AdminService theAdminService;
+    private final RoleRepositoryJPA theRoleRepositoryJPA;
+    private final UserRepositoryJPA theUserRepositoryJPA;
+    private final UserService userService;
 
 
     @Autowired
@@ -53,32 +53,42 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String serveUserForm(@PathVariable("userId") Long userId, Model model) {
         Optional<User> userExist = userService.findById(userId);
-        List<Role> roles = theRoleRepositoryJPA.findAll();
-        UserRoleForm userRoleForm = new UserRoleForm(userExist.get(), roles);
-        model.addAttribute("userRoleForm", userRoleForm);
-        return "userrole-form";
+        if (userExist.isPresent()) {
+            Set<Long> userRoles = userExist.get().getRoles().stream()
+                    .map(Role::getId)
+                    .collect(Collectors.toSet());
+            UserRoleForm userRoleForm = new UserRoleForm(userExist.get(), userRoles);
+            model.addAttribute("userRoleForm", userRoleForm);
+            model.addAttribute("allRoles", theRoleRepositoryJPA.findAll());
+            return "userrole-form";
+        } else {
+            log.error("Could not user with id: " + userId + " while trying to serve user role form");
+            model.addAttribute("title", "404 - Not found");
+            model.addAttribute("message", "The requested user was not found.");
+            return "message";
+        }
     }
 
     @PostMapping("userrole-form")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String handleUserForm(@Valid @ModelAttribute("userRoleForm") UserRoleForm userRoleForm, BindingResult bindings, Model model) {
         if(bindings.hasErrors()){
-            userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
+            model.addAttribute("allRoles", theRoleRepositoryJPA.findAll());
             System.out.println("errors = " + bindings.getAllErrors());
             return "userrole-form";
         }
         User userExist = userRoleForm.getUser();
         if(userExist == null) {
             log.error("user not exist");
-            userRoleForm.setRoles(theRoleRepositoryJPA.findAll());
+            model.addAttribute("allRoles", theRoleRepositoryJPA.findAll());
             System.out.println("are there errors = " + bindings.hasErrors());
             System.out.println("errors = " + bindings.getAllErrors());
             return "userrole-form";
         }
         Set<Role> newRoles = userRoleForm
-                .getRoles()
+                .getAssignedRolesIds()
                 .stream()
-                .map(r -> theAdminService.findRolesById(r.getId()).get())
+                .map(r -> theAdminService.findRolesById(r).get())
                 .collect(Collectors.toSet());
         userExist.setRoles(newRoles);
         theUserRepositoryJPA.save(userExist);

@@ -4,8 +4,10 @@ import ons.group8.domain.*;
 import ons.group8.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,23 +25,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findUsersByRoles(Role role) {
+        return userRepository.findUsersByRoles(role);
     }
 
     @Override
-    public User findUserByEmail(String email){
-        return userRepository.findUserByEmail(email);
-    }
-
-    @Override
-    public User findUserById(Long userId){
-        return userRepository.findUserById(userId);
-    }
-
-    @Override
+    @Transactional(rollbackFor = Exception.class) // if something fails in this process, no data will be saved to the DB
     public void save(ChecklistCreationEvent data) throws Exception {
-        System.out.println(data);
         try {
             ChecklistTemplate checklistTemplate = new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription(), data.getTopics());
             for (Topic topic : checklistTemplate.getTopics()) {
@@ -51,20 +43,35 @@ public class AuthorServiceImpl implements AuthorService {
             ChecklistTemplate checklistTemplate1 = checklistTemplateRepository.save(checklistTemplate);
             LocalDate dateAssigned = LocalDate.now();
             for (User user : data.getAssignedTo()) {
-                personalChecklistRepository.save(new PersonalChecklist(user, checklistTemplate1, dateAssigned));
+                List<ChecklistItem> items = new ArrayList<>();
+                for (Topic topic : checklistTemplate1.getTopics()) {
+                    for (ChecklistTemplateItem item : topic.getItems()) {
+                        items.add(new ChecklistItem(item, false));
+                    }
+                }
+                PersonalChecklist personalChecklist = new PersonalChecklist(user, checklistTemplate1, dateAssigned, items);
+                for (ChecklistItem item : personalChecklist.getChecklistItems()) {
+                    item.setPersonalChecklist(personalChecklist);
+                }
+                personalChecklistRepository.save(personalChecklist);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new Exception();
         }
     }
 
     @Override
-    public ChecklistTemplate getChecklistTemplateById(Long id){
+    public ChecklistTemplate getChecklistTemplateById(Long id) {
         return checklistTemplateRepository.getChecklistTemplateById(id);
     }
 
     @Override
-    public List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate){
+    public List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate) {
         return personalChecklistRepository.getAllByChecklistTemplate(checklistTemplate);
+    }
+
+    @Override
+    public List<ChecklistTemplate> getAllByAuthorEmail(String authorEmail) {
+        return checklistTemplateRepository.findAllByAuthor_Email(authorEmail);
     }
 }

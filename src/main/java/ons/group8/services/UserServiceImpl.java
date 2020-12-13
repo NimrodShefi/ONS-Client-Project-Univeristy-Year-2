@@ -6,10 +6,13 @@ import ons.group8.repositories.RoleRepositoryJPA;
 import ons.group8.repositories.UserRepositoryJPA;
 import ons.group8.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -21,6 +24,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepositoryJPA userRepository;
     private final RoleRepositoryJPA roleRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder; //got password encoder from: https://www.baeldung.com/spring-security-registration-password-encoding-bcrypt
 
@@ -91,5 +95,17 @@ public class UserServiceImpl implements UserService {
 
     public Optional<User> findById(Long userId) {
         return userRepository.findById(userId);
+    }
+
+    //getting the user id of the logged in person
+    public User getLoggedInUserId(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails){
+            username = ((UserDetails)principal).getUsername();
+        }else {
+            username = principal.toString();
+        }
+        return findByEmail(username);
     }
 }
