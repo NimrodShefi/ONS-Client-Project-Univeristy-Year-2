@@ -6,6 +6,20 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
     <h1>Users</h1>
+
+    <div>
+
+        <form action="user-roles" method="get">
+            <label for="search-box">Search by first Name </label>
+            <input type="text" name="firstName" id="search-box"/>
+            <button>Search</button>
+        </form>
+
+
+
+    </div>
+    <br>
+    <br>
     <table>
 
         <thead>
@@ -30,5 +44,10 @@
         </tbody>
 
     </table>
+    <div th:if="${noUsersFound}">No users were found</div>
+    <br>
+    <br>
+    <a href='/admin/user-roles'><button>Show all users </button></a>
+
 </body>
 </html>
