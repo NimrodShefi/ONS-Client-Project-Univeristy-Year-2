@@ -92,7 +92,7 @@ CREATE PROCEDURE validate_email(
 DETERMINISTIC
 NO SQL
 BEGIN
-		IF NOT (SELECT email REGEXP '^[^\@<>+*/=!"£$%^&()`¬\\|;:?,#~]+@cardiff.ac.uk') THEN
+		IF NOT (SELECT email REGEXP '^[^\@<>+*/=!"£$%^&()`¬\\|;:?,#~]+@cardiff.ac.uk+$') THEN
 				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'WRONG email format';
 		END IF;
 END $$

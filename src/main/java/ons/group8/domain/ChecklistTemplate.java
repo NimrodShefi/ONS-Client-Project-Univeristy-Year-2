@@ -26,10 +26,10 @@ public class ChecklistTemplate {
     private User author;
 
     @NotBlank(message="List name field is mandatory")
-    @Column(name="list_name", length=120)
+    @Column(name="list_name")
     private String name;
 
-    @Column(name="description", length=500)
+    @Column(name="description")
     private String description;
 
     @OneToMany(mappedBy = "checklistTemplate", cascade = CascadeType.ALL, orphanRemoval = true)

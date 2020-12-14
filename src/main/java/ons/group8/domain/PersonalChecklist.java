@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,8 +25,7 @@ public class PersonalChecklist {
     @ManyToOne
     @JoinColumn(name="checklist_template_id")
     private ChecklistTemplate checklistTemplate;
-    @NotBlank(message="Date Assigned field is mandatory")
-    @Column(name="date_assigned", nullable=false)
+    @Column(name="date_assigned")
     private LocalDate dateAssigned;
     @Column(name="date_complete")
     private LocalDate dateComplete;
