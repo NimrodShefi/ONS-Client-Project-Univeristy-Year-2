@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -24,6 +25,7 @@ public class ChecklistTemplate {
     @JoinColumn(name="author_id")
     private User author;
 
+    @NotBlank(message="List name field is mandatory")
     @Column(name="list_name")
     private String name;
 

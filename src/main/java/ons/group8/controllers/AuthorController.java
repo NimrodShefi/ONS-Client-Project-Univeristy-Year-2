@@ -71,7 +71,7 @@ public class AuthorController {
                 ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
                 List<PersonalChecklist> personalChecklists = authorService.getAllByChecklistTemplate(checklistTemplate);
                 model.addAttribute("checklist", checklistTemplate);
-                model.addAttribute("users", personalChecklists);
+                model.addAttribute("personalChecklists", personalChecklists);
                 return "checklist/view-checklist-template";
             } catch (NullPointerException e){
                 model.addAttribute("title", "Missing Checklist");
