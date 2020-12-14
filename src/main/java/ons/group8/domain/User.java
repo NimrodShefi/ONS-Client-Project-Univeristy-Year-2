@@ -24,28 +24,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message="Email field is mandatory")
     @NotNull
     @NotEmpty
-    @Column(length=120)
     private String email;
 
-    @NotBlank(message="First Name field is mandatory")
     @NotNull
     @NotEmpty
-    @Column(length=120)
     private String firstName;
 
-    @NotBlank(message="Last name field is manadatory")
     @NotNull
     @NotEmpty
-    @Column(length=120)
     private String lastName;
 
-    @NotBlank(message="Password field is mandatory")
     @NotNull
     @NotEmpty
-    @Column(length=120)
     private String password;
 
     private boolean accountNonLocked;
@@ -55,8 +47,8 @@ public class User {
     private LocalDateTime lockTime;
 
     private boolean enabled;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Column(nullable=false)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
