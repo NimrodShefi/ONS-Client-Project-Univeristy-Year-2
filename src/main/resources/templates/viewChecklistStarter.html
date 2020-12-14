@@ -21,14 +21,14 @@
                     <tr th:each="item: ${personalChecklist.checklistItems}">
                         <div th:if="${item.checklistTemplateItem.topic.id} == ${topic.id}">
                             <td>
-                                <input type="checkbox" th:field="${checklistForm.checkedItemIds}" th:value="${item.id}"/>
+                                <input type="checkbox" th:field="${checklistForm.checkedItemIds}" th:value="${item.id}" th:disabled="${viewingAs} == author"/>
                             </td>
                             <td th:text="${item.checklistTemplateItem.description}"/>
                         </div>
                     </tr>
                 </table>
             </div>
-            <button type="submit">Save</button>
+            <button th:if="${viewingAs} == user" type="submit">Save</button>
         </form>
 
 

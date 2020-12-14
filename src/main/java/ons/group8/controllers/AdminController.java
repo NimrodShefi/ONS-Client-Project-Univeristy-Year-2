@@ -51,7 +51,7 @@ public class AdminController {
             return "user-roles";
         } else {
 
-            Set<User> users = theAdminService.findUsersByFirstName(searchName);
+            Set<User> users = userService.findUsersByFirstName(searchName);
             model.addAttribute("users", users);
             model.addAttribute("noUsersFound", users.isEmpty());
             return "user-roles";

@@ -32,11 +32,15 @@
     <h2>Assigned To:</h2>
     <button>edit assigned users</button>
     <br>
-    <select size="5">
-        <option value="0" disabled>Users:</option>
-        <option th:each=" user : ${users}" th:text="${user.getUser().getFirstName()} + ${user.getUser().getLastName()}"
-                th:value="${user.getUser().getId()}" disabled></option>
-    </select>
+    <table>
+        <tbody>
+        <tr th:each="personalChecklist : ${personalChecklists}">
+            <td th:text="|${personalChecklist.user.firstName} ${personalChecklist.user.lastName}|"></td>
+            <td><a th:href="@{/personal-checklist/{id} (id=${personalChecklist.id})}"> <button>View Checklist</button></a></td>
+        </tr>
+        </tbody>
+
+    </table>
 
 </body>
 </html>

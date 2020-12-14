@@ -15,6 +15,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
@@ -107,5 +108,10 @@ public class UserServiceImpl implements UserService {
             username = principal.toString();
         }
         return findByEmail(username);
+    }
+
+    @Override
+    public Set<User> findUsersByFirstName(String firstName){
+        return userRepository.findUsersByFirstName(firstName);
     }
 }
