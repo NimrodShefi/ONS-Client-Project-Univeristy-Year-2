@@ -107,7 +107,7 @@ CREATE PROCEDURE validate_user_first_name(
 DETERMINISTIC
 NO SQL
 BEGIN
-		IF NOT (SELECT first_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
+		IF (SELECT first_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
 				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Names can only contains letters';
 		END IF;
 END $$
@@ -121,7 +121,7 @@ CREATE PROCEDURE validate_user_last_name(
 DETERMINISTIC
 NO SQL
 BEGIN
-		IF NOT (SELECT last_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
+		IF (SELECT last_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
 				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Names can only contains letters';
 		END IF;
 END $$
