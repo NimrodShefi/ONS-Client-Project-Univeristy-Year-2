@@ -38,4 +38,8 @@ public class ChecklistTemplate {
     public ChecklistTemplate(User author, String list_name, String description, List<Topic> topics){
         this(null, author, list_name, description, topics);
     }
+
+    public ChecklistTemplate(ChecklistTemplate that){
+        this(that.getId(), that.getAuthor(), that.getName(), that.getDescription(), that.getTopics());
+    }
 }
