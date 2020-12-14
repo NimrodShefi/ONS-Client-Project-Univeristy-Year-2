@@ -81,6 +81,74 @@ CREATE TABLE IF NOT EXISTS CHECKLIST_ITEM(
      FOREIGN KEY (personal_checklist_id) REFERENCES PERSONAL_CHECKLIST(id),
      FOREIGN KEY (checklist_template_item_id) REFERENCES CHECKLIST_TEMPLATE_ITEM(id))
      ENGINE = InnoDB;
+     
+     
+-- validate email procedure
+DROP PROCEDURE IF EXISTS validate_email;
+DELIMITER $$
+CREATE PROCEDURE validate_email(
+		IN email VARCHAR(128)
+)
+DETERMINISTIC
+NO SQL
+BEGIN
+		IF NOT (SELECT email REGEXP '^[^\@<>+*/=!"£$%^&()`¬\\|;:?,#~]+@cardiff.ac.uk+$') THEN
+				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'WRONG email format';
+		END IF;
+END $$
+DELIMITER ;
+
+-- validate first and last name procedure
+DROP PROCEDURE IF EXISTS validate_user_first_name;
+DELIMITER $$
+CREATE PROCEDURE validate_user_first_name(
+		IN first_name VARCHAR(128)
+)
+DETERMINISTIC
+NO SQL
+BEGIN
+		IF NOT (SELECT first_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
+				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Names can only contains letters';
+		END IF;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS validate_user_last_name;
+DELIMITER $$
+CREATE PROCEDURE validate_user_last_name(
+		IN last_name VARCHAR(128)
+)
+DETERMINISTIC
+NO SQL
+BEGIN
+		IF NOT (SELECT last_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
+				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Names can only contains letters';
+		END IF;
+END $$
+DELIMITER ;
+
+
+-- validate email trigger
+DELIMITER $$
+CREATE TRIGGER `user_validate_insert`
+BEFORE INSERT ON `user` FOR EACH ROW
+BEGIN
+		CALL validate_email(NEW.email);
+        CALL validate_user_first_name(NEW.first_name);
+        CALL validate_user_last_name(NEW.last_name);
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER user_validate_update
+BEFORE UPDATE ON `user` FOR EACH ROW
+BEGIN
+		CALL validate_email(NEW.email);
+		CALL validate_user_first_name(NEW.first_name);
+		CALL validate_user_last_name(NEW.last_name);
+END $$
+DELIMITER ;
+
 
 
 
