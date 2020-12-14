@@ -6,12 +6,13 @@
 <head>
     <title>Users Roles</title>
     <link rel="stylesheet" href="/css/administration.css">
+<!--    <script src="/js/scrollable-table.js"></script>-->
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
 <h1>Users</h1>
-<div id="table-wrapper">
-    <table class="table">
+<div id="table-wrap">
+    <table class="table table-striped table-bordered table-sm">
         <thead>
         <tr>
             <td>First Name</td>
@@ -35,7 +36,6 @@
             </a></td>
         </tr>
         </tbody>
-
     </table>
 </div>
 </body>
