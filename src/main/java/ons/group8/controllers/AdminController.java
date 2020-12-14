@@ -53,6 +53,7 @@ public class AdminController {
 
             Set<User> users = theAdminService.findUsersByFirstName(searchName);
             model.addAttribute("users", users);
+            model.addAttribute("noUsersFound", users.isEmpty());
             return "user-roles";
         }
     }
