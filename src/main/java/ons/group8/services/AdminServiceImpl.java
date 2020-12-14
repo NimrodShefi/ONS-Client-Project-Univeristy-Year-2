@@ -43,10 +43,5 @@ public class AdminServiceImpl implements AdminService {
         return roleRepositoryJPA.findById(id);
     }
 
-    @Override
-    public Set<User> findUsersByFirstName(String firstName){
-        return userRepositoryJPA.findUsersByFirstName(firstName);
-    }
-
 
 }

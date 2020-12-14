@@ -16,8 +16,6 @@ public interface AdminService {
 
     Optional<Role> findRolesById(Long id);
 
-    public Set<User> findUsersByFirstName(String firstName);
-
 
 
 }
