@@ -4,6 +4,7 @@ import ons.group8.domain.Role;
 import ons.group8.domain.User;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface AdminService {
 
@@ -14,5 +15,9 @@ public interface AdminService {
     Optional<User> findUsersByEmail(String email);
 
     Optional<Role> findRolesById(Long id);
+
+    public Set<User> findUsersByFirstName(String firstName);
+
+
 
 }
