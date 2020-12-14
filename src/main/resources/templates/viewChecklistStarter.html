@@ -7,6 +7,9 @@
 </head>
 <body>
     <div th:replace="fragments/header :: header"></div>
+    <div>
+        <span id="checkedCount"></span>/<span id="checkItemsCount"></span> completed
+    </div>
     <div th:object="${personalChecklist}">
 
         <h1 th:text="*{checklistTemplate.name}"/>
@@ -33,5 +36,42 @@
 
 
     </div>
+
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+        var id = [[${personalChecklist.id}]];
+    </script>
+    <script>
+        $(document).ready(function () {
+            console.log(id);
+            injectChecklistProgress(id);
+        });
+
+        var injectChecklistProgress = (function (id) {
+
+            $.ajax({
+                type: "GET",
+                url: "/api/personal-checklist/" + id + "/progress",
+                dataType: "json"
+                , cache: false
+                , timeout: 600000
+                , async: true
+                , encode: true
+            })
+                .done(function (data) {
+                    console.log(data);
+                    document.getElementById('checkedCount').innerHTML = data.checkedItemsCount;
+                    document.getElementById('checkItemsCount').innerHTML = data.checklistItemsCount;
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log("failed");
+                });
+        })
+    </script>
+
+
 </body>
 </html>
