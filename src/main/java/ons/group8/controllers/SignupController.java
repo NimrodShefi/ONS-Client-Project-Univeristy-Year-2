@@ -28,13 +28,13 @@ public class SignupController {
     public String addUserForm(Model model) {
         UserForm userForm = new UserForm();
         model.addAttribute("userForm", userForm);
-        return "add-user";
+        return "sign-up";
     }
 
     @PostMapping("create-user")
     public String addUser(@Valid UserForm newUser, BindingResult bindingResult, Model model) throws Exception {
         if (bindingResult.hasErrors()) {
-            return "add-user";
+            return "sign-up";
         } else {
             try {
                 userService.save(new UserCreationEvent(newUser.getEmail(), newUser.getFirstName(), newUser.getLastName(), newUser.getPassword(), newUser.getRepeatPassword()));
@@ -43,7 +43,7 @@ public class SignupController {
                 return "message";
             } catch (Exception e) {
                 model.addAttribute("error", e.toString().split(" ",2)[1]);
-                return "add-user";
+                return "sign-up";
             }
         }
     }
