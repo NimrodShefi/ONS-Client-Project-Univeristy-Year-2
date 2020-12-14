@@ -40,6 +40,6 @@ public class ChecklistTemplate {
     }
 
     public ChecklistTemplate(ChecklistTemplate that){
-        this(that.getId(), that.getAuthor(), that.getName(), that.getDescription(), that.getTopics());
+        this(that.getAuthor(), that.getName(), that.getDescription(), that.getTopics());
     }
 }

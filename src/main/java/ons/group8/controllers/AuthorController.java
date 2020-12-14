@@ -57,7 +57,9 @@ public class AuthorController {
         logger.debug("Getting checklist template list for author: " + principal.getName());
         System.out.println(getChecklistForm());
         List<ChecklistTemplate> checklistTemplates = authorService.getAllByAuthorEmail(principal.getName());
+        List<User> authors = authorService.findUsersByRoles(roleRepository.getRoleByName("AUTHOR"));
         model.addAttribute("checklistTemplates", checklistTemplates);
+        model.addAttribute("authors", authors);
         return "checklist/view-all-checklist-templates";
     }
 
