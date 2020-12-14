@@ -22,7 +22,6 @@ public class Role {
     private Long id;
 
     @NotNull @Size(max = 20)
-    @NotBlank(message="Name Role field is mandatory")
     @NotEmpty
     private String name;
 

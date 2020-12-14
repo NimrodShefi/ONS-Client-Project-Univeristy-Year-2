@@ -23,7 +23,7 @@ public class ChecklistTemplateItem {
     @JoinColumn(name="topic_id", referencedColumnName = "id")
     private Topic topic;
 
-    @Column(name="description")
+    @Column(name="description", length=500)
     private String description;
 
     public ChecklistTemplateItem(String description){

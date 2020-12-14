@@ -28,7 +28,7 @@ public class PersonalChecklist {
     @JoinColumn(name="checklist_template_id")
     private ChecklistTemplate checklistTemplate;
     @NotBlank(message="Date Assigned field is mandatory")
-    @Column(name="date_assigned")
+    @Column(name="date_assigned", nullable=false)
     private LocalDate dateAssigned;
     @Column(name="date_complete")
     private LocalDate dateComplete;

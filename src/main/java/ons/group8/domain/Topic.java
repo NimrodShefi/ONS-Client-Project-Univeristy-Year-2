@@ -24,10 +24,10 @@ public class Topic {
     private ChecklistTemplate checklistTemplate;
 
     @NotBlank(message="Topic name field is mandatory")
-    @Column(name="topic_name")
+    @Column(name="topic_name", length=120)
     private String name;
 
-    @Column(name="description")
+    @Column(name="description", length=500)
     private String description;
 
     @OneToMany(mappedBy = "topic", cascade = {CascadeType.ALL})
