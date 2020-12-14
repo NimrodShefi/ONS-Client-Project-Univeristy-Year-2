@@ -51,15 +51,21 @@ public class AuthorController {
         return new ChecklistTemplateForm();
     }
 
+    @GetMapping("view-checklist-authors")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String viewChecklistAuthors(Model model){
+        List<User> authors = authorService.findUsersByRoles(roleRepository.getRoleByName("AUTHOR"));
+        model.addAttribute("authors", authors);
+        return "view-checklist-authors";
+    }
+
     @GetMapping("view-checklist-templates")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String viewChecklistTemplates(Principal principal, Model model){
         logger.debug("Getting checklist template list for author: " + principal.getName());
         System.out.println(getChecklistForm());
         List<ChecklistTemplate> checklistTemplates = authorService.getAllByAuthorEmail(principal.getName());
-        List<User> authors = authorService.findUsersByRoles(roleRepository.getRoleByName("AUTHOR"));
         model.addAttribute("checklistTemplates", checklistTemplates);
-        model.addAttribute("authors", authors);
         return "checklist/view-all-checklist-templates";
     }
 
