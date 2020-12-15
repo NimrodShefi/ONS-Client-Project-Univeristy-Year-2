@@ -107,7 +107,7 @@ CREATE PROCEDURE validate_user_first_name(
 DETERMINISTIC
 NO SQL
 BEGIN
-		IF NOT (SELECT first_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
+		IF (SELECT first_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
 				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Names can only contains letters';
 		END IF;
 END $$
@@ -121,7 +121,7 @@ CREATE PROCEDURE validate_user_last_name(
 DETERMINISTIC
 NO SQL
 BEGIN
-		IF NOT (SELECT last_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
+		IF (SELECT last_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
 				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Names can only contains letters';
 		END IF;
 END $$
@@ -150,6 +150,32 @@ END $$
 DELIMITER ;
 
 
+
+
+
+
+-- Stored procedure to get a count of the checklist items that have been checked
+DROP PROCEDURE IF EXISTS getCheckedItemsCountForPersonalChecklist;
+
+DELIMITER //
+
+USE ons //
+CREATE DEFINER = `onsUser`@`localhost`
+    PROCEDURE getCheckedItemsCountForPersonalChecklist(IN personalChecklistId int, OUT countOut int)
+    SQL SECURITY INVOKER
+BEGIN
+    SELECT COUNT(checked) INTO countOut
+    FROM checklist_item
+    WHERE checklist_item.personal_checklist_id = personalChecklistId
+      AND checked = true;
+END//
+
+DELIMITER ;
+
+
+
+
+
 CREATE USER IF NOT EXISTS 'onsUser'@'localhost' IDENTIFIED BY '2Nng2?9P6q47QJLAL=^3';
 
 grant usage on ons.* to 'onsUser'@'localhost';
@@ -162,5 +188,6 @@ grant select, insert, update, alter on ons.TOPIC to 'onsUser'@'localhost';
 grant select, insert, update, alter on ons.CHECKLIST_TEMPLATE_ITEM to 'onsUser'@'localhost';
 grant select, insert, update, alter on ons.PERSONAL_CHECKLIST to 'onsUser'@'localhost';
 grant select, insert, update, alter on ons.CHECKLIST_ITEM to 'onsUser'@'localhost';
+grant execute on procedure ons.getCheckedItemsCountForPersonalChecklist to 'onsUser'@'localhost';
 show grants for 'onsUser'@'localhost';
 flush privileges;
