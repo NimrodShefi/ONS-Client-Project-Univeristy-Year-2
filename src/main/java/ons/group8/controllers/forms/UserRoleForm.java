@@ -3,23 +3,18 @@ package ons.group8.controllers.forms;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ons.group8.domain.Role;
 import ons.group8.domain.User;
 
-import java.util.List;
+import java.util.Set;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRoleForm {
-    private Long roleId;
 
     private User user;
 
-    private List<Role> roles;
+    private Set<Long> assignedRolesIds;
 
-    public UserRoleForm(User user, List<Role> roles) {
-        this(null, user, roles);
-    }
 }
