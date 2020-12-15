@@ -11,6 +11,7 @@ import ons.group8.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -165,4 +166,20 @@ public class AuthorController {
             }
         }
     }
+
+    @GetMapping("edit-checklist-title-and-description/{id}")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String editchecklisttitleanddescription(@PathVariable(name="id") Long id ,Model model){
+        ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(id);
+        model.addAttribute("title", checklistTemplate.getName());
+        model.addAttribute("description", checklistTemplate.getDescription());
+        return "checklist/edit/checklist-title-and-description";
+
+    }
+
+//    @PostMapping("edit-checklist-title-and-description")
+//    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+//    public String
+
+
 }

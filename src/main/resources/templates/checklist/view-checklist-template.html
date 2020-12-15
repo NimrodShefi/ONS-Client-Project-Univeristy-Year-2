@@ -8,7 +8,8 @@
     <div th:replace="fragments/header :: header"></div>
     <div>
         <h1 th:text="${checklist.name}"></h1>
-        <button th:value="${checklist.id}">Edit Title & Description</button>
+        <a th:href="@{​​​​​/author/edit-checklist-title-and-description/{​​​​​id}​​​​​ (id=${​​​​​checklist.id}​​​​​)}​​​​​">Edit </a>
+
         <div th:text="${checklist.description}"></div>
     </div>
 
