@@ -47,7 +47,7 @@ public class GenerateModel {
 
 
         Container webApplication = checklistApp.addContainer(
-                "Spring Boot Application", "The web application", "Embedded web container.  Tomcat 7.0");
+                "Spring Boot Application", "The web application", "Embedded web container.  Tomcat 9.0");
         Container relationalDatabase = checklistApp.addContainer(
                 "Relational Database", "Stores information regarding the users and checklists.", "MySQL");
         user.uses(webApplication, "Uses", "HTTP");
@@ -86,10 +86,22 @@ public class GenerateModel {
         author.uses(signupController, "Uses", "HTTP");
         admin.uses(signupController, "Uses", "HTTP");
 
+
         // connect all of the repository components to the relational database
         webApplication.getComponents().stream()
                 .filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_REPOSITORY))
                 .forEach(c -> c.uses(relationalDatabase, "Reads from and writes to", "JPA"));
+
+
+        // add templates
+        Component loginTemplate = webApplication.addComponent("Login", "Template for users to login", "Thymeleaf");
+        loginTemplate.addTags("Thymeleaf");
+        loginController.uses(loginTemplate, "as view", "Spring MVC");
+
+        Component signupTemplate = webApplication.addComponent("Sign-up", "Template for users to sign up for an account", "Thymeleaf");
+        signupTemplate.addTags("Thymeleaf");
+        signupController.uses(signupTemplate, "as view", "Spring MVC");
+
 
         //create a SystemContext for the system
         ViewSet viewSet = workspace.getViews();
@@ -106,6 +118,7 @@ public class GenerateModel {
         componentView.addAllComponents();
         componentView.addAllPeople();
         componentView.add(relationalDatabase);
+        componentView.enableAutomaticLayout();
 
         // link the architecture model with the code
         for (Component component : webApplication.getComponents()) {
@@ -138,6 +151,7 @@ public class GenerateModel {
         styles.addElementStyle("Spring MVC Controller").background("#D4F3C0").color("#000000");
         styles.addElementStyle("Spring Service").background("#6CB33E").color("#000000");
         styles.addElementStyle("Spring Repository").background("#95D46C").color("#000000");
+        styles.addElementStyle("Thymeleaf").background("#eeeeee").color("#000077").shape(Shape.RoundedBox);
 
         StructurizrClient structurizrClient = new StructurizrClient(API_KEY, API_SECRET);
         structurizrClient.putWorkspace(WORKSPACE_ID, workspace);
