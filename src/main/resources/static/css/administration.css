@@ -33,22 +33,22 @@ table > tbody > tr > td {padding:2px 5px 2px 10px;}
 
 
 
-/* width */
-::-webkit-scrollbar {
-    width: 0.5%;
-}
+/*!* width *!*/
+/*::-webkit-scrollbar {*/
+/*    width: 100%;*/
+/*}*/
 
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
+/*!* Track *!*/
+/*::-webkit-scrollbar-track {*/
+/*    background: #f1f1f1;*/
+/*}*/
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #888;
-}
+/*!* Handle *!*/
+/*::-webkit-scrollbar-thumb {*/
+/*    background: #888;*/
+/*}*/
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
+/*!* Handle on hover *!*/
+/*::-webkit-scrollbar-thumb:hover {*/
+/*    background: #555;*/
+/*}*/
