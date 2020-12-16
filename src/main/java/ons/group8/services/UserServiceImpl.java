@@ -37,11 +37,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserCreationEvent newUser) throws SQLIntegrityConstraintViolationException, DataFormatException {
-
-        if (userRepository.existsByEmail(newUser.getEmail())) {
-            throw new SQLIntegrityConstraintViolationException();
-        }
         try {
+            if (userRepository.existsByEmail(newUser.getEmail())) {
+                throw new SQLIntegrityConstraintViolationException("Email already exists.");
+            }
             validateData(newUser);
             Role userRole = roleRepository.getRoleByName("USER");
             User user = new User(newUser.getEmail().toLowerCase(), passwordEncoder.encode(newUser.getPassword()), newUser.getFirstName(), newUser.getLastName());
