@@ -55,7 +55,7 @@ public class AuthorController {
     public String viewChecklistAuthors(Model model){
         List<User> authors = authorService.findUsersByRoles(roleRepository.getRoleByName("AUTHOR"));
         model.addAttribute("authors", authors);
-        return "view-checklist-authors";
+        return "clone-templates-list-";
     }
 
     @GetMapping("view-checklist-templates")
@@ -178,7 +178,7 @@ public class AuthorController {
     public String viewAllChecklistTemplates(Model model){
         List<ChecklistTemplate> checklistTemplates = authorService.findAllChecklistTemplates();
         model.addAttribute("checklistTemplates", checklistTemplates);
-        return "view-checklist-authors";
+        return "clone-templates-list-";
     }
 
     @GetMapping("/create-from-clone/checklist-template/{id}")
@@ -199,9 +199,20 @@ public class AuthorController {
     @GetMapping("/create-from-clone/checklist-template/{id}/clone")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String cloneChecklistTemplate(@PathVariable(name = "id") Long checklistId, Model model){
-        System.out.println("Clone checklist");
         User activeUser = userService.getLoggedInUserId();
+        if (activeUser == null) {
+            logger.error("Could not retrieve logged in user." );
+            model.addAttribute("title", "404 - Not found");
+            model.addAttribute("message", "The requested logged in user was not found.");
+            return "message";
+        }
         ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
+        if (checklistTemplate == null) {
+            logger.error("Could not retrieve checklist template with id" + checklistId);
+            model.addAttribute("title", "404 - Not found");
+            model.addAttribute("message", "The checklist template was not found.");
+            return "message";
+        }
         authorService.cloneChecklistTemplate(checklistTemplate, activeUser);
         model.addAttribute("title", "Process Completed");
         model.addAttribute("message", "The checklist is cloned and saved");
