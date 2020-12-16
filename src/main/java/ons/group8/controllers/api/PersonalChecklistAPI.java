@@ -27,7 +27,7 @@ public class PersonalChecklistAPI {
 
     @GetMapping("/personal-checklist/{id}/progress")
     public ChecklistProgressDTO getPersonalChecklistProgress(@PathVariable Long id, Model model) {
-        Optional<PersonalChecklist> personalChecklist = personalChecklistService.getById(1L);
+        Optional<PersonalChecklist> personalChecklist = personalChecklistService.getById(id);
         Long checklistItems = personalChecklistService.getChecklistItemsCount(personalChecklist.get());
         Long checkedItems = personalChecklistService.getCheckedItemsCount(personalChecklist.get());
         return new ChecklistProgressDTO(checkedItems, checklistItems);
