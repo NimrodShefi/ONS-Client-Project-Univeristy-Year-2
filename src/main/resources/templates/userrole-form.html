@@ -3,13 +3,13 @@
 <head th:replace="fragments/header :: head"></head>
 <head>
     <title>Change User Role</title>
+    <link rel="stylesheet" href="/css/administration.css">
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
 
-<h1>Edit User</h1>
-<div th:text="${userRoleForm.user.firstName} + ' ' + ${userRoleForm.user.lastName}"></div>
-
+<div id="main-body">
+    <h1>Edit User: <span th:text="${userRoleForm.user.firstName} + ' ' + ${userRoleForm.user.lastName}"></span></h1>
     <form action="/admin/userrole-form" method="post" th:object="${userRoleForm}">
         <input type="hidden" th:field="*{user}" id="user">
         <div th:each="role: ${allRoles}">
@@ -19,6 +19,8 @@
 
         <input id="submit" name="Update" type="submit" value="Save Roles" class="btn btn-secondary"/>
     </form>
+</div>
+
 
 </form>
 </body>
