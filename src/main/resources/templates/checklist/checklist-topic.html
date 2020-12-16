@@ -1,44 +1,58 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="fragments/header :: head">
-</head>
+<head th:replace="fragments/header :: head"></head>
 <head>
     <meta charset="UTF-8">
     <title>Create Topic</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="/js/add_item_and_topic.js"></script>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
-    <form action="#" th:action="@{/author/set-topic}" enctype="multipart/form-data" method="post"
-          th:object="${topicForm}" class="form-new-checklist">
-        <fieldset>
-            <h1 th:text="${title}"></h1>
-            <pre th:text="${titleDescription}"></pre>
-            <br>
-
+<div th:replace="fragments/header :: header"></div>
+<form action="#" th:action="@{/author/set-topic}" enctype="multipart/form-data" method="post"
+      th:object="${topicForm}" class="form-new-checklist container">
+    <fieldset>
+        <h1 th:text="${title}"></h1>
+        <pre th:text="${titleDescription}"></pre>
+        <br>
+        <div class="form-group">
             <label th:for="${topicTitle}">Topic Title: </label>
-            <input th:field="*{topicTitle}" placeholder="Insert title...." required>
-            <br>
+            <input th:field="*{topicTitle}" placeholder="Insert title...." class="form-control" required>
+        </div>
+
+        <br>
+        <div class="form-group">
             <label th:for="${topicDescription}">Topic Description: </label>
             <textarea th:field="*{topicDescription}" rows="5" cols="60"
-                      placeholder="Enter details about topic here..." required></textarea>
-            <br>
+                      placeholder="Enter details about topic here..." class="form-control" required></textarea>
+        </div>
+
+        <br>
+        <div class="form-group">
             <table>
                 <tbody>
                 <tr>
                     <td><label>Topic Item: </label></td>
-                    <td><input th:field="*{items}" placeholder="Insert item..." required></td>
-                    <td><button type='button' onclick='deleteRow(this)'>-</button></td>
-                    <td><button type='button' onclick='addItemRow(this)'>+</button></td>
+                    <td><input th:field="*{items}" placeholder="Insert item..." class="form-control" required></td>
+                    <td>
+                        <button type='button' onclick='deleteRow(this)' class='btn btn--secondary btn--small'>-</button>
+                    </td>
+                    <td>
+                        <button type='button' onclick='addItemRow(this)' class='btn btn--secondary btn--small'>+</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
-            <input th:field="*{anotherTopic}" type="checkbox" value="true">
+        </div>
+        <div class="form-check">
+            <input th:field="*{anotherTopic}" type="checkbox" value="true" class="form-check-input">
             <label th:for="${anotherTopic}">Create another topic</label>
-            <br>
-            <button type="submit">Submit</button>
-        </fieldset>
-    </form>
+        </div>
+
+        <br>
+        <button type="submit" class="btn btn-primary">Next</button>
+    </fieldset>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="/js/add_item_and_topic.js"></script>
 </body>
 </html>
