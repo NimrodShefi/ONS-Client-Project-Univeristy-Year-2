@@ -6,9 +6,12 @@
 </head>
 <body>
     <div th:replace="fragments/header :: header"></div>
-    <a th:if="${viewMode} == clone" th:id="@{checklistTemplateLink{id} (id=${checklist.id})}"
+    <a th:if="${viewMode} == clone" th:href="@{/author/create-from-clone/checklist-templates-list}">
+        Back to list
+    </a>
+    <a th:if="${viewMode} == clone" th:id="@{cloneTemplateLink{id} (id=${checklist.id})}"
        th:href="@{/author/create-from-clone/checklist-template/{id}/clone (id=${checklist.id})}">
-        <span>Clone</span>
+        Clone
     </a>
     <div>
         <h1 th:text="${checklist.name}"></h1>
