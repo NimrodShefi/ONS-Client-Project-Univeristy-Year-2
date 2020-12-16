@@ -42,14 +42,14 @@ public class Topic {
         this(null, template, name, description, items);
     }
 
-    public Topic(Topic topicToClone, ChecklistTemplate clonedTemplate) {
+    public Topic(Topic topicToClone) {
         this(null,
-                clonedTemplate,
                 topicToClone.getName(),
                 topicToClone.getDescription(),
                 topicToClone.items
                         .stream()
-                        .map(i -> new ChecklistTemplateItem(topicToClone, i.getDescription()))
+                        .map(i -> new ChecklistTemplateItem(i.getDescription()))
                         .collect(Collectors.toList()));
+        items.stream().forEach(i -> i.setTopic(this));
     }
 }

@@ -47,7 +47,8 @@ public class ChecklistTemplate {
                 template.getDescription(),
                 template.topics
                         .stream()
-                        .map(t -> new Topic(t, template))
+                        .map(t -> new Topic(t))
                         .collect(Collectors.toList()));
+        topics.stream().forEach(t -> t.setChecklistTemplate(this));
     }
 }
