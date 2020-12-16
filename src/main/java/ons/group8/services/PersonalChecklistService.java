@@ -20,4 +20,7 @@ public interface PersonalChecklistService {
 
     boolean isUserPersonalChecklistAuthor(PersonalChecklist personalChecklist, User user);
 
+    Long getCheckedItemsCount(PersonalChecklist personalChecklist);
+
+    Long getChecklistItemsCount(PersonalChecklist personalChecklist);
 }
