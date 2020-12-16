@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header :: head">
+    <title>Clone Checklist Template</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+    <h1>Create Checklist Template from Existing</h1>
+    <ul th:each="template : ${checklistTemplates}">
+        <li>
+            <a th:id="@{checklistTemplateLink{id} (id=${template.id})}"
+               th:href="@{/author/create-from-clone/checklist-template/{id} (id=${template.id})}">
+                <span th:text="${template.getName()}"></span>
+            </a>
+        </li>
+    </ul>
+</body>
+</html>

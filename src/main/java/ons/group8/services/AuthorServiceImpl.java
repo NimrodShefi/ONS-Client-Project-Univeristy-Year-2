@@ -74,4 +74,15 @@ public class AuthorServiceImpl implements AuthorService {
     public List<ChecklistTemplate> getAllByAuthorEmail(String authorEmail) {
         return checklistTemplateRepository.findAllByAuthor_Email(authorEmail);
     }
+
+    @Override
+    public List<ChecklistTemplate> findAllChecklistTemplates() {
+        return checklistTemplateRepository.findAll();
+    }
+
+    @Override
+    public void cloneChecklistTemplate(ChecklistTemplate template, User author) {
+        ChecklistTemplate clonedTemplate = new ChecklistTemplate(template, author);
+        checklistTemplateRepository.save(clonedTemplate);
+    }
 }
