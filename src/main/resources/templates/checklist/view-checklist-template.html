@@ -7,11 +7,11 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
     <a th:if="${viewMode} == clone" th:href="@{/author/create-from-clone/checklist-templates-list}">
-        Back to list
+        <button>Back to list</button>
     </a>
     <a th:if="${viewMode} == clone" th:id="@{cloneTemplateLink{id} (id=${checklist.id})}"
        th:href="@{/author/create-from-clone/checklist-template/{id}/clone (id=${checklist.id})}">
-        Clone
+        <button>Clone</button>
     </a>
     <div>
         <h1 th:text="${checklist.name}"></h1>
@@ -26,8 +26,6 @@
 
         <table>
             <tr style="text-align:left">
-                <th><h3>Checked</h3></th>
-                <th><h3>Item Description</h3></th>
             </tr>
             <tr th:each="item: ${topic.items}">
                 <td><input type="checkbox" id="check"></td>

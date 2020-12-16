@@ -4,6 +4,7 @@
     <title>Clone Checklist Template</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
     <h1>Create Checklist Template from Existing</h1>
     <ul th:each="template : ${checklistTemplates}">
         <li>

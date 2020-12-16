@@ -84,6 +84,5 @@ public class AuthorServiceImpl implements AuthorService {
     public void cloneChecklistTemplate(ChecklistTemplate template, User author) {
         ChecklistTemplate clonedTemplate = new ChecklistTemplate(template, author);
         checklistTemplateRepository.save(clonedTemplate);
-
     }
 }
