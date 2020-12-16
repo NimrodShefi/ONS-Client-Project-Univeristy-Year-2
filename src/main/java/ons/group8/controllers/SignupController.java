@@ -39,10 +39,10 @@ public class SignupController {
             try {
                 userService.save(new UserCreationEvent(newUser.getEmail(), newUser.getFirstName(), newUser.getLastName(), newUser.getPassword(), newUser.getRepeatPassword()));
                 model.addAttribute("title", "User Created");
-                model.addAttribute("message", newUser.getFirstName() + " " + newUser.getLastName() +" Your username is :" + newUser.getEmail());
+                model.addAttribute("message", newUser.getFirstName() + " " + newUser.getLastName() +" Your username is: " + newUser.getEmail());
                 return "message";
             } catch (Exception e) {
-                model.addAttribute("error", e.toString().split(" ",2)[1]);
+                model.addAttribute("error", e.getMessage());
                 return "register";
             }
         }
