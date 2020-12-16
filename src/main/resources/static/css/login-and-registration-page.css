@@ -9,6 +9,11 @@ body {
     background-color: #033E58;
     width: 44%;
     float: left;
+    font-size: larger;
+}
+
+.message h2 strong{
+    font-size: 200%;
 }
 
 .form {

@@ -6,14 +6,15 @@
     <meta charset="UTF-8">
     <title>Personal Checklists</title>
     <link rel="stylesheet" href="/css/checklists.css">
+    <link rel="stylesheet" href="/css/lists.css">
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div id="main-body">
     <h1>My Checklists</h1>
     <div>
-        <ul th:each="checklist : ${personalChecklists}">
-            <li>
+        <ul th:each="checklist : ${personalChecklists}" class="list list-group">
+            <li class="list-group-item">
                 <a th:id="@{checklistLink{id} (id=${checklist.id})}"
                    th:href="@{/personal-checklist/{id} (id=${checklist.id})}">
                     <span th:text="${checklist.checklistTemplate.name}"></span>
