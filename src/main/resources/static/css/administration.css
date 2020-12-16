@@ -1,12 +1,15 @@
 .table{
     width: fit-content;
-    margin-left: 10%;
     margin-right: auto;
 }
 
-#table-wrap{
+.table-wrap{
     overflow-y: auto;
-    height: 50vh;
+    height: 30vh;
+}
+
+#main-body{
+    margin-left: 2%;
 }
 
 table > tbody > tr {

@@ -3,10 +3,13 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/header :: head"></head>
 <head>
+    <meta charset="UTF-8">
     <title>Personal Checklists</title>
+    <link rel="stylesheet" href="/css/checklists.css">
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/header :: header"></div>
+<div id="main-body">
     <h1>My Checklists</h1>
     <div>
         <ul th:each="checklist : ${personalChecklists}">
@@ -18,5 +21,6 @@
             </li>
         </ul>
     </div>
+</div>
 </body>
 </html>
