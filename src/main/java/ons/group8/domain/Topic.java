@@ -49,7 +49,7 @@ public class Topic {
                 topicToClone.getDescription(),
                 topicToClone.items
                         .stream()
-                        .map(i -> new ChecklistTemplateItem(topicToClone, topicToClone.description))
+                        .map(i -> new ChecklistTemplateItem(topicToClone, i.getDescription()))
                         .collect(Collectors.toList()));
     }
 }

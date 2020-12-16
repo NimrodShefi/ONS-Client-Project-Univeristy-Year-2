@@ -85,5 +85,7 @@ public class AuthorServiceImpl implements AuthorService {
         System.out.println("Checklist to clone: " + template.getId() + " "  + template);
         ChecklistTemplate clonedTemplate = new ChecklistTemplate(template, author);
         System.out.println("Cloned checklist: " + clonedTemplate.getId() + " " + clonedTemplate);
+        checklistTemplateRepository.save(clonedTemplate);
+        System.out.println("Cloned checklist: " + clonedTemplate.getId() + " " + clonedTemplate);
     }
 }
