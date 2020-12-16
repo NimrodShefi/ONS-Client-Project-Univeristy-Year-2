@@ -15,6 +15,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
@@ -36,11 +37,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserCreationEvent newUser) throws SQLIntegrityConstraintViolationException, DataFormatException {
-
-        if (userRepository.existsByEmail(newUser.getEmail())) {
-            throw new SQLIntegrityConstraintViolationException();
-        }
         try {
+            if (userRepository.existsByEmail(newUser.getEmail())) {
+                throw new SQLIntegrityConstraintViolationException("Email already exists.");
+            }
             validateData(newUser);
             Role userRole = roleRepository.getRoleByName("USER");
             User user = new User(newUser.getEmail().toLowerCase(), passwordEncoder.encode(newUser.getPassword()), newUser.getFirstName(), newUser.getLastName());
@@ -107,5 +107,10 @@ public class UserServiceImpl implements UserService {
             username = principal.toString();
         }
         return findByEmail(username);
+    }
+
+    @Override
+    public Set<User> findUsersByFirstName(String firstName){
+        return userRepository.findUsersByFirstName(firstName);
     }
 }

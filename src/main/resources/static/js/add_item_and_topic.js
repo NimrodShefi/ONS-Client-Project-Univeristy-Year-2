@@ -12,9 +12,9 @@ function addItemRow(element) {
     const cell4 = row.insertCell(3);
 
     cell1.innerHTML = "<label>Topic Item: </label>";
-    cell2.innerHTML = "<input id='items' name='items' placeholder='Insert item...' required>";
-    cell3.innerHTML = "<button type='button' onclick='deleteRow(this)'>-</button>";
-    cell4.innerHTML = "<button type='button' onclick='addItemRow(this)'>+</button>";
+    cell2.innerHTML = "<input id='items' name='items' placeholder='Insert item...' class='form-control' required>";
+    cell3.innerHTML = "<button type='button' onclick='deleteRow(this)' class='btn btn--secondary btn--small'>-</button>";
+    cell4.innerHTML = "<button type='button' onclick='addItemRow(this)' class='btn btn--secondary btn--small'>+</button>";
 }
 
 function deleteRow(el) {

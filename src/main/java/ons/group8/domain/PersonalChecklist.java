@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -33,7 +32,9 @@ public class PersonalChecklist {
     @OneToMany(mappedBy = "personalChecklist", cascade = {CascadeType.ALL})
     private List<ChecklistItem> checklistItems;
 
-    public PersonalChecklist(User user, ChecklistTemplate checklistTemplate, LocalDate dateAssigned){
-        this(null, user, checklistTemplate, dateAssigned, null, new ArrayList<>());
+
+
+    public PersonalChecklist(User user, ChecklistTemplate checklistTemplate, LocalDate dateAssigned, List<ChecklistItem> items){
+        this(null, user, checklistTemplate, dateAssigned, null, items);
     }
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Page</title>
+    <script src="/js/data_validation.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/login-and-registration-page.css">
+</head>
+<body>
+<div class="message">
+    <h2><strong>ONS Onboarding</strong></h2>
+    <h2>Registration Page</h2>
+    <p>Register to our ONS application</p>
+</div>
+
+<div class="form">
+    <form action="/sign-up/create-user" enctype="multipart/form-data" method="post" th:object="${userForm}"
+          onsubmit="return ValidateData()" name="form1">
+
+        <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input th:field="*{firstName}" id="firstName" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input th:field="*{lastName}" id="lastName" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input th:field="*{email}" id="email" name="email" type="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title=
+                    "1) At least 1 uppercase character.
+                2) At least 1 lowercase character.
+                3) At least 1 digit.
+                4) At least 1 special character.
+                5) Minimum 8 characters.">
+            <button class="btn btn-secondary--sm" style="pointer-events: none;" type="button" disabled>?</button>
+        </span>
+            <input th:field="*{password}" id="password" type="password" name="password" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="repeatPassword">Repeat Password:</label>
+            <input th:field="*{repeatPassword}" id="repeatPassword" type="password" name="repeatPassword"
+                   class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-black">Submit</button>
+        <a href="/" class="return btn">Return to Login</a>
+    </form>
+    <br>
+    <p th:text="${error}" id="error"></p>
+</div>
+</body>
+</html>

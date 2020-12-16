@@ -2,6 +2,7 @@ package ons.group8.services;
 
 import ons.group8.domain.ChecklistItem;
 import ons.group8.domain.PersonalChecklist;
+import ons.group8.domain.User;
 import ons.group8.repositories.PersonalChecklistRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,8 @@ public class PersonalChecklistServiceImpl implements PersonalChecklistService {
         return personalChecklistRepository.getById(pChecklistId);
     }
 
-    public boolean isUserAssignedToPersonalChecklist(PersonalChecklist personalChecklist, String email) {
-        return personalChecklist.getUser().getEmail().equals(email);
+    public boolean isUserAssignedToPersonalChecklist(PersonalChecklist personalChecklist, User user) {
+        return personalChecklist.getUser().getEmail().equals(user.getEmail());
     }
 
     public List<Long> getCheckedItemIds(PersonalChecklist personalChecklist) {
@@ -50,4 +51,17 @@ public class PersonalChecklistServiceImpl implements PersonalChecklistService {
         }
         personalChecklistRepository.save(personalChecklist);
     }
+
+    public boolean isUserPersonalChecklistAuthor(PersonalChecklist personalChecklist, User user) {
+        return personalChecklist.getChecklistTemplate().getAuthor().equals(user);
+    }
+
+    public Long getCheckedItemsCount(PersonalChecklist personalChecklist) {
+        return personalChecklistRepository.getCheckedItemsCount(personalChecklist.getId());
+    }
+
+    public Long getChecklistItemsCount(PersonalChecklist personalChecklist) {
+        return (long)personalChecklist.getChecklistItems().size();
+    }
+
 }
