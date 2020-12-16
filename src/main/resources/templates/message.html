@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
 <head th:replace="fragments/header :: head"></head>
 <head>
     <meta charset="UTF-8">
     <title>Process Complete</title>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/header :: header"></div>
 
-    <h1 th:text="${title}"></h1>
-    <span th:text="${message}"></span>
-    <br>
-    <a href="/">Go to home page...</a>
+<h1 th:text="${title}"></h1>
+<span th:text="${message}"></span>
+<br>
+<a sec:authorize="!isAnonymous()" href="/">Go to home page...</a>
+<a sec:authorize="isAnonymous()" href="/">Go to login page...</a>
 </body>
 </html>
