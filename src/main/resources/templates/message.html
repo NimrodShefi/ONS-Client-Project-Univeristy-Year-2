@@ -14,6 +14,6 @@
 <span th:text="${message}"></span>
 <br>
 <a sec:authorize="!isAnonymous()" href="/">Go to home page...</a>
-<a sec:authorize="isAnonymous()" href="/">Go to login page...</a>
+<a sec:authorize="isAnonymous()" href="/login">Go to login page...</a>
 </body>
 </html>
