@@ -9,11 +9,13 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
+<div style="margin-left: 2%">
+    <h1 th:text="${title}"></h1>
+    <span th:text="${message}"></span>
+    <br>
+    <a sec:authorize="!isAnonymous()" href="/">Go to home page...</a>
+    <a sec:authorize="isAnonymous()" href="/login">Go to login page...</a>
+</div>
 
-<h1 th:text="${title}"></h1>
-<span th:text="${message}"></span>
-<br>
-<a sec:authorize="!isAnonymous()" href="/">Go to home page...</a>
-<a sec:authorize="isAnonymous()" href="/login">Go to login page...</a>
 </body>
 </html>
