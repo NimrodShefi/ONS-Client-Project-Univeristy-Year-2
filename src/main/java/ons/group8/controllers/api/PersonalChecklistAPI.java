@@ -28,8 +28,12 @@ public class PersonalChecklistAPI {
     @GetMapping("/personal-checklist/{id}/progress")
     public ChecklistProgressDTO getPersonalChecklistProgress(@PathVariable Long id, Model model) {
         Optional<PersonalChecklist> personalChecklist = personalChecklistService.getById(id);
-        Long checklistItems = personalChecklistService.getChecklistItemsCount(personalChecklist.get());
-        Long checkedItems = personalChecklistService.getCheckedItemsCount(personalChecklist.get());
+        Long checklistItems = 0L;
+        Long checkedItems = 0L;
+        if (personalChecklist.isPresent()) {
+            checklistItems = personalChecklistService.getChecklistItemsCount(personalChecklist.get());
+            checkedItems = personalChecklistService.getCheckedItemsCount(personalChecklist.get());
+        }
         return new ChecklistProgressDTO(checkedItems, checklistItems);
     }
 
