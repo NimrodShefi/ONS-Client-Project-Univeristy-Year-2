@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -39,7 +41,13 @@ public class ChecklistTemplate {
         this(null, author, list_name, description, topics);
     }
 
-    public ChecklistTemplate(ChecklistTemplate that){
-        this(that.getAuthor(), that.getName(), that.getDescription(), that.getTopics());
+    public ChecklistTemplate(ChecklistTemplate template, User author){
+        this(author,
+                template.getName(),
+                template.getDescription(),
+                template.topics
+                        .stream()
+                        .map(t -> new Topic(t, template))
+                        .collect(Collectors.toList()));
     }
 }

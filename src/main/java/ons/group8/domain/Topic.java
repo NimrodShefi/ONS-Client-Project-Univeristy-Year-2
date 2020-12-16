@@ -6,6 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -34,5 +36,20 @@ public class Topic {
 
     public Topic(String name, String description, List<ChecklistTemplateItem> items){
         this(null, null, name, description, items);
+    }
+
+    public Topic(ChecklistTemplate template, String name, String description, List<ChecklistTemplateItem> items){
+        this(null, template, name, description, items);
+    }
+
+    public Topic(Topic topicToClone, ChecklistTemplate clonedTemplate) {
+        this(null,
+                clonedTemplate,
+                topicToClone.getName(),
+                topicToClone.getDescription(),
+                topicToClone.items
+                        .stream()
+                        .map(i -> new ChecklistTemplateItem(topicToClone, topicToClone.description))
+                        .collect(Collectors.toList()));
     }
 }

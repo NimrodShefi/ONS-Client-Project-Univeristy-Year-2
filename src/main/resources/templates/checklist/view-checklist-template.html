@@ -6,15 +6,19 @@
 </head>
 <body>
     <div th:replace="fragments/header :: header"></div>
+    <a th:if="${viewMode} == clone" th:id="@{checklistTemplateLink{id} (id=${checklist.id})}"
+       th:href="@{/author/create-from-clone/checklist-template/{id}/clone (id=${checklist.id})}">
+        <span>Clone</span>
+    </a>
     <div>
         <h1 th:text="${checklist.name}"></h1>
-        <button th:value="${checklist.id}">Edit Title & Description</button>
+        <button th:if="${viewMode} != clone" th:value="${checklist.id}">Edit Title & Description</button>
         <div th:text="${checklist.description}"></div>
     </div>
 
     <div th:each="topic : ${checklist.topics}">
         <h2 th:text="${topic.name}"></h2>
-        <button th:value="${topic.id}">Edit Topic</button>
+        <button th:if="${viewMode} != clone" th:value="${topic.id}">Edit Topic</button>
         <div th:text="${topic.description}"></div>
 
         <table>
@@ -29,18 +33,21 @@
         </table>
     </div>
 
-    <h2>Assigned To:</h2>
-    <button>edit assigned users</button>
-    <br>
-    <table>
-        <tbody>
-        <tr th:each="personalChecklist : ${personalChecklists}">
-            <td th:text="|${personalChecklist.user.firstName} ${personalChecklist.user.lastName}|"></td>
-            <td><a th:href="@{/personal-checklist/{id} (id=${personalChecklist.id})}"> <button>View Checklist</button></a></td>
-        </tr>
-        </tbody>
+    <div th:if="${viewMode} != clone">
+        <h2>Assigned To:</h2>
+        <button>edit assigned users</button>
+        <br>
+        <table>
+            <tbody>
+            <tr th:each="personalChecklist : ${personalChecklists}">
+                <td th:text="|${personalChecklist.user.firstName} ${personalChecklist.user.lastName}|"></td>
+                <td><a th:href="@{/personal-checklist/{id} (id=${personalChecklist.id})}"> <button>View Checklist</button></a></td>
+            </tr>
+            </tbody>
 
-    </table>
+        </table>
+    </div>
+
 
 </body>
 </html>

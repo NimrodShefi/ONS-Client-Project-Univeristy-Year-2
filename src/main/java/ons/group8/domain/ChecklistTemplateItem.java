@@ -29,4 +29,8 @@ public class ChecklistTemplateItem {
     public ChecklistTemplateItem(String description){
         this(null, null, description);
     }
+
+    public ChecklistTemplateItem(Topic topic, String description){
+        this(null, topic, description);
+    }
 }

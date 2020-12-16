@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>View Checklist Authors</title>
+<head th:replace="fragments/header :: head">
+    <title>Clone Checklist Template</title>
 </head>
 <body>
-<ul th:each="author : ${authors}">
-    <li>
-            <span th:text="${author.getFirstName()}"></span>
-            <span th:text="${author.getLastName()}"></span>
-    </li>
-</ul>
+    <h1>Create Checklist Template from Existing</h1>
+    <ul th:each="template : ${checklistTemplates}">
+        <li>
+            <a th:id="@{checklistTemplateLink{id} (id=${template.id})}"
+               th:href="@{/author/create-from-clone/checklist-template/{id} (id=${template.id})}">
+                <span th:text="${template.getName()}"></span>
+            </a>
+        </li>
+    </ul>
 </body>
 </html>

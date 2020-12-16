@@ -19,4 +19,9 @@ public interface AuthorService {
     List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate);
 
     List<ChecklistTemplate> getAllByAuthorEmail(String authorEmail);
+
+    List<ChecklistTemplate> findAllChecklistTemplates();
+
+    void cloneChecklistTemplate(ChecklistTemplate checklistTemplate, User author);
+
 }

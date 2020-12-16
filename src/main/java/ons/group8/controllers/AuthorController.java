@@ -61,7 +61,7 @@ public class AuthorController {
 
     @GetMapping("view-checklist-templates")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String viewChecklistTemplates(Principal principal, Model model){
+    public String viewAuthorsChecklistTemplates(Principal principal, Model model){
         logger.debug("Getting checklist template list for author: " + principal.getName());
         System.out.println(getChecklistForm());
         List<ChecklistTemplate> checklistTemplates = authorService.getAllByAuthorEmail(principal.getName());
@@ -173,4 +173,42 @@ public class AuthorController {
             }
         }
     }
+
+    @GetMapping("/create-from-clone/checklist-templates-list")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String viewAllChecklistTemplates(Model model){
+        List<ChecklistTemplate> checklistTemplates = authorService.findAllChecklistTemplates();
+        model.addAttribute("checklistTemplates", checklistTemplates);
+        return "view-checklist-authors";
+    }
+
+    @GetMapping("/create-from-clone/checklist-template/{id}")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String viewChecklistTemplateToClone(@PathVariable(name = "id") Long checklistId, Model model){
+        try {
+            ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
+            model.addAttribute("checklist", checklistTemplate);
+            model.addAttribute("viewMode", "clone");
+            return "checklist/view-checklist-template";
+        } catch (NullPointerException e){
+            model.addAttribute("title", "Missing Checklist");
+            model.addAttribute("message", "The checklist you are looking for could not be found");
+            return "message";
+        }
+    }
+
+    @GetMapping("/create-from-clone/checklist-template/{id}/clone")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String cloneChecklistTemplate(@PathVariable(name = "id") Long checklistId, Model model){
+        System.out.println("Clone checklist");
+        User activeUser = userService.getLoggedInUserId();
+        ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
+        authorService.cloneChecklistTemplate(checklistTemplate, activeUser);
+        model.addAttribute("title", "Process Completed");
+        model.addAttribute("message", "The checklist is cloned and saved");
+        return "message";
+    }
+
+
+
 }
