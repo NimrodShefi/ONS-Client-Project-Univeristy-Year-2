@@ -52,19 +52,6 @@ public class SignupTests {
     }
 
     @Test
-    public void should_fail_to_add_user_due_to_wrong_password_format() throws Exception {
-        try {
-            UserCreationEvent user = new UserCreationEvent("nimrodshefi@cardiff.ac.uk", "Nimrod", "Shefi", "123", "123");
-            userService.save(user);
-
-            User retrievedUser = userRepository.findUserByEmail(user.getEmail());
-            assertEquals(user.getEmail(), retrievedUser.getEmail());
-        } catch (DataFormatException dataFormatException) {
-            assertEquals("Password Format is wrong", dataFormatException.getMessage());
-        }
-    }
-
-    @Test
     public void should_fail_to_add_user_due_to_wrong_email_format_1() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi@gamil.com", "Nimrod", "Shefi", "Password1!", "Password1!");
@@ -102,6 +89,40 @@ public class SignupTests {
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
             assertEquals("Email already exists.", sqlIntegrityConstraintViolationException.getMessage());
+        }
+    }
+
+    @Test
+    public void should_fail_to_add_user_due_to_wrong_password_format() throws Exception {
+        /*
+            when running all of the tests together, if the email here is the same as one of teh already finished tests,
+            this will fail because the emails from previous tests still exists in memory
+         */
+        try {
+            UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi", "123", "123");
+            userService.save(user);
+
+            User retrievedUser = userRepository.findUserByEmail(user.getEmail());
+            assertEquals(user.getEmail(), retrievedUser.getEmail());
+        } catch (DataFormatException dataFormatException) {
+            assertEquals("Password Format is wrong", dataFormatException.getMessage());
+        }
+    }
+
+    @Test
+    public void should_fail_to_add_user_due_to_not_same_repeated_password() throws Exception {
+        /*
+            when running all of the tests together, if the email here is the same as one of teh already finished tests,
+            this will fail because the emails from previous tests still exists in memory
+         */
+        try {
+            UserCreationEvent user = new UserCreationEvent("nimrodshefi02@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "123");
+            userService.save(user);
+
+            User retrievedUser = userRepository.findUserByEmail(user.getEmail());
+            assertEquals(user.getEmail(), retrievedUser.getEmail());
+        } catch (DataFormatException dataFormatException) {
+            assertEquals("Passwords don't match", dataFormatException.getMessage());
         }
     }
 }
