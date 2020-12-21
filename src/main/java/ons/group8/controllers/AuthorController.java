@@ -55,14 +55,13 @@ public class AuthorController {
     public String viewChecklistAuthors(Model model){
         List<User> authors = authorService.findUsersByRoles(roleRepository.getRoleByName("AUTHOR"));
         model.addAttribute("authors", authors);
-        return "clone-templates-list-";
+        return "checklist/clone-templates-list";
     }
 
     @GetMapping("view-checklist-templates")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String viewAuthorsChecklistTemplates(Principal principal, Model model){
         logger.debug("Getting checklist template list for author: " + principal.getName());
-        System.out.println(getChecklistForm());
         List<ChecklistTemplate> checklistTemplates = authorService.getAllByAuthorEmail(principal.getName());
         model.addAttribute("checklistTemplates", checklistTemplates);
         return "checklist/view-all-checklist-templates";
@@ -92,7 +91,7 @@ public class AuthorController {
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String startChecklistForm(Model model, @ModelAttribute("checklistForm") ChecklistTemplateForm checklistTemplateForm) {
         model.addAttribute("checklist", checklistTemplateForm);
-        return "checklist/checklist-title-and-description";
+        return "checklist/createBlank/checklist-title-and-description";
     }
 
     @PostMapping("checklist-title-and-description")
@@ -103,14 +102,14 @@ public class AuthorController {
             for (ObjectError oe : bindings.getAllErrors()) {
                 System.out.println(oe);
             }
-            return "checklist/checklist-title-and-description";
+            return "checklist/createBlank/checklist-title-and-description";
         } else {
             checklistTemplateForm.setTitle(formValues.getTitle());
             checklistTemplateForm.setTitleDescription(formValues.getTitleDescription());
             model.addAttribute("title", formValues.getTitle());
             model.addAttribute("titleDescription", formValues.getTitleDescription());
             model.addAttribute("topicForm", new TopicForm());
-            return "checklist/checklist-topic";
+            return "checklist/createBlank/checklist-topic";
         }
     }
 
@@ -122,7 +121,7 @@ public class AuthorController {
             for (ObjectError oe : bindings.getAllErrors()) {
                 System.out.println(oe);
             }
-            return "checklist/checklist-topic";
+            return "checklist/createBlank/checklist-topic";
         } else {
             List<ChecklistTemplateItem> items = new ArrayList<>();
             for (String item : topic.getItems()) {
@@ -133,11 +132,11 @@ public class AuthorController {
             model.addAttribute("titleDescription", checklistTemplateForm.getTitleDescription());
             if ("true".equals(topic.getAnotherTopic())) {
                 model.addAttribute("topicForm", new TopicForm());
-                return "checklist/checklist-topic";
+                return "checklist/createBlank/checklist-topic";
             } else {
                 model.addAttribute("users", authorService.findUsersByRoles(roleRepository.getRoleByName("USER")));
                 model.addAttribute("assignedTo", new AssignedToForm());
-                return "checklist/assign-to";
+                return "checklist/createBlank/assign-to";
             }
         }
     }
@@ -150,7 +149,7 @@ public class AuthorController {
             for (ObjectError oe : bindings.getAllErrors()) {
                 System.out.println(oe);
             }
-            return "checklist/assign-to";
+            return "checklist/createBlank/assign-to";
         } else {
             List<User> users = new ArrayList<>();
             for (Long userId : formValues.getId()) {
@@ -178,7 +177,7 @@ public class AuthorController {
     public String viewAllChecklistTemplates(Model model){
         List<ChecklistTemplate> checklistTemplates = authorService.findAllChecklistTemplates();
         model.addAttribute("checklistTemplates", checklistTemplates);
-        return "clone-templates-list-";
+        return "checklist/clone-templates-list";
     }
 
     @GetMapping("/create-from-clone/checklist-template/{id}")

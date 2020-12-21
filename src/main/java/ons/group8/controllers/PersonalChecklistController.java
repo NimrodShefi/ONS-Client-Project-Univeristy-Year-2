@@ -40,7 +40,7 @@ public class PersonalChecklistController {
         logger.debug("Getting personal checklist list for user: " + principal.getName());
         List<PersonalChecklist> personalChecklists = personalChecklistService.findAllPersonalChecklistsByUserEmail(principal.getName());
         model.addAttribute("personalChecklists", personalChecklists);
-        return "personal-checklist-list";
+        return "checklist/personal-checklist-list";
     }
 
     @GetMapping("personal-checklist/{id}")
