@@ -33,6 +33,10 @@ public class SignupTests {
     @Autowired
     private UserRepositoryJPA userRepository;
 
+    /*
+        when running all of the tests together, if the email here is the same as one of teh already finished tests,
+        this will fail because the emails from previous tests still exists in memory
+     */
     @Test
     public void should_get_signup_page() throws Exception {
 
@@ -94,10 +98,6 @@ public class SignupTests {
 
     @Test
     public void should_fail_to_add_user_due_to_wrong_password_format() throws Exception {
-        /*
-            when running all of the tests together, if the email here is the same as one of teh already finished tests,
-            this will fail because the emails from previous tests still exists in memory
-         */
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi", "123", "123");
             userService.save(user);
@@ -111,10 +111,7 @@ public class SignupTests {
 
     @Test
     public void should_fail_to_add_user_due_to_not_same_repeated_password() throws Exception {
-        /*
-            when running all of the tests together, if the email here is the same as one of teh already finished tests,
-            this will fail because the emails from previous tests still exists in memory
-         */
+
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi02@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "123");
             userService.save(user);
@@ -123,6 +120,59 @@ public class SignupTests {
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
             assertEquals("Passwords don't match", dataFormatException.getMessage());
+        }
+    }
+
+    @Test
+    public void should_fail_to_add_user_due_to_first_name_containing_more_than_letters_numbers() throws Exception {
+        try {
+            UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod1", "Shefi", "Password1!", "Password1!");
+            userService.save(user);
+
+            User retrievedUser = userRepository.findUserByEmail(user.getEmail());
+            assertEquals(user.getEmail(), retrievedUser.getEmail());
+        } catch (DataFormatException dataFormatException) {
+            assertEquals("First Name can only contain letters", dataFormatException.getMessage());
+        }
+    }
+
+    @Test
+    public void should_fail_to_add_user_due_to_first_name_containing_more_than_letters_special_characters() throws Exception {
+        try {
+            UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod!", "Shefi", "Password1!", "Password1!");
+            userService.save(user);
+
+            User retrievedUser = userRepository.findUserByEmail(user.getEmail());
+            assertEquals(user.getEmail(), retrievedUser.getEmail());
+        } catch (DataFormatException dataFormatException) {
+            assertEquals("First Name can only contain letters", dataFormatException.getMessage());
+        }
+    }
+
+    @Test
+    public void should_fail_to_add_user_due_to_last_name_containing_more_than_letters_numbers() throws Exception {
+        try {
+            UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi1", "Password1!", "Password1!");
+            System.out.println(user.getLastName());
+            userService.save(user);
+
+            User retrievedUser = userRepository.findUserByEmail(user.getEmail());
+            assertEquals(user.getEmail(), retrievedUser.getEmail());
+        } catch (DataFormatException dataFormatException) {
+            assertEquals("Last Name can only contain letters", dataFormatException.getMessage());
+        }
+    }
+
+    @Test
+    public void should_fail_to_add_user_due_to_last_name_containing_more_than_letters_special_characters() throws Exception {
+        try {
+            UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi£", "Password1!", "Password1!");
+            userService.save(user);
+
+            User retrievedUser = userRepository.findUserByEmail(user.getEmail());
+            assertEquals(user.getEmail(), retrievedUser.getEmail());
+        } catch (DataFormatException dataFormatException) {
+            assertEquals("Last Name can only contain letters", dataFormatException.getMessage());
         }
     }
 }

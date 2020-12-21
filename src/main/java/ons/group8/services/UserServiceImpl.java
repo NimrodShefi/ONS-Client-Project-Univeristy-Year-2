@@ -51,6 +51,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    private boolean firstNameValidation(String firstName) {
+        Matcher matcher = Pattern.compile(".*[0-9@<>+*/=!\"£$%^&()`¬\\\\|;:?,#~{}].*").matcher(firstName);
+        // if the regex has a match with firstName than it means it contains one of the illegal characters and should return false
+        return !matcher.find();
+    }
+
+    private boolean lastNameValidation(String lastName) {
+        Matcher matcher = Pattern.compile(".*[0-9@<>+*/=!\"£$%^&()`¬\\\\|;:?,#~{}].*").matcher(lastName);
+        // if the regex has a match with lastName than it means it contains one of the illegal characters and should return false
+        return !matcher.find();
+    }
+
     private boolean emailValidation(String email) {
         Matcher matcher = Pattern.compile("^[^\\s@<>+*/=!\"£$%^&()`¬\\\\|;:?,#~]+@cardiff.ac.uk").matcher(email);
 
@@ -76,14 +88,26 @@ public class UserServiceImpl implements UserService {
         boolean emailFormat = emailValidation(user.getEmail());
         boolean passwordFormat = passwordValidation(user.getPassword());
         boolean samePassword = samePasswordValidation(user.getPassword(), user.getRepeatPassword());
+        boolean firstName = firstNameValidation(user.getFirstName());
+        boolean lastName = lastNameValidation(user.getLastName());
 
-        if (!(passwordFormat && samePassword && emailFormat)) {
-            if (!passwordFormat){
+        if (!(passwordFormat && samePassword && emailFormat && firstName && lastName)) {
+            if (!passwordFormat) {
                 throw new DataFormatException("Password Format is wrong");
-            } else if (!samePassword){
+            } else if (!samePassword) {
                 throw new DataFormatException("Passwords don't match");
-            } else if (!emailFormat){
+            } else if (!emailFormat) {
                 throw new DataFormatException("Email Format is wrong");
+            } else if (!firstName) {
+                System.out.println("First Name");
+                System.out.println(firstName);
+                System.out.println(user.getFirstName());
+                throw new DataFormatException("First Name can only contain letters");
+            } else if (!lastName) {
+                System.out.println("Last Name");
+                System.out.println(lastName);
+                System.out.println(user.getLastName());
+                throw new DataFormatException("Last Name can only contain letters");
             }
         }
     }
@@ -98,19 +122,19 @@ public class UserServiceImpl implements UserService {
     }
 
     //getting the user id of the logged in person
-    public User getLoggedInUserId(){
+    public User getLoggedInUserId() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
-        if (principal instanceof UserDetails){
-            username = ((UserDetails)principal).getUsername();
-        }else {
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
             username = principal.toString();
         }
         return findByEmail(username);
     }
 
     @Override
-    public Set<User> findUsersByFirstName(String firstName){
+    public Set<User> findUsersByFirstName(String firstName) {
         return userRepository.findUsersByFirstName(firstName);
     }
 }
