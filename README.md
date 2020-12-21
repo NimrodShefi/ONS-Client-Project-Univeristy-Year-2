@@ -2,6 +2,8 @@
 
 INSTRUCTIONS
 Before running the application, seperately run the schema.sql and the data.sql externally on workbench.
+
+
 Application URL: https://localhost:8443/
 
 LOGIN IN DETAILS
