@@ -19,7 +19,7 @@ public class ChecklistTest {
     private MockMvc mockMvc;
 
     /**
-     * This test checks if the user accessing the page has permission to access the page. Only authors should be allowed
+     * These tests checks if the user accessing the page has permission to access the page. Only authors should be allowed
      */
     @Test
     @WithMockUser(roles = {"AUTHOR"})
@@ -31,9 +31,6 @@ public class ChecklistTest {
                 .andExpect(status().isOk());
     }
 
-    /**
-     * This test checks if the user accessing the page has permission to access the page. Only authors should be allowed
-     */
     @Test
     @WithMockUser(roles = {"USER", "ADMIN"})
     public void should_fail_to_get_view_all_checklists_page() throws Exception {
@@ -44,13 +41,6 @@ public class ChecklistTest {
                 .andExpect(status().isForbidden()); // isForbidden gives https status of 403, which is what is thrown when trying to access a page without permission
     }
 
-    /*
-    STARTING THE PAGES FOR BLANK CHECKLIST FORM
-     */
-
-    /**
-     * This test checks if the user accessing the page has permission to access the page. Only authors should be allowed
-     */
     @Test
     @WithMockUser(roles = {"AUTHOR"})
     public void should_get_checklist_title_and_description() throws Exception {
@@ -61,9 +51,6 @@ public class ChecklistTest {
                 .andExpect(status().isOk());
     }
 
-    /**
-     * This test checks if the user accessing the page has permission to access the page. Only authors should be allowed
-     */
     @Test
     @WithMockUser(roles = {"USER", "ADMIN"})
     public void should_fail_to_get_checklist_title_and_description() throws Exception {
