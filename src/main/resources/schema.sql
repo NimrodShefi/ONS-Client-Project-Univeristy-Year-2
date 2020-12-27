@@ -12,8 +12,6 @@ CREATE TABLE IF NOT EXISTS USER (
   account_non_locked tinyint NOT NULL default 1,
   lock_time datetime,
   enabled tinyint NOT NULL default 1,
-
-
   PRIMARY KEY (id),
   CONSTRAINT email_unique UNIQUE (email))
 ENGINE = InnoDB;
@@ -150,10 +148,6 @@ END $$
 DELIMITER ;
 
 
-
-
-
-
 -- Stored procedure to get a count of the checklist items that have been checked
 DROP PROCEDURE IF EXISTS getCheckedItemsCountForPersonalChecklist;
 
@@ -173,9 +167,7 @@ END//
 DELIMITER ;
 
 
-
-
-
+ -- CREATING DB USER 
 CREATE USER IF NOT EXISTS 'onsUser'@'localhost' IDENTIFIED BY '2Nng2?9P6q47QJLAL=^3';
 
 grant usage on ons.* to 'onsUser'@'localhost';
