@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Test;
 
 public class GenerateModel {
 
-    private final static int WORKSPACE_ID = 61657;
+    private final static int WORKSPACE_ID = 62004;
 
-    private final static String API_KEY = "32495347-6670-4315-98fb-b3ee9ba99eda";
+    private final static String API_KEY = "aa1afc51-af21-4cc6-861b-b32bf2b3acc4";
 
-    private final static String API_SECRET = "3770f3c4-4e1d-4d7a-8f22-579b319f79f9";
+    private final static String API_SECRET = "3484ad9a-eb78-4b45-83d0-59ce46f349a0";
 
     public  static void main(String[] args) {
         GenerateModel structurizr = new GenerateModel();
@@ -126,7 +126,7 @@ public class GenerateModel {
                 String sourcePath = codeElement.getUrl();
                 if (sourcePath != null) {
                     codeElement.setUrl(
-                            "https://git.cardiff.ac.uk/c1946094/ons-client-project-group-8/-/tree/master");
+                            "https://git.cardiff.ac.uk/ase-2020/cm6213/journals/c1989618-nimrod-shefi/year-2/term-1/ons-client-project-group-8/-/tree/master");
                 }
             }
         }
