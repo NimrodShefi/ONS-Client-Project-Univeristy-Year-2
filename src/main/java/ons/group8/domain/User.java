@@ -30,6 +30,7 @@ public class User {
     @ColumnTransformer(
             read = "AES_DECRYPT(email, 'key')",
             write = "AES_ENCRYPT(?, 'key')"
+            //https://www.programmersought.com/article/4488957993/
     )
     private String email;
 
