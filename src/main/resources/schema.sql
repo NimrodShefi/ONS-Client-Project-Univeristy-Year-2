@@ -131,9 +131,9 @@ DELIMITER $$
 CREATE TRIGGER `user_validate_insert`
 BEFORE INSERT ON `user` FOR EACH ROW
 BEGIN
-		CALL validate_email(NEW.email);
-        CALL validate_user_first_name(NEW.first_name);
-        CALL validate_user_last_name(NEW.last_name);
+		CALL validate_email(AES_DECRYPT(NEW.email,'key'));
+		CALL validate_user_first_name(AES_DECRYPT(NEW.first_name,'key'));
+		CALL validate_user_last_name(AES_DECRYPT(NEW.last_name,'key'));
 END$$
 DELIMITER ;
 
@@ -141,9 +141,9 @@ DELIMITER $$
 CREATE TRIGGER user_validate_update
 BEFORE UPDATE ON `user` FOR EACH ROW
 BEGIN
-		CALL validate_email(NEW.email);
-		CALL validate_user_first_name(NEW.first_name);
-		CALL validate_user_last_name(NEW.last_name);
+		CALL validate_email(AES_DECRYPT(NEW.email,'key'));
+		CALL validate_user_first_name(AES_DECRYPT(NEW.first_name,'key'));
+		CALL validate_user_last_name(AES_DECRYPT(NEW.last_name,'key'));
 END $$
 DELIMITER ;
 
