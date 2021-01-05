@@ -47,17 +47,33 @@ public class UserServiceImpl implements UserService {
             user.addRole(userRole);
             userRepository.save(user); // The save() method returns the saved entity, including the id field which was null up until now.
         } catch (Exception e) {
+            e.printStackTrace();
             throw e;
         }
     }
 
-    private boolean emailValidation(String email) {
+    private boolean nameValidation(String name) throws DataFormatException {
+        if (name.equals("") || name == null){
+            throw new DataFormatException("Name is empty. Please input your name");
+        }
+        Matcher matcher = Pattern.compile("^[a-zA-Z]*$").matcher(name);
+
+        return matcher.find();
+    }
+
+    private boolean emailValidation(String email) throws DataFormatException {
+        if (email.equals("") || email == null){
+            throw new DataFormatException("Email is empty. Please input your email");
+        }
         Matcher matcher = Pattern.compile("^[^\\s@<>+*/=!\"£$%^&()`¬\\\\|;:?,#~]+@cardiff.ac.uk").matcher(email);
 
         return matcher.find();
     }
 
-    private boolean passwordValidation(String password) {
+    private boolean passwordValidation(String password) throws DataFormatException {
+        if (password.equals("") || password == null){
+            throw new DataFormatException("Password is empty. Please input your password");
+        }
         Matcher matcher1 = Pattern.compile(".*[a-z].*").matcher(password); // must contain lower-case
         Matcher matcher2 = Pattern.compile(".*[A-Z.].*").matcher(password); // must contain upper-case
         Matcher matcher3 = Pattern.compile(".*[\\d].*").matcher(password); // must contain a number
@@ -68,7 +84,10 @@ public class UserServiceImpl implements UserService {
                 && matcher4.find();
     }
 
-    private boolean samePasswordValidation(String password, String repeatPassword) {
+    private boolean samePasswordValidation(String password, String repeatPassword) throws DataFormatException {
+        if (repeatPassword.equals("") || repeatPassword == null){
+            throw new DataFormatException("Please input your password in both fields");
+        }
         return password.equals(repeatPassword);
     }
 
@@ -76,14 +95,18 @@ public class UserServiceImpl implements UserService {
         boolean emailFormat = emailValidation(user.getEmail());
         boolean passwordFormat = passwordValidation(user.getPassword());
         boolean samePassword = samePasswordValidation(user.getPassword(), user.getRepeatPassword());
+        boolean firstName = nameValidation(user.getFirstName());
+        boolean lastName = nameValidation(user.getLastName());
 
-        if (!(passwordFormat && samePassword && emailFormat)) {
+        if (!(passwordFormat && samePassword && emailFormat && firstName && lastName)) {
             if (!passwordFormat){
                 throw new DataFormatException("Password Format is wrong");
             } else if (!samePassword){
                 throw new DataFormatException("Passwords don't match");
             } else if (!emailFormat){
                 throw new DataFormatException("Email Format is wrong");
+            } else if (!firstName || !lastName){
+                throw new DataFormatException("Names can only contain letters");
             }
         }
     }
