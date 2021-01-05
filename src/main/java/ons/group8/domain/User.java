@@ -27,27 +27,14 @@ public class User {
 
     @NotNull
     @NotEmpty
-    @ColumnTransformer(
-            read = "AES_DECRYPT(email, 'key')",
-            write = "AES_ENCRYPT(?, 'key')"
-            //https://www.programmersought.com/article/4488957993/
-    )
     private String email;
 
     @NotNull
     @NotEmpty
-    @ColumnTransformer(
-            read = "AES_DECRYPT(first_name, 'key')",
-            write = "AES_ENCRYPT(?, 'key')"
-    )
     private String firstName;
 
     @NotNull
     @NotEmpty
-    @ColumnTransformer(
-            read = "AES_DECRYPT(last_name, 'key')",
-            write = "AES_ENCRYPT(?, 'key')"
-    )
     private String lastName;
 
     @NotNull
