@@ -33,6 +33,13 @@ function ValidateName(name) {
     }
 }
 
+function resetClassInputColour(){
+    const elements = document.getElementsByClassName("input");
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.borderColor="grey";
+    }
+}
+
 function ValidateData() {
     let emailFormat = ValidateEmail();
     let passwordFormat = ValidatePassword();
@@ -42,24 +49,29 @@ function ValidateData() {
     if (emailFormat && passwordFormat && samePasswordInput && firstNameInput && lastNameInput){
         return true;
     } else {
+        resetClassInputColour();
         if (emailFormat === false){
-            document.getElementById("error").innerText = "There is a problem in the email";
+            document.getElementById("error").innerText = "There is a problem in the email. example@cardiff.ac.uk";
             document.form1.email.focus();
+            document.form1.email.style.borderColor = "red";
         } else if (passwordFormat === false){
-            document.getElementById("error").innerText = "There is a problem in the password";
+            document.getElementById("error").innerText = "There is a problem in the password. Look at the rules provided";
             document.form1.password.focus();
+            document.form1.password.style.borderColor = "red";
         } else if (samePasswordInput === false){
             document.getElementById("error").innerText = "The passwords don't match each other";
             document.form1.repeatPassword.focus();
+            document.form1.repeatPassword.style.borderColor = "red";
         } else if (firstNameInput === false){
-            document.getElementById("error").innerText = "There is a problem in the first name";
+            document.getElementById("error").innerText = "There is a problem in the first name. Name can only contain letters";
             document.form1.firstName.focus();
+            document.form1.firstName.style.borderColor = "red";
         } else if (lastNameInput === false){
-            document.getElementById("error").innerText = "There is a problem in the last name";
+            document.getElementById("error").innerText = "There is a problem in the last name. Name can only contain letters";
             document.form1.lastName.focus();
+            document.form1.lastName.style.borderColor = "red";
         }
 
-        document.getElementById("error").style.display="block";
         return false;
     }
 }
