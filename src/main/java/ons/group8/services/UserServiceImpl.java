@@ -49,9 +49,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private boolean nameValidation(String name) throws DataFormatException {
+    private boolean nameValidation(String name, String text) throws DataFormatException {
         if (name.equals("") || name == null) {
-            throw new DataFormatException("Name is empty. Please input your name");
+            throw new DataFormatException(text + " is empty. Please input your name");
         }
         Matcher matcher = Pattern.compile("^[a-zA-Z]*$").matcher(name);
 
@@ -92,8 +92,8 @@ public class UserServiceImpl implements UserService {
         boolean emailFormat = emailValidation(user.getEmail());
         boolean passwordFormat = passwordValidation(user.getPassword());
         boolean samePassword = samePasswordValidation(user.getPassword(), user.getRepeatPassword());
-        boolean firstName = nameValidation(user.getFirstName());
-        boolean lastName = nameValidation(user.getLastName());
+        boolean firstName = nameValidation(user.getFirstName(), "First Name");
+        boolean lastName = nameValidation(user.getLastName(), "Last Name");
 
         if (!(passwordFormat && samePassword && emailFormat && firstName && lastName)) {
             if (!passwordFormat) {
@@ -102,8 +102,10 @@ public class UserServiceImpl implements UserService {
                 throw new DataFormatException("Passwords don't match");
             } else if (!emailFormat) {
                 throw new DataFormatException("Email Format is wrong");
-            } else if (!firstName || !lastName) {
-                throw new DataFormatException("Names can only contain letters");
+            } else if (!firstName) {
+                throw new DataFormatException("First Name can only contain letters");
+            } else if (!lastName){
+                throw new DataFormatException("Last Name can only contain letters");
             }
         }
         if (userRepository.existsByEmail(user.getEmail())) {
