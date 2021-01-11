@@ -1,6 +1,3 @@
-// function ValidateEmail taken from: https://www.w3resource.com/javascript/form/email-validation.php
-// however, regex was taken from here: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
-
 function ValidateEmail(){
     const email = document.form1.email.value;
     const mailFormat = /^[^\s@<>+*/=!"£$%^&()`¬\\|;:?,#~]+@cardiff.ac.uk/;
@@ -10,7 +7,7 @@ function ValidateEmail(){
 
 function ValidatePassword() {
     const password = document.form1.password.value;
-    // regex was taken from online and the format of code was from recommendation of IntellijJ instead of the usual if else format
+    // regex was from Carl and the format of code was from recommendation of IntellijJ instead of the usual if else format
     return !!(password.match(/[a-z]/g)
         && password.match(/[A-Z]/g)
         && password.match(/[0-9]/g)
@@ -26,7 +23,7 @@ function ValidateSamePasswordInput() {
 
 function ValidateName(name) {
     const nameFormat = /^[a-zA-Z]*$/;
-    if (name){
+    if (name){ // this checks that it is not empty
         return !!name.match(nameFormat);
     } else {
         return false;
