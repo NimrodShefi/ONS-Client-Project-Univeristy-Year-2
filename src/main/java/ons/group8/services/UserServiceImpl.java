@@ -38,26 +38,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(UserCreationEvent newUser) throws SQLIntegrityConstraintViolationException, DataFormatException {
         try {
-            if (userRepository.existsByEmail(newUser.getEmail())) {
-                throw new SQLIntegrityConstraintViolationException("Email already exists.");
-            }
             validateData(newUser);
             Role userRole = roleRepository.getRoleByName("USER");
             User user = new User(newUser.getEmail().toLowerCase(), passwordEncoder.encode(newUser.getPassword()), newUser.getFirstName(), newUser.getLastName());
             user.addRole(userRole);
-            userRepository.save(user); // The save() method returns the saved entity, including the id field which was null up until now.
+            userRepository.save(user);
         } catch (Exception e) {
+            e.printStackTrace();
             throw e;
         }
     }
 
-    private boolean emailValidation(String email) {
+    private boolean nameValidation(String name, String text) throws DataFormatException {
+        if (name.equals("") || name == null) {
+            throw new DataFormatException(text + " is empty. Please input your name");
+        }
+        Matcher matcher = Pattern.compile("^[a-zA-Z]*$").matcher(name);
+
+        return matcher.find();
+    }
+
+    private boolean emailValidation(String email) throws DataFormatException {
+        if (email.equals("") || email == null) {
+            throw new DataFormatException("Email is empty. Please input your email");
+        }
         Matcher matcher = Pattern.compile("^[^\\s@<>+*/=!\"£$%^&()`¬\\\\|;:?,#~]+@cardiff.ac.uk").matcher(email);
 
         return matcher.find();
     }
 
-    private boolean passwordValidation(String password) {
+    private boolean passwordValidation(String password) throws DataFormatException {
+        if (password.equals("") || password == null) {
+            throw new DataFormatException("Password is empty. Please input your password");
+        }
         Matcher matcher1 = Pattern.compile(".*[a-z].*").matcher(password); // must contain lower-case
         Matcher matcher2 = Pattern.compile(".*[A-Z.].*").matcher(password); // must contain upper-case
         Matcher matcher3 = Pattern.compile(".*[\\d].*").matcher(password); // must contain a number
@@ -68,23 +81,35 @@ public class UserServiceImpl implements UserService {
                 && matcher4.find();
     }
 
-    private boolean samePasswordValidation(String password, String repeatPassword) {
+    private boolean samePasswordValidation(String password, String repeatPassword) throws DataFormatException {
+        if (repeatPassword.equals("") || repeatPassword == null) {
+            throw new DataFormatException("Please input your password in both fields");
+        }
         return password.equals(repeatPassword);
     }
 
-    private void validateData(UserCreationEvent user) throws DataFormatException {
+    private void validateData(UserCreationEvent user) throws DataFormatException, SQLIntegrityConstraintViolationException {
         boolean emailFormat = emailValidation(user.getEmail());
         boolean passwordFormat = passwordValidation(user.getPassword());
         boolean samePassword = samePasswordValidation(user.getPassword(), user.getRepeatPassword());
+        boolean firstName = nameValidation(user.getFirstName(), "First Name");
+        boolean lastName = nameValidation(user.getLastName(), "Last Name");
 
-        if (!(passwordFormat && samePassword && emailFormat)) {
-            if (!passwordFormat){
+        if (!(passwordFormat && samePassword && emailFormat && firstName && lastName)) {
+            if (!passwordFormat) {
                 throw new DataFormatException("Password Format is wrong");
-            } else if (!samePassword){
+            } else if (!samePassword) {
                 throw new DataFormatException("Passwords don't match");
-            } else if (!emailFormat){
+            } else if (!emailFormat) {
                 throw new DataFormatException("Email Format is wrong");
+            } else if (!firstName) {
+                throw new DataFormatException("First Name can only contain letters");
+            } else if (!lastName){
+                throw new DataFormatException("Last Name can only contain letters");
             }
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new SQLIntegrityConstraintViolationException("Email already exists");
         }
     }
 
@@ -98,19 +123,19 @@ public class UserServiceImpl implements UserService {
     }
 
     //getting the user id of the logged in person
-    public User getLoggedInUserId(){
+    public User getLoggedInUserId() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
-        if (principal instanceof UserDetails){
-            username = ((UserDetails)principal).getUsername();
-        }else {
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
             username = principal.toString();
         }
         return findByEmail(username);
     }
 
     @Override
-    public Set<User> findUsersByFirstName(String firstName){
+    public Set<User> findUsersByFirstName(String firstName) {
         return userRepository.findUsersByFirstName(firstName);
     }
 }
