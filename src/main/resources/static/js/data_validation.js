@@ -72,3 +72,7 @@ function ValidateData() {
         return false;
     }
 }
+
+$(document).on("submit", function () {
+    return ValidateData();
+})
