@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,13 @@ public class PersonalChecklistController {
             logger.debug("Found personal checklist with id: " + pChecklistId);
             if (personalChecklistService.isUserAssignedToPersonalChecklist(personalChecklist.get(), activeUser)
                     || personalChecklistService.isUserPersonalChecklistAuthor(personalChecklist.get(), activeUser)) {
+                int checkedItems = 0;
+                for (ChecklistItem item : personalChecklist.get().getChecklistItems()) {
+                    if (item.isChecked()){
+                        checkedItems ++;
+                    }
+                }
+                model.addAttribute("checkedItems", checkedItems);
                 model.addAttribute("personalChecklist", personalChecklist.get());
                 model.addAttribute("checklistForm", new ChecklistForm(personalChecklistService.getCheckedItemIds(personalChecklist.get())));
                 if (personalChecklistService.isUserAssignedToPersonalChecklist(personalChecklist.get(), activeUser)) {
@@ -87,6 +95,13 @@ public class PersonalChecklistController {
         if (personalChecklist.isPresent()){
             logger.debug("Found personal checklist with id: " + pChecklistId);
             personalChecklistService.updateCheckedItems(personalChecklist.get(), checklistForm.getCheckedItemIds());
+            int checkedItems = 0;
+            for (ChecklistItem item : personalChecklist.get().getChecklistItems()) {
+                if (item.isChecked()){
+                    checkedItems ++;
+                }
+            }
+            model.addAttribute("checkedItems", checkedItems);
             model.addAttribute("personalChecklist", personalChecklist.get());
             model.addAttribute("checklistForm", checklistForm);
             model.addAttribute("viewingAs", "user");
