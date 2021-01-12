@@ -3,6 +3,7 @@
 <head th:replace="fragments/header :: head"></head>
 <head>
     <title>Assign To User</title>
+    <link rel="stylesheet" href="/css/assign-to.css">
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
@@ -11,8 +12,8 @@
     <fieldset>
         <div class="form-group">
             <label>Assign checklist:</label>
-            <select th:field="*{id}" size="4" class="form-control" data-role="select-dropdown"
-                    style="width: fit-content" multiple required>
+            <select th:field="*{id}" size="4" id="select" class="form-control" data-role="select-dropdown"
+                    multiple required>
                 <option th:each="user : ${users}" th:text="${user.getEmail()}"
                         th:value="${user.getId()}"></option>
             </select>

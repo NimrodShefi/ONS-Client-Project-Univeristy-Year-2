@@ -1,16 +1,13 @@
-// function ValidateEmail taken from: https://www.w3resource.com/javascript/form/email-validation.php
-// however, regex was taken from here: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
-
 function ValidateEmail(){
-    const email = document.form1.email;
+    const email = document.form1.email.value;
     const mailFormat = /^[^\s@<>+*/=!"£$%^&()`¬\\|;:?,#~]+@cardiff.ac.uk/;
 
-    return !!email.value.match(mailFormat);
+    return !!email.match(mailFormat);
 }
 
 function ValidatePassword() {
     const password = document.form1.password.value;
-    // regex was taken from online and the format of code was from recommendation of IntellijJ instead of the usual if else format
+    // regex was from Carl and the format of code was from recommendation of IntellijJ instead of the usual if else format
     return !!(password.match(/[a-z]/g)
         && password.match(/[A-Z]/g)
         && password.match(/[0-9]/g)
@@ -24,45 +21,58 @@ function ValidateSamePasswordInput() {
     return password === repeatPassword;
 }
 
-function ValidateFirstNameInput(){
-    const firstName = document.form1.firstName.value;
-    const nameFormat = /[0-9@<>+*/=!"£$%^&()`¬\\|;:?,#~]/;
-    return !firstName.match(nameFormat);
+function ValidateName(name) {
+    const nameFormat = /^[a-zA-Z]*$/;
+    if (name){ // this checks that it is not empty
+        return !!name.match(nameFormat);
+    } else {
+        return false;
+    }
 }
 
-function ValidateLastNameInput(){
-    const lastName = document.form1.lastName.value;
-    const nameFormat = /[0-9@<>+*/=!"£$%^&()`¬\\|;:?,#~]/;
-    return !lastName.match(nameFormat);
+function resetClassInputColour(){
+    const elements = document.getElementsByClassName("input");
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.borderColor="grey";
+    }
 }
 
 function ValidateData() {
     let emailFormat = ValidateEmail();
     let passwordFormat = ValidatePassword();
     let samePasswordInput = ValidateSamePasswordInput();
-    let firstNameInput = ValidateFirstNameInput();
-    let lastNameInput = ValidateLastNameInput();
+    let firstNameInput = ValidateName(document.form1.firstName.value);
+    let lastNameInput = ValidateName(document.form1.lastName.value);
     if (emailFormat && passwordFormat && samePasswordInput && firstNameInput && lastNameInput){
         return true;
     } else {
+        resetClassInputColour();
         if (emailFormat === false){
-            document.getElementById("error").innerText = "There is a problem in the email";
+            document.getElementById("error").innerText = "There is a problem in the email. example@cardiff.ac.uk";
             document.form1.email.focus();
+            document.form1.email.style.borderColor = "red";
         } else if (passwordFormat === false){
-            document.getElementById("error").innerText = "There is a problem in the password";
-                document.form1.password.focus();
+            document.getElementById("error").innerText = "There is a problem in the password. Look at the rules provided";
+            document.form1.password.focus();
+            document.form1.password.style.borderColor = "red";
         } else if (samePasswordInput === false){
             document.getElementById("error").innerText = "The passwords don't match each other";
-                document.form1.repeatPassword.focus();
+            document.form1.repeatPassword.focus();
+            document.form1.repeatPassword.style.borderColor = "red";
         } else if (firstNameInput === false){
-            document.getElementById("error").innerText = "First name can only contain letters";
+            document.getElementById("error").innerText = "There is a problem in the first name. Name can only contain letters";
             document.form1.firstName.focus();
+            document.form1.firstName.style.borderColor = "red";
         } else if (lastNameInput === false){
-            document.getElementById("error").innerText = "Last name can only contain letters";
+            document.getElementById("error").innerText = "There is a problem in the last name. Name can only contain letters";
             document.form1.lastName.focus();
+            document.form1.lastName.style.borderColor = "red";
         }
 
-        document.getElementById("error").style.display="block";
         return false;
     }
 }
+
+$(document).on("submit", function () {
+    return ValidateData();
+})

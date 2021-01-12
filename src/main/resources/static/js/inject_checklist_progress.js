@@ -18,3 +18,8 @@ var injectChecklistProgress = (function (id) {
             console.log("failed");
         });
 })
+var id = document.getElementById("checkItemsCount");
+$(document).ready(function () {
+    console.log(id);
+    injectChecklistProgress(id);
+});

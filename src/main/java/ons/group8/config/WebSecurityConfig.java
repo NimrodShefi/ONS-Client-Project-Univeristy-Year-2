@@ -61,6 +61,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().disable();
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
+        http.headers().contentSecurityPolicy(csp -> csp.policyDirectives(
+                "default-src 'self';" +
+                "script-src 'self' https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js;" +
+                "style-src 'self' https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css;" +
+                "font-src 'self' https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/fonts/;"
+        ));
     }
 
     @Bean

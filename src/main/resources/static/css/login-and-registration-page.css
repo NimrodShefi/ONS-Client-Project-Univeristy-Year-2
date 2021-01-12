@@ -34,3 +34,7 @@ body {
     background-color: #a9a9a9;
     color: #fff;
 }
+
+.pointer{
+    pointer-events: none;
+}
