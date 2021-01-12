@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -38,6 +39,7 @@ public class SignupTests {
         this will fail because the emails from previous tests still exists in memory
      */
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_get_signup_page() throws Exception {
 
         this.mockMvc
@@ -47,7 +49,8 @@ public class SignupTests {
     }
 
     @Test
-    public void should_add_user() throws Exception {
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void should_add_user() throws Exception { //FAIL on automatic but works on manual
         UserCreationEvent user = new UserCreationEvent("nimrodshefi@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
         userService.save(user);
 
@@ -56,6 +59,7 @@ public class SignupTests {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_wrong_email_format_1() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi@gamil.com", "Nimrod", "Shefi", "Password1!", "Password1!");
@@ -69,6 +73,7 @@ public class SignupTests {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_wrong_email_format_2() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi<@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
@@ -82,7 +87,8 @@ public class SignupTests {
     }
 
     @Test
-    public void should_fail_to_add_user_due_to_email_already_exists() throws Exception {
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void should_fail_to_add_user_due_to_email_already_exists() throws Exception { //FAIL on automatic but works on manual
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
             UserCreationEvent user2 = new UserCreationEvent("nimrodshefi@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
@@ -97,6 +103,7 @@ public class SignupTests {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_wrong_password_format() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi", "123", "123");
@@ -110,6 +117,7 @@ public class SignupTests {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_not_same_repeated_password() throws Exception {
 
         try {
@@ -124,6 +132,7 @@ public class SignupTests {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_first_name_containing_more_than_letters_numbers() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod1", "Shefi", "Password1!", "Password1!");
@@ -137,6 +146,7 @@ public class SignupTests {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_first_name_containing_more_than_letters_special_characters() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod!", "Shefi", "Password1!", "Password1!");
@@ -150,6 +160,7 @@ public class SignupTests {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_last_name_containing_more_than_letters_numbers() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi1", "Password1!", "Password1!");
@@ -164,6 +175,7 @@ public class SignupTests {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_last_name_containing_more_than_letters_special_characters() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi£", "Password1!", "Password1!");

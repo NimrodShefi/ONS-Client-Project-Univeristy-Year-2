@@ -1,6 +1,6 @@
 package ons.group8.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ons.group8.controllers.forms.AssignedToForm;
 import ons.group8.controllers.forms.ChecklistTemplateForm;
 import ons.group8.controllers.forms.TopicForm;
 import ons.group8.domain.ChecklistTemplateItem;
@@ -16,8 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,18 +28,25 @@ public class ChecklistTest {
     @Autowired
     private MockMvc mockMvc;
 
-
-    public static String asJsonString(final Object obj) {
-        // used this website for this: https://howtodoinjava.com/spring-boot2/testing/spring-boot-mockmvc-example/#:~:text=MockMVC%20class%20is%20part%20of,Spring%20boot%202%20hateoas%20example.
-        // and also to learn how to use the testing for post requests in the controller
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public ChecklistTemplateForm generateChecklistForm(Integer topicsNum, Integer itemsNum) {
+        ChecklistTemplateForm checklistTemplateForm = new ChecklistTemplateForm();
+        checklistTemplateForm.setTitle("Checklist Title");
+        checklistTemplateForm.setTitleDescription("description");
+        List<Topic> topics = new ArrayList<>();
+        List<ChecklistTemplateItem> items = new ArrayList<>();
+        if (topicsNum != 0) {
+            for (int i = 1; i <= topicsNum; i++) {
+                for (int j = 1; j <= itemsNum; j++) {
+                    items.add(new ChecklistTemplateItem("item " + j));
+                }
+                topics.add(new Topic("topic " + i, "desc " + i, items));
+            }
         }
+        checklistTemplateForm.setTopics(topics);
+        return checklistTemplateForm;
     }
 
-    public TopicForm generateTopic(Integer itemsNum) {
+    public TopicForm generateTopicForm(Integer itemsNum) {
         TopicForm topicForm = new TopicForm();
         topicForm.setTopicTitle("topic 1");
         topicForm.setTopicDescription("desc 1");
@@ -105,9 +110,11 @@ public class ChecklistTest {
         checklistTemplateForm.setTitleDescription("description");
         this.mockMvc
                 .perform(post("/author/checklist-title-and-description")
-                        .content(asJsonString(checklistTemplateForm))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .param("title", checklistTemplateForm.getTitle())
+                        .param("titleDescription", checklistTemplateForm.getTitleDescription())
+                        .sessionAttr("checklistForm", new ChecklistTemplateForm())
+                )
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -115,17 +122,44 @@ public class ChecklistTest {
     @Test
     @WithMockUser(roles = {"AUTHOR"})
     public void should_post_set_topic_with_5_items() throws Exception {
-        ChecklistTemplateForm checklistTemplateForm = new ChecklistTemplateForm();
-        checklistTemplateForm.setTitle("Checklist Title");
-        checklistTemplateForm.setTitleDescription("description");
-        TopicForm topicForm = generateTopic(5);
-        System.out.println(checklistTemplateForm);
+        TopicForm topicForm = generateTopicForm(5);
         System.out.println(topicForm);
         this.mockMvc
                 .perform(post("/author/set-topic")
-                        .content(asJsonString(topicForm))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .param("title", "Checklist Title")
+                        .param("titleDescription", "description")
+                        .sessionAttr("checklistForm", new ChecklistTemplateForm())
+                        .param("topicTitle", topicForm.getTopicTitle())
+                        .param("topicDescription", topicForm.getTopicDescription())
+                        .param("items", String.valueOf(topicForm.getItems()))
+                        .param("anotherTopic", topicForm.getAnotherTopic())
+                        .sessionAttr("topicForm", new TopicForm())
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = {"AUTHOR"})
+    public void should_post_assign_to_with_5_users() throws Exception {
+        ChecklistTemplateForm checklistTemplateForm = generateChecklistForm(2, 4);
+        System.out.println(checklistTemplateForm);
+        List<Long> user_ids = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            user_ids.add((long) i);
+        }
+        this.mockMvc
+                .perform(post("/author/assign-to")
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .param("title", checklistTemplateForm.getTitle())
+                        .param("titleDescription", checklistTemplateForm.getTitleDescription())
+                        .param("topics", String.valueOf(checklistTemplateForm.getTopics()))
+                        .sessionAttr("checklistForm", new ChecklistTemplateForm())
+                        .param("deadline", "12/01/2021")
+                        .param("id", String.valueOf(user_ids))
+                        .sessionAttr("formValues", new AssignedToForm())
+                )
                 .andDo(print())
                 .andExpect(status().isOk());
     }
