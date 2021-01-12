@@ -92,7 +92,7 @@ public class SignupTests {
             User retrievedUser = userRepository.findUserByEmail(user.getEmail());
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
-            assertEquals("Email already exists.", sqlIntegrityConstraintViolationException.getMessage());
+            assertEquals("Email already exists", sqlIntegrityConstraintViolationException.getMessage());
         }
     }
 

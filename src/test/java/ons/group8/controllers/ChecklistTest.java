@@ -41,24 +41,6 @@ public class ChecklistTest {
         }
     }
 
-    public ChecklistTemplateForm generateChecklistForm(Integer topicsNum, Integer itemsNum) {
-        ChecklistTemplateForm checklistTemplateForm = new ChecklistTemplateForm();
-        checklistTemplateForm.setTitle("Checklist Title");
-        checklistTemplateForm.setTitleDescription("description");
-        List<Topic> topics = new ArrayList<>();
-        List<ChecklistTemplateItem> items = new ArrayList<>();
-        if (topicsNum != 0) {
-            for (int i = 1; i <= topicsNum; i++) {
-                for (int j = 1; j <= itemsNum; j++) {
-                    items.add(new ChecklistTemplateItem("item " + j));
-                }
-                topics.add(new Topic("topic " + i, "desc " + i, items));
-            }
-        }
-        checklistTemplateForm.setTopics(topics);
-        return checklistTemplateForm;
-    }
-
     public TopicForm generateTopic(Integer itemsNum) {
         TopicForm topicForm = new TopicForm();
         topicForm.setTopicTitle("topic 1");
@@ -118,8 +100,9 @@ public class ChecklistTest {
     @Test
     @WithMockUser(roles = {"AUTHOR"})
     public void should_post_checklist_title_and_description() throws Exception {
-        ChecklistTemplateForm checklistTemplateForm = generateChecklistForm(0, 0);
-
+        ChecklistTemplateForm checklistTemplateForm = new ChecklistTemplateForm();
+        checklistTemplateForm.setTitle("Checklist Title");
+        checklistTemplateForm.setTitleDescription("description");
         this.mockMvc
                 .perform(post("/author/checklist-title-and-description")
                         .content(asJsonString(checklistTemplateForm))
@@ -132,6 +115,9 @@ public class ChecklistTest {
     @Test
     @WithMockUser(roles = {"AUTHOR"})
     public void should_post_set_topic_with_5_items() throws Exception {
+        ChecklistTemplateForm checklistTemplateForm = new ChecklistTemplateForm();
+        checklistTemplateForm.setTitle("Checklist Title");
+        checklistTemplateForm.setTitleDescription("description");
         TopicForm topicForm = generateTopic(5);
         System.out.println(topicForm);
         this.mockMvc
