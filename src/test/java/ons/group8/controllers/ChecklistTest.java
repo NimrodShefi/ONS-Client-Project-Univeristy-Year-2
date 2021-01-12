@@ -119,6 +119,7 @@ public class ChecklistTest {
         checklistTemplateForm.setTitle("Checklist Title");
         checklistTemplateForm.setTitleDescription("description");
         TopicForm topicForm = generateTopic(5);
+        System.out.println(checklistTemplateForm);
         System.out.println(topicForm);
         this.mockMvc
                 .perform(post("/author/set-topic")
