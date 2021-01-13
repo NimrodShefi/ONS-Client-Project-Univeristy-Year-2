@@ -62,7 +62,6 @@ public class AuthorController {
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String viewAuthorsChecklistTemplates(Principal principal, Model model){
         logger.debug("Getting checklist template list for author: " + principal.getName());
-        System.out.println(getChecklistForm());
         List<ChecklistTemplate> checklistTemplates = authorService.getAllByAuthorEmail(principal.getName());
         model.addAttribute("checklistTemplates", checklistTemplates);
         return "checklist/view-all-checklist-templates";
@@ -131,7 +130,7 @@ public class AuthorController {
             checklistTemplateForm.getTopics().add(new Topic(topic.getTopicTitle(), topic.getTopicDescription(), items));
             model.addAttribute("title", checklistTemplateForm.getTitle());
             model.addAttribute("titleDescription", checklistTemplateForm.getTitleDescription());
-            if ("true".equals(topic.getAnotherTopic())) {
+            if ("true".equalsIgnoreCase(topic.getAnotherTopic())) {
                 model.addAttribute("topicForm", new TopicForm());
                 return "checklist/checklist-topic";
             } else {
