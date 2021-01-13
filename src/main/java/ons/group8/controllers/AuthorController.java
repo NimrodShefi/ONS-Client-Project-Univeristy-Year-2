@@ -130,7 +130,7 @@ public class AuthorController {
             checklistTemplateForm.getTopics().add(new Topic(topic.getTopicTitle(), topic.getTopicDescription(), items));
             model.addAttribute("title", checklistTemplateForm.getTitle());
             model.addAttribute("titleDescription", checklistTemplateForm.getTitleDescription());
-            if ("true".equals(topic.getAnotherTopic())) {
+            if ("true".equalsIgnoreCase(topic.getAnotherTopic())) {
                 model.addAttribute("topicForm", new TopicForm());
                 return "checklist/checklist-topic";
             } else {

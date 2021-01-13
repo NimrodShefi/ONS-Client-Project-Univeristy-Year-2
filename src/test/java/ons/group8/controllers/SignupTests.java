@@ -1,5 +1,6 @@
 package ons.group8.controllers;
 
+import ons.group8.controllers.forms.UserForm;
 import ons.group8.domain.User;
 import ons.group8.repositories.UserRepositoryJPA;
 import ons.group8.services.UserCreationEvent;
@@ -8,21 +9,24 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.zip.DataFormatException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class SignupTests {
 
     @Autowired
@@ -34,12 +38,7 @@ public class SignupTests {
     @Autowired
     private UserRepositoryJPA userRepository;
 
-    /*
-        when running all of the tests together, if the email here is the same as one of teh already finished tests,
-        this will fail because the emails from previous tests still exists in memory
-     */
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_get_signup_page() throws Exception {
 
         this.mockMvc
@@ -49,8 +48,24 @@ public class SignupTests {
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void should_add_user() throws Exception { //FAIL on automatic but works on manual
+    public void should_post_signup_page() throws Exception {
+
+        this.mockMvc
+                .perform(post("/sign-up/create-user")
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .param("email", "nimrodshefi@cardiff.ac.uk")
+                    .param("firstName", "Nimrod")
+                    .param("lastName", "Shefi")
+                    .param("password", "Password1!")
+                    .param("repeatPassword", "Password1!")
+                    .sessionAttr("newUser", new UserForm())
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_add_user() throws Exception {
         UserCreationEvent user = new UserCreationEvent("nimrodshefi@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
         userService.save(user);
 
@@ -59,7 +74,6 @@ public class SignupTests {
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_wrong_email_format_1() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi@gamil.com", "Nimrod", "Shefi", "Password1!", "Password1!");
@@ -68,12 +82,11 @@ public class SignupTests {
             User retrievedUser = userRepository.findUserByEmail(user.getEmail());
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
-            assertEquals("Email Format is wrong", dataFormatException.getMessage());
+            assertTrue(dataFormatException.getMessage().contains("Email Format is wrong"));
         }
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_wrong_email_format_2() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi<@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
@@ -82,13 +95,12 @@ public class SignupTests {
             User retrievedUser = userRepository.findUserByEmail(user.getEmail());
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
-            assertEquals("Email Format is wrong", dataFormatException.getMessage());
+            assertTrue(dataFormatException.getMessage().contains("Email Format is wrong"));
         }
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void should_fail_to_add_user_due_to_email_already_exists() throws Exception { //FAIL on automatic but works on manual
+    public void should_fail_to_add_user_due_to_email_already_exists() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
             UserCreationEvent user2 = new UserCreationEvent("nimrodshefi@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
@@ -98,12 +110,11 @@ public class SignupTests {
             User retrievedUser = userRepository.findUserByEmail(user.getEmail());
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
-            assertEquals("Email already exists", sqlIntegrityConstraintViolationException.getMessage());
+            assertTrue(sqlIntegrityConstraintViolationException.getMessage().contains("Email already exists"));
         }
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_wrong_password_format() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi", "123", "123");
@@ -112,12 +123,11 @@ public class SignupTests {
             User retrievedUser = userRepository.findUserByEmail(user.getEmail());
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
-            assertEquals("Password Format is wrong", dataFormatException.getMessage());
+            assertTrue(dataFormatException.getMessage().contains("Password Format is wrong"));
         }
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_not_same_repeated_password() throws Exception {
 
         try {
@@ -127,12 +137,11 @@ public class SignupTests {
             User retrievedUser = userRepository.findUserByEmail(user.getEmail());
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
-            assertEquals("Passwords don't match", dataFormatException.getMessage());
+            assertTrue(dataFormatException.getMessage().contains("Passwords don't match"));
         }
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_first_name_containing_more_than_letters_numbers() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod1", "Shefi", "Password1!", "Password1!");
@@ -141,12 +150,11 @@ public class SignupTests {
             User retrievedUser = userRepository.findUserByEmail(user.getEmail());
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
-            assertEquals("First Name can only contain letters", dataFormatException.getMessage());
+            assertTrue(dataFormatException.getMessage().contains("First Name can only contain letters"));
         }
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_first_name_containing_more_than_letters_special_characters() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod!", "Shefi", "Password1!", "Password1!");
@@ -155,12 +163,11 @@ public class SignupTests {
             User retrievedUser = userRepository.findUserByEmail(user.getEmail());
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
-            assertEquals("First Name can only contain letters", dataFormatException.getMessage());
+            assertTrue(dataFormatException.getMessage().contains("First Name can only contain letters"));
         }
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_last_name_containing_more_than_letters_numbers() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi1", "Password1!", "Password1!");
@@ -170,12 +177,11 @@ public class SignupTests {
             User retrievedUser = userRepository.findUserByEmail(user.getEmail());
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
-            assertEquals("Last Name can only contain letters", dataFormatException.getMessage());
+            assertTrue(dataFormatException.getMessage().contains("Last Name can only contain letters"));
         }
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void should_fail_to_add_user_due_to_last_name_containing_more_than_letters_special_characters() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi£", "Password1!", "Password1!");
@@ -184,7 +190,7 @@ public class SignupTests {
             User retrievedUser = userRepository.findUserByEmail(user.getEmail());
             assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
-            assertEquals("Last Name can only contain letters", dataFormatException.getMessage());
+            assertTrue(dataFormatException.getMessage().contains("Last Name can only contain letters"));
         }
     }
 }
