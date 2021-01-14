@@ -4,7 +4,6 @@ import ons.group8.domain.Role;
 import ons.group8.domain.User;
 import ons.group8.repositories.RoleRepositoryJPA;
 import ons.group8.repositories.UserRepositoryJPA;
-import ons.group8.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,8 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -137,5 +134,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<User> findUsersByFirstName(String firstName) {
         return userRepository.findUsersByFirstName(firstName);
+    }
+
+    @Override
+    public Optional<Role> findRoleById(long id){
+        return roleRepository.findById(id);
+    }
+
+    @Override
+    public void update(User user){
+        userRepository.save(user);
     }
 }

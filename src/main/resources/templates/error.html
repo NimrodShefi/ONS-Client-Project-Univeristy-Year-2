@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" href="/css/message.css">
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+    <div id="message">
+        <h1>Something went wrong! </h1>
+        <h2>Our Engineers are on it</h2>
+        <a href="/">Go Home</a>
+    </div>
+</body>
+</html>

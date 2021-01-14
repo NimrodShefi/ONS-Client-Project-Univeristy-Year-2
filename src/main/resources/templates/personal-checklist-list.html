@@ -16,7 +16,7 @@
         <ul th:each="checklist : ${personalChecklists}" class="list list-group">
             <li class="list-group-item">
                 <a th:id="@{checklistLink{id} (id=${checklist.id})}"
-                   th:href="@{/personal-checklist/{id} (id=${checklist.id})}">
+                   th:href="@{/user/personal-checklist/{id} (id=${checklist.id})}">
                     <span th:text="${checklist.checklistTemplate.name}"></span>
                 </a>
             </li>
