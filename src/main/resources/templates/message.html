@@ -6,10 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Process Complete</title>
+    <link rel="stylesheet" href="/css/message.css">
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<div style="margin-left: 2%">
+<div id="message">
     <h1 th:text="${title}"></h1>
     <span th:text="${message}"></span>
     <br>
