@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 public class AdminTests {
 
     @Autowired
@@ -50,6 +49,7 @@ public class AdminTests {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
+    @Transactional
     public void should_post_which_single_user_is_edited() throws Exception {
 
         this.mockMvc

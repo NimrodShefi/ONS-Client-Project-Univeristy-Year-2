@@ -140,4 +140,9 @@ public class UserServiceImpl implements UserService {
     public Optional<Role> findRoleById(long id){
         return roleRepository.findById(id);
     }
+
+    @Override
+    public void update(User user){
+        userRepository.save(user);
+    }
 }

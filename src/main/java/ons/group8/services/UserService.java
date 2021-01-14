@@ -8,6 +8,8 @@ import java.util.Set;
 public interface UserService {
     void save(UserCreationEvent user) throws Exception;
 
+    void update(User user);
+
     User findByEmail(String email);
 
     Optional<User> findById(Long userId);
