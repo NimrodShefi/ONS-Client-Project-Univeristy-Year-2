@@ -4,6 +4,7 @@ package ons.group8.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -34,6 +35,7 @@ public class ChecklistTemplate {
     private String description;
 
     @OneToMany(mappedBy = "checklistTemplate", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Topic> topics;
 
     public ChecklistTemplate(User author, String list_name, String description, List<Topic> topics){
