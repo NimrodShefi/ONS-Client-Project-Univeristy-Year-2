@@ -19,7 +19,7 @@
         <h1 th:text="*{checklistTemplate.name}"></h1>
         <div th:text="*{checklistTemplate.description}"></div>
 
-        <form th:action="@{/personal-checklist/{id}/save (id=${personalChecklist.id})}" th:method="post"
+        <form th:action="@{/user/personal-checklist/{id}/save (id=${personalChecklist.id})}" th:method="post"
               th:object="${checklistForm}">
             <div th:each="topic : ${personalChecklist.checklistTemplate.topics}">
                 <h2 th:text="${topic.name}"></h2>
