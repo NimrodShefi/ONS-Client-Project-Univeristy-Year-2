@@ -40,7 +40,8 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save(ChecklistCreationEvent data) throws Exception {
+    public ChecklistTemplate save(ChecklistCreationEvent data) throws Exception {
+        ChecklistTemplate checklistTemplate1;
         try {
             ChecklistTemplate checklistTemplate = new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription(), data.getTopics());
             for (Topic topic : checklistTemplate.getTopics()) {
@@ -49,7 +50,7 @@ public class AuthorServiceImpl implements AuthorService {
                     item.setTopic(topic);
                 }
             }
-            ChecklistTemplate checklistTemplate1 = checklistTemplateRepository.save(checklistTemplate);
+            checklistTemplate1 = checklistTemplateRepository.save(checklistTemplate);
             LocalDate dateAssigned = LocalDate.now();
             for (User user : data.getAssignedTo()) {
                 List<ChecklistItem> items = new ArrayList<>();
@@ -67,6 +68,7 @@ public class AuthorServiceImpl implements AuthorService {
         } catch (Exception e) {
             throw new Exception();
         }
+        return checklistTemplate1;
     }
 
     @Override

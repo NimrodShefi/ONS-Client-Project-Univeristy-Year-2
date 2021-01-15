@@ -11,7 +11,7 @@ public interface AuthorService {
 
     List<User> findUsersByRoles(String role);
 
-    void save(ChecklistCreationEvent checklistForm) throws Exception;
+    ChecklistTemplate save(ChecklistCreationEvent checklistForm) throws Exception;
 
     ChecklistTemplate getChecklistTemplateById(Long id);
 
