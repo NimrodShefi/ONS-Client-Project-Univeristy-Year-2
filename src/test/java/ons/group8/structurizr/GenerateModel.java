@@ -31,7 +31,7 @@ public class GenerateModel {
 
         //set up workspace and model
         //these are the core objects of our
-        Workspace workspace = new Workspace("ONS Onboarding - Group 8", "Checklist Project for ONS Onboarding");
+        Workspace workspace = new Workspace("ONS Onboarding - Group 8 - Private", "Checklist Project for ONS Onboarding");
         Model model = workspace.getModel();
 
         // create the basic model (the stuff we can't get from the code)
@@ -67,6 +67,7 @@ public class GenerateModel {
         componentFinder.findComponents();
 
 
+        // Controllers
         Component adminController = webApplication.getComponentOfType("ons.group8.controllers.AdminController");
         admin.uses(adminController, "Uses", "HTTP");
 
@@ -75,6 +76,7 @@ public class GenerateModel {
 
         Component personalChecklistController = webApplication.getComponentOfType("ons.group8.controllers.PersonalChecklistController");
         user.uses(personalChecklistController, "Uses", "HTTP");
+
 
         Component loginController = webApplication.getComponentOfType("ons.group8.controllers.LoginController");
         user.uses(loginController, "Uses", "HTTP");
@@ -93,14 +95,106 @@ public class GenerateModel {
                 .forEach(c -> c.uses(relationalDatabase, "Reads from and writes to", "JPA"));
 
 
-        // add templates
-        Component loginTemplate = webApplication.addComponent("Login", "Template for users to login", "Thymeleaf");
+        // Services
+        Component authorService = webApplication.getComponentOfType("ons.group8.services.AuthorService");
+        Component personalChecklistService = webApplication.getComponentOfType("ons.group8.services.PersonalChecklistService");
+        Component adminService = webApplication.getComponentOfType("ons.group8.services.AdminService");
+        Component lockoutService = webApplication.getComponentOfType("ons.group8.services.LockOutService");
+        Component userService = webApplication.getComponentOfType("ons.group8.services.UserService");
+        Component myUserDetailsService = webApplication.addComponent("MyUserDetailsService", "", "Spring Security");
+        myUserDetailsService.addTags("Spring Service");
+
+
+        // Repos
+        Component personalChecklistRepo = webApplication.getComponentOfType("ons.group8.repositories.PersonalChecklistRepositoryJPA");
+        Component checklistTemplateRepo = webApplication.getComponentOfType("ons.group8.repositories.ChecklistTemplateRepositoryJPA");
+
+
+        // templates
+        Component loginTemplate = webApplication.addComponent("login", "Template for users to login", "Thymeleaf");
         loginTemplate.addTags("Thymeleaf");
         loginController.uses(loginTemplate, "as view", "Spring MVC");
 
-        Component signupTemplate = webApplication.addComponent("Sign-up", "Template for users to sign up for an account", "Thymeleaf");
-        signupTemplate.addTags("Thymeleaf");
-        signupController.uses(signupTemplate, "as view", "Spring MVC");
+        Component indexTemplate = webApplication.addComponent("index", "Template for the homepage once a user has logged in", "Thymeleaf");
+        indexTemplate.addTags("Thymeleaf");
+        loginController.uses(indexTemplate, "as view", "Spring MVC");
+
+        Component userRolesTemplate = webApplication.addComponent("user-roles", "Template for admins to manage users of the system", "Thymeleaf");
+        userRolesTemplate.addTags("Thymeleaf");
+        adminController.uses(userRolesTemplate, "as view", "Spring MVC");
+
+        Component userRoleFormTemplate = webApplication.addComponent("userrole-form", "Template containing a form so that admins can edit the roles of a user", "Thymeleaf");
+        userRoleFormTemplate.addTags("Thymeleaf");
+        adminController.uses(userRoleFormTemplate, "as view", "Spring MVC");
+
+        Component messageTemplate = webApplication.addComponent("message", "Template that displays a message to the user", "Thymeleaf");
+        messageTemplate.addTags("Thymeleaf");
+        adminController.uses(messageTemplate, "as view", "Spring MVC");
+        signupController.uses(messageTemplate, "as view", "Spring MVC");
+        authorController.uses(messageTemplate, "as view", "Spring MVC");
+        personalChecklistController.uses(messageTemplate, "as view", "Spring MVC");
+
+        Component errorTemplate = webApplication.addComponent("error", "Displays an error message to the user when Whitelabel error occurs", "Thymeleaf");
+        errorTemplate.addTags("Thymeleaf");
+        adminController.uses(errorTemplate, "as view", "Spring MVC");
+        signupController.uses(errorTemplate, "as view", "Spring MVC");
+        authorController.uses(errorTemplate, "as view", "Spring MVC");
+        personalChecklistController.uses(errorTemplate, "as view", "Spring MVC");
+
+        Component registerTemplate = webApplication.addComponent("register", "Template for users to sign up for an account", "Thymeleaf");
+        registerTemplate.addTags("Thymeleaf");
+        signupController.uses(registerTemplate, "as view", "Spring MVC");
+
+        Component authorsChecklistTemplateListTemplate = webApplication.addComponent("view-all-checklist-templates", "Template for an author to view a list of their checklist templates", "Thymeleaf");
+        authorsChecklistTemplateListTemplate.addTags("Thymeleaf");
+        authorController.uses(authorsChecklistTemplateListTemplate, "as view", "Spring MVC");
+
+        Component checklistTemplateTemplate = webApplication.addComponent("view-checklist-template", "Template for an author to view a checklist template", "Thymeleaf");
+        checklistTemplateTemplate.addTags("Thymeleaf");
+        authorController.uses(checklistTemplateTemplate, "as view", "Spring MVC");
+
+        Component checklistTemplateTitleDescriptionTemplate = webApplication.addComponent("checklist-title-and-description", "Template for an author add a title and description when creating a checklist template", "Thymeleaf");
+        checklistTemplateTitleDescriptionTemplate.addTags("Thymeleaf");
+        authorController.uses(checklistTemplateTitleDescriptionTemplate, "as view", "Spring MVC");
+
+        Component checklistTemplateTopicTemplate = webApplication.addComponent("checklist-topic", "Template for an author add topics and checklist items when creating a checklist template", "Thymeleaf");
+        checklistTemplateTopicTemplate.addTags("Thymeleaf");
+        authorController.uses(checklistTemplateTopicTemplate, "as view", "Spring MVC");
+
+        Component checklistTemplateAssignUsersTemplate = webApplication.addComponent("assign-to", "Template for an author to assign users when creating a checklist template", "Thymeleaf");
+        checklistTemplateAssignUsersTemplate.addTags("Thymeleaf");
+        authorController.uses(checklistTemplateAssignUsersTemplate, "as view", "Spring MVC");
+
+        Component personalChecklistListTemplate = webApplication.addComponent("personal-checklist-list", "Template for a user to view a list of their assigned checklists", "Thymeleaf");
+        personalChecklistListTemplate.addTags("Thymeleaf");
+        personalChecklistController.uses(personalChecklistListTemplate, "as view", "Spring MVC");
+
+        Component viewChecklistTemplate = webApplication.addComponent("viewChecklistStarter", "Template for a user to view an assigned checklist", "Thymeleaf");
+        viewChecklistTemplate.addTags("Thymeleaf");
+        personalChecklistController.uses(viewChecklistTemplate, "as view", "Spring MVC");
+
+
+        // Configuration components
+        Component mvcConfig = webApplication.addComponent("MvcConfig", "Configuration for view controllers", "Spring MVC");
+        mvcConfig.addTags("Configuration");
+
+        Component loginSuccessHandler = webApplication.addComponent("LoginSuccessHandler", "Handles a successful login", "Spring");
+        loginSuccessHandler.addTags("Configuration");
+        loginSuccessHandler.uses(lockoutService, "");
+        loginSuccessHandler.uses(userService, "");
+
+        Component loginFailureHandler = webApplication.addComponent("LoginFailureHandler", "Handles a failed login", "Spring");
+        loginFailureHandler.addTags("Configuration");
+        loginFailureHandler.uses(lockoutService, "");
+        loginFailureHandler.uses(userService, "");
+
+        Component webSecurityConfig = webApplication.addComponent("WebSecurityConfig", "Configuration for Spring Security", "Spring Security");
+        webSecurityConfig.addTags("Configuration");
+        webSecurityConfig.uses(myUserDetailsService, "");
+        webSecurityConfig.uses(loginSuccessHandler, "");
+        webSecurityConfig.uses(loginFailureHandler, "");
+
+
 
 
         //create a SystemContext for the system
@@ -108,17 +202,67 @@ public class GenerateModel {
         SystemContextView contextView = viewSet.createSystemContextView(checklistApp, "context", "The System Context diagram for the ONS Checklist system.");
         contextView.addAllSoftwareSystems();
         contextView.addAllPeople();
+        contextView.enableAutomaticLayout();
 
         ContainerView containerView = viewSet.createContainerView(checklistApp, "containers", "The Containers diagram for the ONS Checklist system.");
         containerView.addAllPeople();
         containerView.addAllSoftwareSystems();
         containerView.addAllContainers();
+        containerView.enableAutomaticLayout();
 
         ComponentView componentView = viewSet.createComponentView(webApplication, "components", "The Components diagram for the ONS Checklist web application.");
         componentView.addAllComponents();
         componentView.addAllPeople();
         componentView.add(relationalDatabase);
-        componentView.enableAutomaticLayout();
+
+        ComponentView componentViewAdmin = viewSet.createComponentView(webApplication, "admin components", "The Components diagram for the ONS Checklist web application when taking on an admin role.");
+        componentViewAdmin.add(admin);
+        componentViewAdmin.addAllComponents();
+        componentViewAdmin.remove(authorController);
+        componentViewAdmin.remove(authorService);
+        componentViewAdmin.remove(authorsChecklistTemplateListTemplate);
+        componentViewAdmin.remove(checklistTemplateTemplate);
+        componentViewAdmin.remove(checklistTemplateTitleDescriptionTemplate);
+        componentViewAdmin.remove(checklistTemplateTopicTemplate);
+        componentViewAdmin.remove(checklistTemplateAssignUsersTemplate);
+        componentViewAdmin.remove(personalChecklistController);
+        componentViewAdmin.remove(personalChecklistService);
+        componentViewAdmin.remove(personalChecklistListTemplate);
+        componentViewAdmin.remove(viewChecklistTemplate);
+        componentViewAdmin.remove(personalChecklistRepo);
+        componentViewAdmin.remove(checklistTemplateRepo);
+        componentViewAdmin.add(relationalDatabase);
+
+        ComponentView componentViewAuthor = viewSet.createComponentView(webApplication, "author components", "The Components diagram for the ONS Checklist web application when taking on an author role.");
+        componentViewAuthor.add(author);
+        componentViewAuthor.addAllComponents();
+        componentViewAuthor.remove(adminController);
+        componentViewAuthor.remove(adminService);
+        componentViewAuthor.remove(personalChecklistController);
+        componentViewAuthor.remove(personalChecklistService);
+        componentViewAuthor.remove(personalChecklistListTemplate);
+        componentViewAuthor.remove(viewChecklistTemplate);
+        componentViewAuthor.remove(personalChecklistRepo);
+        componentViewAuthor.remove(userRoleFormTemplate);
+        componentViewAuthor.remove(userRolesTemplate);
+        componentViewAuthor.add(relationalDatabase);
+
+        ComponentView componentViewUser = viewSet.createComponentView(webApplication, "user components", "The Components diagram for the ONS Checklist web application when taking on a user role.");
+        componentViewUser.add(user);
+        componentViewUser.addAllComponents();
+        componentViewUser.remove(adminController);
+        componentViewUser.remove(adminService);
+        componentViewUser.remove(userRoleFormTemplate);
+        componentViewUser.remove(userRolesTemplate);
+        componentViewUser.remove(authorController);
+        componentViewUser.remove(authorService);
+        componentViewUser.remove(authorsChecklistTemplateListTemplate);
+        componentViewUser.remove(checklistTemplateTemplate);
+        componentViewUser.remove(checklistTemplateTitleDescriptionTemplate);
+        componentViewUser.remove(checklistTemplateTopicTemplate);
+        componentViewUser.remove(checklistTemplateAssignUsersTemplate);
+        componentViewUser.remove(checklistTemplateRepo);
+        componentViewUser.add(relationalDatabase);
 
         // link the architecture model with the code
         for (Component component : webApplication.getComponents()) {
@@ -126,7 +270,7 @@ public class GenerateModel {
                 String sourcePath = codeElement.getUrl();
                 if (sourcePath != null) {
                     codeElement.setUrl(
-                            "https://git.cardiff.ac.uk/ase-2020/cm6213/journals/c1989618-nimrod-shefi/year-2/term-1/ons-client-project-group-8/-/tree/master");
+                            "https://git.cardiff.ac.uk/c1989618/ons-client-project-group-8/-/tree/master");
                 }
             }
         }
@@ -134,26 +278,28 @@ public class GenerateModel {
         // tag and style some elements
         checklistApp.addTags("ONS Onboarding");
         webApplication.getComponents().stream().filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_MVC_CONTROLLER)).forEach(c -> c.addTags("Spring MVC Controller"));
-        webApplication.getComponents().stream().filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_MVC_CONTROLLER)).forEach(c -> c.addTags("Spring REST Controller"));
+        webApplication.getComponents().stream().filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_REST_CONTROLLER)).forEach(c -> c.addTags("Spring REST Controller"));
 
         webApplication.getComponents().stream().filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_SERVICE)).forEach(c -> c.addTags("Spring Service"));
         webApplication.getComponents().stream().filter(c -> c.getTechnology().equals(SpringComponentFinderStrategy.SPRING_REPOSITORY)).forEach(c -> c.addTags("Spring Repository"));
         relationalDatabase.addTags("Database");
 
         Styles styles = viewSet.getConfiguration().getStyles();
-        styles.addElementStyle("ONS Onboarding - Group 8").background("#6CB33E").color("#ffffff");
+        styles.addElementStyle("ONS Onboarding - Group 8 - Private").background("#6CB33E").color("#ffffff");
         styles.addElementStyle(Tags.PERSON).background("#519823").color("#ffffff").shape(Shape.Person);
         styles.addElementStyle(Tags.CONTAINER).background("#91D366").color("#ffffff");
         styles.addElementStyle("Database").shape(Shape.Cylinder);
 
-        styles.addElementStyle("Spring REST Controller").background("#D4FFC0").color("#000000");
+        styles.addElementStyle("Spring REST Controller").background("#D4F3C0").color("#000000");
 
         styles.addElementStyle("Spring MVC Controller").background("#D4F3C0").color("#000000");
         styles.addElementStyle("Spring Service").background("#6CB33E").color("#000000");
         styles.addElementStyle("Spring Repository").background("#95D46C").color("#000000");
         styles.addElementStyle("Thymeleaf").background("#eeeeee").color("#000077").shape(Shape.RoundedBox);
+        styles.addElementStyle("Configuration").background("#a9c299").color("#000000");
 
         StructurizrClient structurizrClient = new StructurizrClient(API_KEY, API_SECRET);
         structurizrClient.putWorkspace(WORKSPACE_ID, workspace);
     }
+
 }
