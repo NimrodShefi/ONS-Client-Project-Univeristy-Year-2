@@ -74,9 +74,6 @@ public class SignupTests {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi@gamil.com", "Nimrod", "Shefi", "Password1!", "Password1!");
             userService.save(user);
-
-            User retrievedUser = userService.findByEmail(user.getEmail());
-            assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Email Format is wrong"));
         }
@@ -87,9 +84,6 @@ public class SignupTests {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi<@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
             userService.save(user);
-
-            User retrievedUser = userService.findByEmail(user.getEmail());
-            assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Email Format is wrong"));
         }
@@ -102,9 +96,6 @@ public class SignupTests {
             UserCreationEvent user2 = new UserCreationEvent("nimrodshefi@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
             userService.save(user);
             userService.save(user2);
-
-            User retrievedUser = userService.findByEmail(user.getEmail());
-            assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
             assertTrue(sqlIntegrityConstraintViolationException.getMessage().contains("Email already exists"));
         }
@@ -115,9 +106,6 @@ public class SignupTests {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi", "123", "123");
             userService.save(user);
-
-            User retrievedUser = userService.findByEmail(user.getEmail());
-            assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Password Format is wrong"));
         }
@@ -129,9 +117,6 @@ public class SignupTests {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi02@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "123");
             userService.save(user);
-
-            User retrievedUser = userService.findByEmail(user.getEmail());
-            assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Passwords don't match"));
         }
@@ -142,9 +127,6 @@ public class SignupTests {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod1", "Shefi", "Password1!", "Password1!");
             userService.save(user);
-
-            User retrievedUser = userService.findByEmail(user.getEmail());
-            assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("First Name can only contain letters"));
         }
@@ -155,9 +137,6 @@ public class SignupTests {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod!", "Shefi", "Password1!", "Password1!");
             userService.save(user);
-
-            User retrievedUser = userService.findByEmail(user.getEmail());
-            assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("First Name can only contain letters"));
         }
@@ -167,11 +146,7 @@ public class SignupTests {
     public void should_fail_to_add_user_due_to_last_name_containing_more_than_letters_numbers() throws Exception {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi1", "Password1!", "Password1!");
-            System.out.println(user.getLastName());
             userService.save(user);
-
-            User retrievedUser = userService.findByEmail(user.getEmail());
-            assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Last Name can only contain letters"));
         }
@@ -182,9 +157,6 @@ public class SignupTests {
         try {
             UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi£", "Password1!", "Password1!");
             userService.save(user);
-
-            User retrievedUser = userService.findByEmail(user.getEmail());
-            assertEquals(user.getEmail(), retrievedUser.getEmail());
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Last Name can only contain letters"));
         }
