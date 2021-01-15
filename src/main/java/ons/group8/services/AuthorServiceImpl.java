@@ -31,8 +31,15 @@ public class AuthorServiceImpl implements AuthorService {
         return userRepository.findUsersByRoles(roleRepository.getRoleByName(role));
     }
 
+    /**
+     * using the data collected, a checklist template is created and also creating a reference of them in personal checklist for all of the users that got assigned the checklist
+     * if anything goes wrong in the process, the annotation @Transactional will ensure that it is not saved in the DB
+     *
+     * @param data - this is the data collected from the controller sent to be saved as a checklist template with the topics and items
+     * @throws Exception - should anything go wrong, the server will catch it instead of letting it break the application
+     */
     @Override
-    @Transactional(rollbackFor = Exception.class) // if something fails in this process, no data will be saved to the DB
+    @Transactional(rollbackFor = Exception.class)
     public void save(ChecklistCreationEvent data) throws Exception {
         try {
             ChecklistTemplate checklistTemplate = new ChecklistTemplate(data.getAuthorId(), data.getTitle(), data.getTitleDescription(), data.getTopics());
