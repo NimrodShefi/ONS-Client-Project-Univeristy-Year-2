@@ -40,6 +40,10 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     runtimeOnly 'mysql:mysql-connector-java'
+
+    testCompile 'com.structurizr:structurizr-core:1.6.2'
+    testCompile 'com.structurizr:structurizr-client:1.6.2'
+    testCompile 'com.structurizr:structurizr-spring:1.3.5'
 }
 
 test {
