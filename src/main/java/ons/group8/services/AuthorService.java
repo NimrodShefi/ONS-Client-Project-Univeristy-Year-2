@@ -2,7 +2,6 @@ package ons.group8.services;
 
 import ons.group8.domain.ChecklistTemplate;
 import ons.group8.domain.PersonalChecklist;
-import ons.group8.domain.Role;
 import ons.group8.domain.User;
 
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 
 public interface AuthorService {
 
-    List<User> findUsersByRoles(Role role);
+    List<User> findUsersByRoles(String role);
 
     void save(ChecklistCreationEvent checklistForm) throws Exception;
 

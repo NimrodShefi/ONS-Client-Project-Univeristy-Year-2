@@ -4,7 +4,6 @@ import ons.group8.controllers.forms.AssignedToForm;
 import ons.group8.controllers.forms.ChecklistTemplateForm;
 import ons.group8.controllers.forms.TopicForm;
 import ons.group8.domain.*;
-import ons.group8.repositories.RoleRepositoryJPA;
 import ons.group8.services.AuthorService;
 import ons.group8.services.ChecklistCreationEvent;
 import ons.group8.services.UserService;
@@ -35,13 +34,10 @@ public class AuthorController {
 
     private final UserService userService;
 
-    private final RoleRepositoryJPA roleRepository;
-
     @Autowired
-    public AuthorController(AuthorService authorService, UserService userService, RoleRepositoryJPA roleRepository) {
+    public AuthorController(AuthorService authorService, UserService userService) {
         this.authorService = authorService;
         this.userService = userService;
-        this.roleRepository = roleRepository;
     }
 
     @ModelAttribute("checklistForm")
@@ -53,7 +49,7 @@ public class AuthorController {
     @GetMapping("view-checklist-authors")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public String viewChecklistAuthors(Model model){
-        List<User> authors = authorService.findUsersByRoles(roleRepository.getRoleByName("AUTHOR"));
+        List<User> authors = authorService.findUsersByRoles("AUTHOR");
         model.addAttribute("authors", authors);
         return "clone-templates-list-";
     }
@@ -134,7 +130,7 @@ public class AuthorController {
                 model.addAttribute("topicForm", new TopicForm());
                 return "checklist/checklist-topic";
             } else {
-                model.addAttribute("users", authorService.findUsersByRoles(roleRepository.getRoleByName("USER")));
+                model.addAttribute("users", authorService.findUsersByRoles("USER"));
                 model.addAttribute("assignedTo", new AssignedToForm());
                 return "checklist/assign-to";
             }
