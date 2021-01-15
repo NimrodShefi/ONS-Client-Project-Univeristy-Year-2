@@ -32,6 +32,13 @@ public class UserServiceImpl implements UserService {
         this.roleRepository = roleRepository;
     }
 
+    /**
+     * with the data sent from the controller a new user will be created, but before that happens the data has to be validated to ensure that there aren't any problems
+     *
+     * @param newUser - this is the data collected from the controller sent to be saved as a user
+     * @throws SQLIntegrityConstraintViolationException - when validating the data, should the email exist, this is the error that will be thrown
+     * @throws DataFormatException                      - when validating the data, should any of the data have the wrong format, this error will be thrown
+     */
     @Override
     public void save(UserCreationEvent newUser) throws SQLIntegrityConstraintViolationException, DataFormatException {
         try {
@@ -46,6 +53,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * checking if the name is empty and then if not to see if it passes the regex and contains only letters
+     *
+     * @param name - the piece of data validated
+     * @param text - this method checks both first name and last name, so this will say in the message which part of the name this is for, when checking if the name is empty
+     * @return - true/false to see if the name passes the regex
+     * @throws DataFormatException - if the name is empty
+     */
     private boolean nameValidation(String name, String text) throws DataFormatException {
         if (name.equals("") || name == null) {
             throw new DataFormatException(text + " is empty. Please input your name");
@@ -55,6 +70,13 @@ public class UserServiceImpl implements UserService {
         return matcher.find();
     }
 
+    /**
+     * checking of the email is empty and then if matches the format of the emails wanted
+     *
+     * @param email - the piece of data validated
+     * @return - true/false to see if the email passes the regex
+     * @throws DataFormatException - if the email is empty
+     */
     private boolean emailValidation(String email) throws DataFormatException {
         if (email.equals("") || email == null) {
             throw new DataFormatException("Email is empty. Please input your email");
@@ -64,6 +86,13 @@ public class UserServiceImpl implements UserService {
         return matcher.find();
     }
 
+    /**
+     * checking of the password is empty and then if matches the format of the passwords wanted
+     *
+     * @param password - the piece of data validated
+     * @return - true/false to see if the password passes all the regex
+     * @throws DataFormatException - if the password is empty
+     */
     private boolean passwordValidation(String password) throws DataFormatException {
         if (password.equals("") || password == null) {
             throw new DataFormatException("Password is empty. Please input your password");
@@ -78,6 +107,14 @@ public class UserServiceImpl implements UserService {
                 && matcher4.find();
     }
 
+    /**
+     * checking of the repeat password is empty and then if the repeats password has the same value as password
+     *
+     * @param password       - using to validate the repeat password variable
+     * @param repeatPassword - the piece of data validated
+     * @return - true/false to see if the repeat password equals the password
+     * @throws DataFormatException - if the repeat password is empty
+     */
     private boolean samePasswordValidation(String password, String repeatPassword) throws DataFormatException {
         if (repeatPassword.equals("") || repeatPassword == null) {
             throw new DataFormatException("Please input your password in both fields");
@@ -85,6 +122,13 @@ public class UserServiceImpl implements UserService {
         return password.equals(repeatPassword);
     }
 
+    /**
+     * calling all of the methods shown above and checking their outputs, while throwing an error with teh correct message according to what went wrong
+     *
+     * @param user - the object holding all of the data that is going to be validated by the methods above
+     * @throws DataFormatException                      -  if there is a problem with the format of any of the user details
+     * @throws SQLIntegrityConstraintViolationException -  if the email signed in with already exists
+     */
     private void validateData(UserCreationEvent user) throws DataFormatException, SQLIntegrityConstraintViolationException {
         boolean emailFormat = emailValidation(user.getEmail());
         boolean passwordFormat = passwordValidation(user.getPassword());
@@ -101,7 +145,7 @@ public class UserServiceImpl implements UserService {
                 throw new DataFormatException("Email Format is wrong");
             } else if (!firstName) {
                 throw new DataFormatException("First Name can only contain letters");
-            } else if (!lastName){
+            } else if (!lastName) {
                 throw new DataFormatException("Last Name can only contain letters");
             }
         }
@@ -137,12 +181,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<Role> findRoleById(long id){
+    public Optional<Role> findRoleById(long id) {
         return roleRepository.findById(id);
     }
 
     @Override
-    public void update(User user){
+    public void update(User user) {
         userRepository.save(user);
     }
 }
