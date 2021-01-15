@@ -32,6 +32,8 @@ public class PersonalChecklist {
     @OneToMany(mappedBy = "personalChecklist", cascade = {CascadeType.ALL})
     private List<ChecklistItem> checklistItems;
 
+
+
     public PersonalChecklist(User user, ChecklistTemplate checklistTemplate, LocalDate dateAssigned, List<ChecklistItem> items){
         this(null, user, checklistTemplate, dateAssigned, null, items);
     }

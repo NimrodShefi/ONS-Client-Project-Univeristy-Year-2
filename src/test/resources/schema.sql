@@ -8,6 +8,10 @@ CREATE TABLE IF NOT EXISTS USER (
   last_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
+  failed_attempt tinyint NOT NULL DEFAULT 0,
+  account_non_locked tinyint NOT NULL default 1,
+  lock_time datetime,
+  enabled tinyint NOT NULL default 1,
   PRIMARY KEY (id),
   CONSTRAINT email_unique UNIQUE (email))
 ENGINE = InnoDB;
@@ -20,8 +24,10 @@ CREATE TABLE IF NOT EXISTS ROLE(
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS USER_ROLE(
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id INT UNSIGNED NOT NULL,
     role_id INT UNSIGNED NOT NULL,
+    PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES USER(id),
     FOREIGN KEY (role_id) REFERENCES ROLE(id))
 ENGINE = InnoDB;
@@ -72,7 +78,8 @@ CREATE TABLE IF NOT EXISTS CHECKLIST_ITEM(
      PRIMARY KEY(id),
      FOREIGN KEY (personal_checklist_id) REFERENCES PERSONAL_CHECKLIST(id),
      FOREIGN KEY (checklist_template_item_id) REFERENCES CHECKLIST_TEMPLATE_ITEM(id))
-     ENGINE = InnoDB;
+ENGINE = InnoDB;
+
 
 -- validate email procedure
 DROP PROCEDURE IF EXISTS validate_email;
@@ -83,7 +90,7 @@ CREATE PROCEDURE validate_email(
 DETERMINISTIC
 NO SQL
 BEGIN
-		IF NOT (SELECT email REGEXP '^[^\@<>+*/=!"£$%^&()`¬\\|;:?,#~]+@cardiff.ac.uk') THEN
+		IF NOT (SELECT email REGEXP '^[^\@<>+*/=!"£$^&%()`¬\\|;:?,#~]+@cardiff.ac.uk') THEN
 				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'WRONG email format';
 		END IF;
 END $$
@@ -98,7 +105,7 @@ CREATE PROCEDURE validate_user_first_name(
 DETERMINISTIC
 NO SQL
 BEGIN
-		IF NOT (SELECT first_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
+		IF (SELECT first_name REGEXP '[0-9\@<>+*/=!"£$123^&()`¬\\|;:?,#~]') THEN
 				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Names can only contains letters';
 		END IF;
 END $$
@@ -112,7 +119,7 @@ CREATE PROCEDURE validate_user_last_name(
 DETERMINISTIC
 NO SQL
 BEGIN
-		IF NOT (SELECT last_name REGEXP '[0-9\@<>+*/=!"£$%^&()`¬\\|;:?,#~]') THEN
+		IF (SELECT last_name REGEXP '[0-9\@<>+*/=!"£$123^&()`¬\\|;:?,#~]') THEN
 				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Names can only contains letters';
 		END IF;
 END $$
@@ -125,8 +132,8 @@ CREATE TRIGGER `user_validate_insert`
 BEFORE INSERT ON `user` FOR EACH ROW
 BEGIN
 		CALL validate_email(NEW.email);
-        CALL validate_user_first_name(NEW.first_name);
-        CALL validate_user_last_name(NEW.last_name);
+		CALL validate_user_first_name(NEW.first_name);
+		CALL validate_user_last_name(NEW.last_name);
 END$$
 DELIMITER ;
 
@@ -140,6 +147,27 @@ BEGIN
 END $$
 DELIMITER ;
 
+
+-- Stored procedure to get a count of the checklist items that have been checked
+DROP PROCEDURE IF EXISTS getCheckedItemsCountForPersonalChecklist;
+
+DELIMITER //
+
+USE ons //
+CREATE DEFINER = `onsUser`@`localhost`
+    PROCEDURE getCheckedItemsCountForPersonalChecklist(IN personalChecklistId int, OUT countOut int)
+    SQL SECURITY INVOKER
+BEGIN
+    SELECT COUNT(checked) INTO countOut
+    FROM checklist_item
+    WHERE checklist_item.personal_checklist_id = personalChecklistId
+      AND checked = true;
+END//
+
+DELIMITER ;
+
+
+ -- CREATING DB USER
 CREATE USER IF NOT EXISTS 'onsUser'@'localhost' IDENTIFIED BY '2Nng2?9P6q47QJLAL=^3';
 
 grant usage on ons.* to 'onsUser'@'localhost';
@@ -152,5 +180,6 @@ grant select, insert, update, alter on ons.TOPIC to 'onsUser'@'localhost';
 grant select, insert, update, alter on ons.CHECKLIST_TEMPLATE_ITEM to 'onsUser'@'localhost';
 grant select, insert, update, alter on ons.PERSONAL_CHECKLIST to 'onsUser'@'localhost';
 grant select, insert, update, alter on ons.CHECKLIST_ITEM to 'onsUser'@'localhost';
+grant execute on procedure ons.getCheckedItemsCountForPersonalChecklist to 'onsUser'@'localhost';
 show grants for 'onsUser'@'localhost';
 flush privileges;

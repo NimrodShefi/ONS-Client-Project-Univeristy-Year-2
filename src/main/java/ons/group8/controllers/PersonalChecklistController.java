@@ -1,26 +1,26 @@
 package ons.group8.controllers;
 
 import ons.group8.controllers.forms.ChecklistForm;
-import ons.group8.domain.*;
-import ons.group8.services.*;
+import ons.group8.domain.ChecklistItem;
+import ons.group8.domain.PersonalChecklist;
+import ons.group8.domain.User;
+import ons.group8.services.PersonalChecklistService;
+import ons.group8.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/user")
 public class PersonalChecklistController {
 
     Logger logger = LoggerFactory.getLogger(PersonalChecklistController.class);
@@ -59,6 +59,13 @@ public class PersonalChecklistController {
             logger.debug("Found personal checklist with id: " + pChecklistId);
             if (personalChecklistService.isUserAssignedToPersonalChecklist(personalChecklist.get(), activeUser)
                     || personalChecklistService.isUserPersonalChecklistAuthor(personalChecklist.get(), activeUser)) {
+                int checkedItems = 0;
+                for (ChecklistItem item : personalChecklist.get().getChecklistItems()) {
+                    if (item.isChecked()){
+                        checkedItems ++;
+                    }
+                }
+                model.addAttribute("checkedItems", checkedItems);
                 model.addAttribute("personalChecklist", personalChecklist.get());
                 model.addAttribute("checklistForm", new ChecklistForm(personalChecklistService.getCheckedItemIds(personalChecklist.get())));
                 if (personalChecklistService.isUserAssignedToPersonalChecklist(personalChecklist.get(), activeUser)) {
@@ -87,6 +94,13 @@ public class PersonalChecklistController {
         if (personalChecklist.isPresent()){
             logger.debug("Found personal checklist with id: " + pChecklistId);
             personalChecklistService.updateCheckedItems(personalChecklist.get(), checklistForm.getCheckedItemIds());
+            int checkedItems = 0;
+            for (ChecklistItem item : personalChecklist.get().getChecklistItems()) {
+                if (item.isChecked()){
+                    checkedItems ++;
+                }
+            }
+            model.addAttribute("checkedItems", checkedItems);
             model.addAttribute("personalChecklist", personalChecklist.get());
             model.addAttribute("checklistForm", checklistForm);
             model.addAttribute("viewingAs", "user");

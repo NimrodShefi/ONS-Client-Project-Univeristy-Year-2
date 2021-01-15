@@ -1,0 +1,54 @@
+.table{
+    width: fit-content;
+    margin-right: auto;
+}
+
+.table-wrap{
+    overflow-y: auto;
+    height: 30vh;
+    margin-bottom: 2vh;
+    width: fit-content;
+}
+
+#main-body{
+    margin-left: 2%;
+}
+
+table > tbody > tr {
+    font-size: 14px;
+    color: #474747;
+    background-color: #E2E2E2;
+}
+table > thead > tr:first-child {
+    font-size: 16px;
+    color: #454545;
+    outline: 1px solid #6A6A6A;
+    background: linear-gradient(to top, #8e9eab, #eef2f3);
+}
+table > tbody > tr > th {padding: 5px 10px;}
+table > tbody > tr > th:nth-child(1),
+table > tbody > tr > th:nth-child(2) {border-right: 1px solid #717171;}
+table > tbody > tr > td {padding:2px 5px 2px 10px;}
+
+
+
+
+/*!* width *!*/
+/*::-webkit-scrollbar {*/
+/*    width: 100%;*/
+/*}*/
+
+/*!* Track *!*/
+/*::-webkit-scrollbar-track {*/
+/*    background: #f1f1f1;*/
+/*}*/
+
+/*!* Handle *!*/
+/*::-webkit-scrollbar-thumb {*/
+/*    background: #888;*/
+/*}*/
+
+/*!* Handle on hover *!*/
+/*::-webkit-scrollbar-thumb:hover {*/
+/*    background: #555;*/
+/*}*/

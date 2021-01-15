@@ -3,6 +3,7 @@ package ons.group8.repositories;
 import ons.group8.domain.ChecklistTemplate;
 import ons.group8.domain.PersonalChecklist;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.query.Procedure;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,5 +15,8 @@ public interface PersonalChecklistRepositoryJPA extends JpaRepository<PersonalCh
     List<PersonalChecklist> getAllByChecklistTemplate(ChecklistTemplate checklistTemplate);
 
     Optional<PersonalChecklist> getById(Long pChecklistId);
+
+    @Procedure("getCheckedItemsCountForPersonalChecklist")
+    Long getCheckedItemsCount(Long pChecklistId);
 
 }

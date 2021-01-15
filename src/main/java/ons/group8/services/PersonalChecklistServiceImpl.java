@@ -55,4 +55,13 @@ public class PersonalChecklistServiceImpl implements PersonalChecklistService {
     public boolean isUserPersonalChecklistAuthor(PersonalChecklist personalChecklist, User user) {
         return personalChecklist.getChecklistTemplate().getAuthor().equals(user);
     }
+
+    public Long getCheckedItemsCount(PersonalChecklist personalChecklist) {
+        return personalChecklistRepository.getCheckedItemsCount(personalChecklist.getId());
+    }
+
+    public Long getChecklistItemsCount(PersonalChecklist personalChecklist) {
+        return (long)personalChecklist.getChecklistItems().size();
+    }
+
 }

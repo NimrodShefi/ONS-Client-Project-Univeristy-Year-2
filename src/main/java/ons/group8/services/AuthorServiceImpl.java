@@ -16,17 +16,19 @@ public class AuthorServiceImpl implements AuthorService {
     private final UserRepositoryJPA userRepository;
     private final ChecklistTemplateRepositoryJPA checklistTemplateRepository;
     private final PersonalChecklistRepositoryJPA personalChecklistRepository;
+    private final RoleRepositoryJPA roleRepository;
 
     @Autowired
-    public AuthorServiceImpl(UserRepositoryJPA userRepository, ChecklistTemplateRepositoryJPA checklistTemplateRepository, PersonalChecklistRepositoryJPA personalChecklistRepository) {
+    public AuthorServiceImpl(UserRepositoryJPA userRepository, ChecklistTemplateRepositoryJPA checklistTemplateRepository, PersonalChecklistRepositoryJPA personalChecklistRepository, RoleRepositoryJPA roleRepository) {
         this.userRepository = userRepository;
         this.checklistTemplateRepository = checklistTemplateRepository;
         this.personalChecklistRepository = personalChecklistRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
-    public List<User> findUsersByRoles(Role role) {
-        return userRepository.findUsersByRoles(role);
+    public List<User> findUsersByRoles(String role) {
+        return userRepository.findUsersByRoles(roleRepository.getRoleByName(role));
     }
 
     @Override
@@ -73,5 +75,16 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<ChecklistTemplate> getAllByAuthorEmail(String authorEmail) {
         return checklistTemplateRepository.findAllByAuthor_Email(authorEmail);
+    }
+
+    @Override
+    public List<ChecklistTemplate> findAllChecklistTemplates() {
+        return checklistTemplateRepository.findAll();
+    }
+
+    @Override
+    public void cloneChecklistTemplate(ChecklistTemplate template, User author) {
+        ChecklistTemplate clonedTemplate = new ChecklistTemplate(template, author);
+        checklistTemplateRepository.save(clonedTemplate);
     }
 }
