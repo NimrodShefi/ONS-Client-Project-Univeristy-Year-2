@@ -38,7 +38,7 @@
                 <tbody>
                 <tr th:each="personalChecklist : ${personalChecklists}">
                     <td th:text="|${personalChecklist.user.firstName} ${personalChecklist.user.lastName}|"></td>
-                    <td><a th:href="@{/personal-checklist/{id} (id=${personalChecklist.id})}">
+                    <td><a th:href="@{/user/personal-checklist/{id} (id=${personalChecklist.id})}">
                         <button>View Checklist</button>
                     </a></td>
                 </tr>
