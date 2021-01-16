@@ -15,8 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.zip.DataFormatException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -76,6 +75,7 @@ public class SignupTests {
             userService.save(user);
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Email Format is wrong"));
+            assertNull(userService.findByEmail("nimrodshefi@gamil.com"));
         }
     }
 
@@ -86,14 +86,16 @@ public class SignupTests {
             userService.save(user);
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Email Format is wrong"));
+            assertNull(userService.findByEmail("nimrodshefi<@cardiff.ac.uk"));
+
         }
     }
 
     @Test
     public void should_fail_to_add_user_due_to_email_already_exists() throws Exception {
         try {
-            UserCreationEvent user = new UserCreationEvent("nimrodshefi@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
-            UserCreationEvent user2 = new UserCreationEvent("nimrodshefi@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
+            UserCreationEvent user = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
+            UserCreationEvent user2 = new UserCreationEvent("nimrodshefi01@cardiff.ac.uk", "Nimrod", "Shefi", "Password1!", "Password1!");
             userService.save(user);
             userService.save(user2);
         } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
@@ -108,6 +110,7 @@ public class SignupTests {
             userService.save(user);
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Password Format is wrong"));
+            assertNull(userService.findByEmail("nimrodshefi01@cardiff.ac.uk"));
         }
     }
 
@@ -119,6 +122,7 @@ public class SignupTests {
             userService.save(user);
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Passwords don't match"));
+            assertNull(userService.findByEmail("nimrodshefi02@cardiff.ac.uk"));
         }
     }
 
@@ -129,6 +133,7 @@ public class SignupTests {
             userService.save(user);
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("First Name can only contain letters"));
+            assertNull(userService.findByEmail("nimrodshefi01@cardiff.ac.uk"));
         }
     }
 
@@ -139,6 +144,7 @@ public class SignupTests {
             userService.save(user);
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("First Name can only contain letters"));
+            assertNull(userService.findByEmail("nimrodshefi01@cardiff.ac.uk"));
         }
     }
 
@@ -149,6 +155,7 @@ public class SignupTests {
             userService.save(user);
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Last Name can only contain letters"));
+            assertNull(userService.findByEmail("nimrodshefi01@cardiff.ac.uk"));
         }
     }
 
@@ -159,6 +166,7 @@ public class SignupTests {
             userService.save(user);
         } catch (DataFormatException dataFormatException) {
             assertTrue(dataFormatException.getMessage().contains("Last Name can only contain letters"));
+            assertNull(userService.findByEmail("nimrodshefi01@cardiff.ac.uk"));
         }
     }
 }
