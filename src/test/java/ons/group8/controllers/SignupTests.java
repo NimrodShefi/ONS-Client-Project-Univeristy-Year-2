@@ -100,7 +100,6 @@ public class SignupTests {
             userService.save(user2);
         } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
             assertTrue(sqlIntegrityConstraintViolationException.getMessage().contains("Email already exists"));
-            assertNull(userService.findByEmail("nimrodshefi@cardiff.ac.uk"));
         }
     }
 
