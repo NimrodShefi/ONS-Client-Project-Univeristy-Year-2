@@ -100,7 +100,9 @@ public class AdminController {
                 .collect(Collectors.toSet());
         userExist.setRoles(newRoles);
         userService.update(userExist);
-        model.addAttribute("users", adminService.findAllUsers());
+        List<User> users = adminService.findAllUsers();
+        users.remove(userService.getLoggedInUserId());
+        model.addAttribute("users", users);
         return "user-roles";
     }
 }
