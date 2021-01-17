@@ -12,8 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,11 +39,13 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getList(@RequestParam(value = "firstName", required = false) String searchName, Model model) {
         if (searchName == null) {
-            model.addAttribute("users", adminService.findAllUsers());
+            List<User> users = adminService.findAllUsers();
+            users.remove(userService.getLoggedInUserId());
+            model.addAttribute("users", users);
             return "user-roles";
         } else {
-
             Set<User> users = userService.findUsersByFirstName(searchName);
+            users.remove(userService.getLoggedInUserId());
             model.addAttribute("users", users);
             model.addAttribute("noUsersFound", users.isEmpty());
             return "user-roles";
@@ -55,6 +57,10 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String serveUserForm(@PathVariable("userId") Long userId, Model model) {
         Optional<User> userExist = userService.findById(userId);
+        if (userExist.isPresent() && userExist.get().getId().equals(userService.getLoggedInUserId().getId())){
+            model.addAttribute("message", "You can't edit your own user");
+            return "user-roles";
+        }
         if (userExist.isPresent()) {
             Set<Long> userRoles = userExist.get().getRoles().stream()
                     .map(Role::getId)
@@ -94,7 +100,9 @@ public class AdminController {
                 .collect(Collectors.toSet());
         userExist.setRoles(newRoles);
         userService.update(userExist);
-        model.addAttribute("users", adminService.findAllUsers());
+        List<User> users = adminService.findAllUsers();
+        users.remove(userService.getLoggedInUserId());
+        model.addAttribute("users", users);
         return "user-roles";
     }
 }
