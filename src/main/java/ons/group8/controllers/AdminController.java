@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import ons.group8.controllers.forms.UserRoleForm;
 import ons.group8.domain.Role;
 import ons.group8.domain.User;
-import ons.group8.repositories.RoleRepositoryJPA;
-import ons.group8.repositories.UserRepositoryJPA;
 import ons.group8.services.AdminService;
 import ons.group8.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -23,34 +22,27 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final AdminService theAdminService;
-    private final RoleRepositoryJPA theRoleRepositoryJPA;
-    private final UserRepositoryJPA theUserRepositoryJPA;
+    private final AdminService adminService;
     private final UserService userService;
 
 
     @Autowired
     public AdminController(AdminService aAdminService,
-                           RoleRepositoryJPA aRoleRepositoryJPA,
-                           UserRepositoryJPA aUserRepositoryJPA,
                            UserService aUserService) {
-        theAdminService = aAdminService;
-        theRoleRepositoryJPA = aRoleRepositoryJPA;
-        theUserRepositoryJPA = aUserRepositoryJPA;
+        adminService = aAdminService;
         userService = aUserService;
     }
 
 
-
     @GetMapping("user-roles")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getList(@RequestParam(value = "firstName", required = false) String searchName,Model model) {
-        if (searchName == null ) {
-            model.addAttribute("users", theAdminService.findAll());
+    public String getList(@RequestParam(value = "firstName", required = false) String searchName, Model model) {
+        if (searchName == null) {
+            model.addAttribute("users", adminService.findAllUsers());
             return "user-roles";
         } else {
 
-            Set<User> users = theAdminService.findUsersByFirstName(searchName);
+            Set<User> users = userService.findUsersByFirstName(searchName);
             model.addAttribute("users", users);
             model.addAttribute("noUsersFound", users.isEmpty());
             return "user-roles";
@@ -68,7 +60,7 @@ public class AdminController {
                     .collect(Collectors.toSet());
             UserRoleForm userRoleForm = new UserRoleForm(userExist.get(), userRoles);
             model.addAttribute("userRoleForm", userRoleForm);
-            model.addAttribute("allRoles", theRoleRepositoryJPA.findAll());
+            model.addAttribute("allRoles", adminService.findAllRoles());
             return "userrole-form";
         } else {
             log.error("Could not user with id: " + userId + " while trying to serve user role form");
@@ -81,15 +73,15 @@ public class AdminController {
     @PostMapping("userrole-form")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String handleUserForm(@Valid @ModelAttribute("userRoleForm") UserRoleForm userRoleForm, BindingResult bindings, Model model) {
-        if(bindings.hasErrors()){
-            model.addAttribute("allRoles", theRoleRepositoryJPA.findAll());
+        if (bindings.hasErrors()) {
+            model.addAttribute("allRoles", adminService.findAllRoles());
             System.out.println("errors = " + bindings.getAllErrors());
             return "userrole-form";
         }
         User userExist = userRoleForm.getUser();
-        if(userExist == null) {
+        if (userExist == null) {
             log.error("user not exist");
-            model.addAttribute("allRoles", theRoleRepositoryJPA.findAll());
+            model.addAttribute("allRoles", adminService.findAllRoles());
             System.out.println("are there errors = " + bindings.hasErrors());
             System.out.println("errors = " + bindings.getAllErrors());
             return "userrole-form";
@@ -97,11 +89,11 @@ public class AdminController {
         Set<Role> newRoles = userRoleForm
                 .getAssignedRolesIds()
                 .stream()
-                .map(r -> theAdminService.findRolesById(r).get())
+                .map(r -> adminService.findRolesById(r).get())
                 .collect(Collectors.toSet());
         userExist.setRoles(newRoles);
-        theUserRepositoryJPA.save(userExist);
-        model.addAttribute("users", theAdminService.findAll());
+        userService.update(userExist);
+        model.addAttribute("users", adminService.findAllUsers());
         return "user-roles";
     }
 }

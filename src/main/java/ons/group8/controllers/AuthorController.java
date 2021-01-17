@@ -4,7 +4,6 @@ import ons.group8.controllers.forms.AssignedToForm;
 import ons.group8.controllers.forms.ChecklistTemplateForm;
 import ons.group8.controllers.forms.TopicForm;
 import ons.group8.domain.*;
-import ons.group8.repositories.RoleRepositoryJPA;
 import ons.group8.services.AuthorService;
 import ons.group8.services.ChecklistCreationEvent;
 import ons.group8.services.UserService;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -35,13 +33,10 @@ public class AuthorController {
 
     private final UserService userService;
 
-    private final RoleRepositoryJPA roleRepository;
-
     @Autowired
-    public AuthorController(AuthorService authorService, UserService userService, RoleRepositoryJPA roleRepository) {
+    public AuthorController(AuthorService authorService, UserService userService) {
         this.authorService = authorService;
         this.userService = userService;
-        this.roleRepository = roleRepository;
     }
 
     @ModelAttribute("checklistForm")
@@ -50,11 +45,18 @@ public class AuthorController {
         return new ChecklistTemplateForm();
     }
 
+    @GetMapping("view-checklist-authors")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String viewChecklistAuthors(Model model){
+        List<User> authors = authorService.findUsersByRoles("AUTHOR");
+        model.addAttribute("authors", authors);
+        return "clone-templates-list-";
+    }
+
     @GetMapping("view-checklist-templates")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
-    public String viewChecklistTemplates(Principal principal, Model model){
+    public String viewAuthorsChecklistTemplates(Principal principal, Model model){
         logger.debug("Getting checklist template list for author: " + principal.getName());
-        System.out.println(getChecklistForm());
         List<ChecklistTemplate> checklistTemplates = authorService.getAllByAuthorEmail(principal.getName());
         model.addAttribute("checklistTemplates", checklistTemplates);
         return "checklist/view-all-checklist-templates";
@@ -70,7 +72,7 @@ public class AuthorController {
                 ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
                 List<PersonalChecklist> personalChecklists = authorService.getAllByChecklistTemplate(checklistTemplate);
                 model.addAttribute("checklist", checklistTemplate);
-                model.addAttribute("users", personalChecklists);
+                model.addAttribute("personalChecklists", personalChecklists);
                 return "checklist/view-checklist-template";
             } catch (NullPointerException e){
                 model.addAttribute("title", "Missing Checklist");
@@ -123,11 +125,11 @@ public class AuthorController {
             checklistTemplateForm.getTopics().add(new Topic(topic.getTopicTitle(), topic.getTopicDescription(), items));
             model.addAttribute("title", checklistTemplateForm.getTitle());
             model.addAttribute("titleDescription", checklistTemplateForm.getTitleDescription());
-            if ("true".equals(topic.getAnotherTopic())) {
+            if ("true".equalsIgnoreCase(topic.getAnotherTopic())) {
                 model.addAttribute("topicForm", new TopicForm());
                 return "checklist/checklist-topic";
             } else {
-                model.addAttribute("users", authorService.findUsersByRoles(roleRepository.getRoleByName("USER")));
+                model.addAttribute("users", authorService.findUsersByRoles("USER"));
                 model.addAttribute("assignedTo", new AssignedToForm());
                 return "checklist/assign-to";
             }
@@ -164,4 +166,53 @@ public class AuthorController {
             }
         }
     }
+
+    @GetMapping("/create-from-clone/checklist-templates-list")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String viewAllChecklistTemplates(Model model){
+        List<ChecklistTemplate> checklistTemplates = authorService.findAllChecklistTemplates();
+        model.addAttribute("checklistTemplates", checklistTemplates);
+        return "clone-templates-list-";
+    }
+
+    @GetMapping("/create-from-clone/checklist-template/{id}")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String viewChecklistTemplateToClone(@PathVariable(name = "id") Long checklistId, Model model){
+        try {
+            ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
+            model.addAttribute("checklist", checklistTemplate);
+            model.addAttribute("viewMode", "clone");
+            return "checklist/view-checklist-template";
+        } catch (NullPointerException e){
+            model.addAttribute("title", "Missing Checklist");
+            model.addAttribute("message", "The checklist you are looking for could not be found");
+            return "message";
+        }
+    }
+
+    @GetMapping("/create-from-clone/checklist-template/{id}/clone")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public String cloneChecklistTemplate(@PathVariable(name = "id") Long checklistId, Model model){
+        User activeUser = userService.getLoggedInUserId();
+        if (activeUser == null) {
+            logger.error("Could not retrieve logged in user." );
+            model.addAttribute("title", "404 - Not found");
+            model.addAttribute("message", "The requested logged in user was not found.");
+            return "message";
+        }
+        ChecklistTemplate checklistTemplate = authorService.getChecklistTemplateById(checklistId);
+        if (checklistTemplate == null) {
+            logger.error("Could not retrieve checklist template with id" + checklistId);
+            model.addAttribute("title", "404 - Not found");
+            model.addAttribute("message", "The checklist template was not found.");
+            return "message";
+        }
+        authorService.cloneChecklistTemplate(checklistTemplate, activeUser);
+        model.addAttribute("title", "Process Completed");
+        model.addAttribute("message", "The checklist is cloned and saved");
+        return "message";
+    }
+
+
+
 }

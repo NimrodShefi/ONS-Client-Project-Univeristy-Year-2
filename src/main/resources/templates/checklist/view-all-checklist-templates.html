@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
-<head th:replace="fragments/header :: head">
+<head th:replace="fragments/header :: head"></head>
+<head>
     <title>My Checklist Templates</title>
+    <link rel="stylesheet" href="/css/checklists.css">
+    <link rel="stylesheet" href="/css/lists.css">
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/header :: header"></div>
+<div id="main-body">
     <h1>My Checklist Templates</h1>
     <div>
-        <ul th:each="checklist : ${checklistTemplates}">
-            <li>
+        <ul th:each="checklist : ${checklistTemplates}" class="list list-group">
+            <li class="list-group-item">
                 <a th:id="@{checklistTemplateLink{id} (id=${checklist.id})}"
                    th:href="@{/author/view-checklist-template/{id} (id=${checklist.id})}">
                     <span th:text="${checklist.name}"></span>
                 </a>
             </li>
         </ul>
-        <a href="checklist-title-and-description">Create Blank Checklist</a>
     </div>
+    <a href="/author/checklist-title-and-description" class="btn btn-black" id="checklistTitleAndDescription">
+        <button>Create Blank Checklist</button>
+    </a>
+    <a th:href="@{/author/create-from-clone/checklist-templates-list}" class="btn btn-black">
+        <button>Create Checklist from Existing</button>
+    </a>
+</div>
 </body>
 </html>
