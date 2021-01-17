@@ -43,6 +43,14 @@ Choose the new user you created. Now if you return to 'My Checklist Templates' y
 
 Log in to the user you created earlier, and if you go to 'My Checklists' now you should be able to see a checklist, which when clicked will let you to tick the items you completed and then save it. 
 
+## Test 2
+Log in using picard@cardiff.ac.uk (details below) to now access an account with all rights. Go to 'User Management' through the nav bar. Here you are able to assign users roles for the application.
+
+In 'Search by first name' input the name Johnny to look for the user you created earlier. This will show you all of the Johnnies in the DB, which right now, there is only 1, so click on the edit button next to his name and tick the AUTHOR box, while keeping the USER role. This will give Johnny the ability to both complete checklists and create new ones. After saving the changes, you will be able to see the changes in the table of all users.
+
+If you log in with the Johnny account, you will be able to see the optoin of creating new checklists as Johnny is an AUTHOR now. 
+
+if you go back to the admin an remove the USER role from Johnny, he would not be able to access his personal checklists anymore, but if teh role of USER is reassigned to Johnny, the checklists will be visible again without any data loss.
 
 Application URL: https://localhost:8443/login
 
