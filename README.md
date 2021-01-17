@@ -5,6 +5,8 @@ Before running the application, seperately run the schema.sql and the data.sql e
 
 When runnig the tests, the application needs to run in the background or the Selenium tests will not work.
 
+Application URL: https://localhost:8443/login
+
 ## Manual Tests:
 ### Test 1
 Create a new user using the following details: \
@@ -43,7 +45,7 @@ Choose the new user you created. Now if you return to 'My Checklist Templates' y
 
 Log in to the user you created earlier, and if you go to 'My Checklists' now you should be able to see a checklist, which when clicked will let you to tick the items you completed and then save it. 
 
-## Test 2
+### Test 2
 Log in using picard@cardiff.ac.uk (details below) to now access an account with all rights. Go to 'User Management' through the nav bar. Here you are able to assign users roles for the application.
 
 In 'Search by first name' input the name Johnny to look for the user you created earlier. This will show you all of the Johnnies in the DB, which right now, there is only 1, so click on the edit button next to his name and tick the AUTHOR box, while keeping the USER role. This will give Johnny the ability to both complete checklists and create new ones. After saving the changes, you will be able to see the changes in the table of all users.
@@ -52,7 +54,20 @@ If you log in with the Johnny account, you will be able to see the optoin of cre
 
 if you go back to the admin an remove the USER role from Johnny, he would not be able to access his personal checklists anymore, but if teh role of USER is reassigned to Johnny, the checklists will be visible again without any data loss.
 
-Application URL: https://localhost:8443/login
+### Test 3
+
+Attempt to create new users. 
+
+see what happens when anything but letters are being inputted to the first or last name fields.
+
+emails will reject anything that is not in the format of example@cardiff.ac.uk, and the only special characters it accepts are . - _
+
+how the password rules (which can be found on the registration page) are enforced.
+
+the password and repeat password must match.
+
+Unless all of those criteria are met, no new user will be created
+
 
 ## Login in Details
 
@@ -61,14 +76,26 @@ Application URL: https://localhost:8443/login
 **roles**: User \
 **use for**: filling out a personal checklist 
 
+**username**: hannah@cardiff.ac.uk \
+**password**: hanpass \
+**roles**: Admin \
+**use for**: managing user roles 
+
 **username**: mahruk@cardiff.ac.uk \
 **password**: mahpass \
 **roles**: User & Author \
 **use for**: filling out a personal checklist & creating new checklists template 
 
+**username**: sameer@cardiff.ac.uk \
+**password**: sampass \
+**roles**: Author \
+**use for**: creating new checklists template 
+
 **username**: picard@cardiff.ac.uk \
 **password**: earlgreyhot \
 **roles**: User, Author, Admin \
-**use for**: filling out a personal checklist & creating new checklists template & managing user roles 
+**use for**: filling out a personal checklist & creating new checklists template & managing user roles
 
-all users created through the register page will be given a default User role
+the other users details can be found in data.sql in the comments
+
+all users created through the registeration page will be given a default User role
