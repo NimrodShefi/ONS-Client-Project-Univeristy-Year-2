@@ -21,13 +21,13 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li sec:authorize="isAuthenticated()" th:classappend="${#request.requestURI.equals('/') ? 'active':''}"><a href="/">Home</a></li>
-                <li sec:authorize="hasRole('ROLE_USER')" th:classappend="${#request.requestURI.equals('/user/personal-checklist-list') ? 'active':''}"><a href="/user/personal-checklist-list">My Checklists</a></li>
-                <li sec:authorize="hasRole('ROLE_AUTHOR')" th:classappend="${#request.requestURI.equals('/author/user-roles') ? 'active':''}"><a href="/author/view-checklist-templates">My Checklist Templates</a></li>
-                <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#request.requestURI.equals('/admin/user-roles') ? 'active':''}"><a href="/admin/user-roles">User Management</a></li>
+                <li sec:authorize="isAuthenticated()" th:classappend="${#request.requestURI.equals('/') ? 'active':''}"><a href="/" id="home">Home</a></li>
+                <li sec:authorize="hasRole('ROLE_USER')" th:classappend="${#request.requestURI.equals('/user/personal-checklist-list') ? 'active':''}"><a href="/user/personal-checklist-list" id="myChecklists">My Checklists</a></li>
+                <li sec:authorize="hasRole('ROLE_AUTHOR')" th:classappend="${#request.requestURI.equals('/author/user-roles') ? 'active':''}"><a href="/author/view-checklist-templates" id="myChecklistTemplates">My Checklist Templates</a></li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#request.requestURI.equals('/admin/user-roles') ? 'active':''}"><a href="/admin/user-roles" id="userManagement">User Management</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" sec:authorize="!isAnonymous()">
-                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                <li><a href="/logout" id="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
         </div>
     </nav>

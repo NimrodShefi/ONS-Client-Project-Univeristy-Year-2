@@ -5,13 +5,13 @@
 <head th:replace="fragments/header :: head"></head>
 <head>
     <meta charset="UTF-8">
-    <title>Process Complete</title>
+    <title>Process Result</title>
     <link rel="stylesheet" href="/css/message.css">
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div id="message">
-    <h1 th:text="${title}"></h1>
+    <h1 th:text="${title}" id="title"></h1>
     <span th:text="${message}"></span>
     <br>
     <a sec:authorize="!isAnonymous()" href="/">Go to home page...</a>
