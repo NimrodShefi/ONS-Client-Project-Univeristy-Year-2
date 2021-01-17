@@ -11,16 +11,16 @@
         <fieldset>
             <div class="form-group">
                 <label th:for="title"> Checklist Title:</label>
-                <input th:field="*{title}" type="text" class="form-control" placeholder="Checklist Title" required>
+                <input th:field="*{title}" type="text" class="form-control" placeholder="Checklist Title" name="title" required>
             </div>
             <br>
             <div class="form-group">
                 <label th:for="titleDescription"> Checklist Description:</label>
                 <textarea th:field="*{titleDescription}" rows="5" cols="60"
-                          placeholder="Enter details about checklist here..." class="form-control" required></textarea>
+                          placeholder="Enter details about checklist here..." class="form-control" name="description" required></textarea>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Next</button>
+            <button type="submit" class="btn btn-primary" name="toTopic">Next</button>
         </fieldset>
     </form>
 </body>

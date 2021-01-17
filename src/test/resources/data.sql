@@ -88,9 +88,22 @@ INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, ch
 INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(2, 9, true, '2020-12-03');
 INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(2, 10, false, null);
 
+-- Assign checklist template 1 to Picard
+INSERT INTO personal_checklist(user_id, checklist_template_id, date_assigned, date_complete) VALUES(5, 1, DATE('2020-12-01'), null);
 
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 1, true, '2020-12-02');
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 2, false, '2020-12-03');
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 3, false, null);
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 4, false, null);
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 5, false, null);
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 6, true, '2020-12-01');
 
--- Sameer (4) creates a checklist template 1
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 7, true, '2020-12-04');
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 8, true, '2020-12-04');
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 9, true, '2020-12-03');
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 10, false, null);
+
+-- Sameer (4) creates a checklist template 2
 INSERT INTO checklist_template(author_id, list_name, description) VALUES(4, "Daily Tasks", "Tasks to do on a daily basis");
 
 INSERT INTO topic(checklist_template_id, topic_name, description) VALUES(2, "Before Lunch", "Tasks to be done before you go on your lunch break");
@@ -110,13 +123,13 @@ INSERT INTO checklist_template_item(topic_id, description) VALUES(4, "drink coff
 -- Assign checklist template 2 to Nimrod
 INSERT INTO personal_checklist(user_id, checklist_template_id, date_assigned, date_complete) VALUES(1, 2, DATE('2020-12-05'), null);
 
-INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 11, true, '2020-12-02');
-INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 12, true, '2020-12-03');
-INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 13, false, null);
-INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 14, false, null);
-INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 15, false, null);
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(4, 11, true, '2020-12-02');
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(4, 12, true, '2020-12-03');
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(4, 13, false, null);
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(4, 14, false, null);
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(4, 15, false, null);
 
 
-INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 16, false, null);
-INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 17, true, '2020-12-04');
-INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(3, 18, true, '2020-12-03');
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(4, 16, false, null);
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(4, 17, true, '2020-12-04');
+INSERT INTO checklist_item(personal_checklist_id, checklist_template_item_id, checked, date_checked) VALUES(4, 18, true, '2020-12-03');
