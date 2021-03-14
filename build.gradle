@@ -49,6 +49,11 @@ dependencies {
     testCompile 'com.structurizr:structurizr-spring:1.3.5'
 }
 
+checkstyle {
+   toolVersion = 8.25
+   checkstyleTest.enabled = false
+}
+
 test {
     useJUnitPlatform()
     ignoreFailures = true
