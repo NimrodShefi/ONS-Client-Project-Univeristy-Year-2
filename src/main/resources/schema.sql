@@ -2,7 +2,7 @@ DROP SCHEMA IF EXISTS ons;
 CREATE SCHEMA IF NOT EXISTS ons;
 USE ons;
 
-CREATE TABLE IF NOT EXISTS USER (
+CREATE TABLE IF NOT EXISTS user (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(255) NOT NULL,
   last_name VARCHAR(255) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS USER (
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
-CREATE TABLE IF NOT EXISTS ROLE(
+CREATE TABLE IF NOT EXISTS role(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS ROLE(
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
-CREATE TABLE IF NOT EXISTS USER_ROLE(
+CREATE TABLE IF NOT EXISTS user_role(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id INT UNSIGNED NOT NULL,
     role_id INT UNSIGNED NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS USER_ROLE(
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
-CREATE TABLE IF NOT EXISTS CHECKLIST_TEMPLATE(
+CREATE TABLE IF NOT EXISTS checklist_template(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     author_id INT UNSIGNED NOT NULL, -- this will contain the id of the author who create the list
     list_name VARCHAR(255) NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS CHECKLIST_TEMPLATE(
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
-CREATE TABLE IF NOT EXISTS TOPIC(
+CREATE TABLE IF NOT EXISTS topic(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     checklist_template_id INT UNSIGNED NOT NULL,
     topic_name VARCHAR(255) NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS TOPIC(
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
-CREATE TABLE IF NOT EXISTS CHECKLIST_TEMPLATE_ITEM(
+CREATE TABLE IF NOT EXISTS checklist_template_item(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     topic_id INT UNSIGNED NOT NULL,
     description LONGTEXT NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS CHECKLIST_TEMPLATE_ITEM(
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
-CREATE TABLE IF NOT EXISTS PERSONAL_CHECKLIST(
+CREATE TABLE IF NOT EXISTS personal_checklist(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id INT UNSIGNED NOT NULL,
     checklist_template_id INT UNSIGNED NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS PERSONAL_CHECKLIST(
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
-CREATE TABLE IF NOT EXISTS CHECKLIST_ITEM(
+CREATE TABLE IF NOT EXISTS checklist_item(
      id INT UNSIGNED NOT NULL AUTO_INCREMENT,
      personal_checklist_id INT UNSIGNED NOT NULL,
      checklist_template_item_id INT UNSIGNED NOT NULL,
@@ -180,14 +180,14 @@ CREATE USER IF NOT EXISTS 'onsUser'@'localhost' IDENTIFIED BY '2Nng2?9P6q47QJLAL
 
 grant usage on ons.* to 'onsUser'@'localhost';
 
-grant select, insert, update(id,first_name, last_name, password, email, failed_attempt, account_non_locked, lock_time, enabled) on ons.USER to 'onsUser'@'localhost';
-grant select, insert, update, alter on ons.ROLE to 'onsUser'@'localhost';
-grant select, insert, update, alter, delete on ons.USER_ROLE to 'onsUser'@'localhost';
-grant select, insert, update, alter on ons.CHECKLIST_TEMPLATE to 'onsUser'@'localhost';
-grant select, insert, update, alter on ons.TOPIC to 'onsUser'@'localhost';
-grant select, insert, update, alter on ons.CHECKLIST_TEMPLATE_ITEM to 'onsUser'@'localhost';
-grant select, insert, update, alter on ons.PERSONAL_CHECKLIST to 'onsUser'@'localhost';
-grant select, insert, update, alter on ons.CHECKLIST_ITEM to 'onsUser'@'localhost';
+grant select, insert, update(id,first_name, last_name, password, email, failed_attempt, account_non_locked, lock_time, enabled) on ons.user to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.role to 'onsUser'@'localhost';
+grant select, insert, update, alter, delete on ons.user_role to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.checklist_template to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.topic to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.checklist_template_item to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.personal_checklist to 'onsUser'@'localhost';
+grant select, insert, update, alter on ons.checklist_item to 'onsUser'@'localhost';
 grant execute on procedure ons.getCheckedItemsCountForPersonalChecklist to 'onsUser'@'localhost';
 show grants for 'onsUser'@'localhost';
 flush privileges;
