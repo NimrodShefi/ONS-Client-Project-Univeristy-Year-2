@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS user_role(
     user_id INT UNSIGNED NOT NULL,
     role_id INT UNSIGNED NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES USER(id),
-    FOREIGN KEY (role_id) REFERENCES ROLE(id))
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (role_id) REFERENCES role(id))
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS checklist_template(
     list_name VARCHAR(255) NOT NULL,
     description LONGTEXT NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY (author_id) REFERENCES USER(id))
+    FOREIGN KEY (author_id) REFERENCES user(id))
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS topic(
     topic_name VARCHAR(255) NOT NULL,
     description LONGTEXT NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY (checklist_template_id) REFERENCES CHECKLIST_TEMPLATE(id))
+    FOREIGN KEY (checklist_template_id) REFERENCES checklist_template(id))
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS checklist_template_item(
     topic_id INT UNSIGNED NOT NULL,
     description LONGTEXT NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY (topic_id) REFERENCES TOPIC(id))
+    FOREIGN KEY (topic_id) REFERENCES topic(id))
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
@@ -71,8 +71,8 @@ CREATE TABLE IF NOT EXISTS personal_checklist(
     date_assigned DATE NOT NULL,
     date_complete DATE,
     PRIMARY KEY(id),
-    FOREIGN KEY (user_id) REFERENCES USER(id),
-    FOREIGN KEY (checklist_template_id) REFERENCES CHECKLIST_TEMPLATE(id))
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (checklist_template_id) REFERENCES checklist_template(id))
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
 
@@ -83,8 +83,8 @@ CREATE TABLE IF NOT EXISTS checklist_item(
      checked BOOLEAN NOT NULL, -- boolean will show as TINYINT(1)
      date_checked DATE,
      PRIMARY KEY(id),
-     FOREIGN KEY (personal_checklist_id) REFERENCES PERSONAL_CHECKLIST(id),
-     FOREIGN KEY (checklist_template_item_id) REFERENCES CHECKLIST_TEMPLATE_ITEM(id))
+     FOREIGN KEY (personal_checklist_id) REFERENCES personal_checklist(id),
+     FOREIGN KEY (checklist_template_item_id) REFERENCES checklist_template_item(id))
 ENGINE = InnoDB;
 -- ENCRYPTED = YES;
      
