@@ -137,7 +137,7 @@ DELIMITER ;
 -- validate email trigger
 DELIMITER $$
 CREATE TRIGGER `user_validate_insert`
-BEFORE INSERT ON `USER` FOR EACH ROW
+BEFORE INSERT ON `user` FOR EACH ROW
 BEGIN
 		CALL validate_email(NEW.email);
 		CALL validate_user_first_name(NEW.first_name);
@@ -147,7 +147,7 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE TRIGGER user_validate_update
-BEFORE UPDATE ON `USER` FOR EACH ROW
+BEFORE UPDATE ON `user` FOR EACH ROW
 BEGIN
 		CALL validate_email(NEW.email);
 		CALL validate_user_first_name(NEW.first_name);
