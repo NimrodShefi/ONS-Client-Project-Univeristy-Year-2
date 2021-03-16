@@ -53,6 +53,7 @@ dependencies {
 checkstyle {
     toolVersion = 8.25
     checkstyleTest.enabled = false
+    ignoreFailures = true
 }
 
 test {
