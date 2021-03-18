@@ -37,15 +37,15 @@ public class AdminTests {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    @WithMockUser(roles = {"ADMIN"})
-    public void should_get_single_user_role_form_page() throws Exception {
-
-        this.mockMvc
-                .perform(get("/admin/userrole-form/1"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @WithMockUser(roles = {"ADMIN"})
+//    public void should_get_single_user_role_form_page() throws Exception {
+//
+//        this.mockMvc
+//                .perform(get("/admin/userrole-form/1"))
+//                .andDo(print())
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
